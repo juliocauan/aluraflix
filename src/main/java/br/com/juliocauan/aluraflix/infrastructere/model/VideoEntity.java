@@ -15,19 +15,19 @@ import br.com.juliocauan.aluraflix.domain.model.Video;
 public class VideoEntity extends Video{
     
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "video_id")
     private Integer id;
     
     @Size(min = 1, max = 100)
-    @Column(name = "titulo", nullable = false)
+    @Column(nullable = false)
     private String titulo;
 
-    @Column(name = "descricao", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String descricao;
 
     @Size(min = 10, max = 255)
-    @Column(name = "url", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String url;
 
     public Integer getId(){
