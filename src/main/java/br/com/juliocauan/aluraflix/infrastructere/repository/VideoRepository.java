@@ -23,17 +23,12 @@ public interface VideoRepository extends BaseRepository<VideoEntity, Integer>, J
 
     @Override
     default VideoEntity post(VideoEntity entity) {
-        try {
-            return save(entity);
-        } catch (Exception e) {
-            //TODO: handle exception
-        }
-        return null;
+        return save(entity);
     }
 
     @Override
-    default void remove(Integer id) {
-        delete(findOne(id));
+    default void remove(VideoEntity entity) {
+        delete(entity);
     }
 
 }
