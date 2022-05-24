@@ -1,0 +1,201 @@
+openapi: 3.0.3
+
+info:
+  title: 'AluraFlix'
+  version: '1.0.0'
+
+tags:
+  - name: "video"
+
+paths:
+  /videos:
+    get:
+      tags:
+        - "video"
+      operationId: "findAllVideos"
+      description: "Get a list of all Videos"
+      responses:
+        '200':
+          description: "Sucessfully found all Videos"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VideoGet"
+    post:
+      tags:
+        - "video"
+      operationId: "addVideo"
+      description: "Post a new Video"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VideoPost"
+      responses:
+        '201':
+          description: "Successfully created a new Video"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoGet"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+          
+  /videos/{videoId}:
+    get:
+      tags:
+        - "video"
+      operationId: "findVideoById"
+      description: "Get a specific Video by Id"
+      parameters:
+        - name: videoId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/videoId"
+      responses:
+        '200':
+          description: "Sucessfully found Video"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoGet"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    put:
+      tags:
+        - "video"
+      operationId: "updateVideo"
+      description: "Update Video parameters"
+      parameters:
+        - name: videoId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/videoId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VideoPut"
+      responses:
+        '204':
+          $ref: "#/components/responses/Updated"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - "video"
+      operationId: "deleteVideo"
+      description: "Delete Video"
+      parameters:
+        - name: videoId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/videoId"
+      responses:
+        '200':
+          $ref: "#/components/responses/Deleted"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
+components:
+  schemas:
+    ErrorDto:
+      type: object
+      required:
+        - code
+        - message
+        - trace
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        trace:
+          type: string
+        fieldList:
+          type: array
+          items:
+            $ref: "#/components/schemas/ErrorFieldDto"
+    ErrorFieldDto:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        field:
+          type: string
+    VideoGet:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/videoId"
+        titulo:
+          type: string
+        descricao:
+          type: string
+        url:
+          type: string
+    VideoPost:
+      type: object
+      required:
+        - titulo
+        - descricao
+        - url
+      properties:
+        titulo:
+          type: string
+          minLength: 1
+          maxLength: 100
+        descricao:
+          type: string
+        url:
+          type: string
+          minLength: 10
+          maxLength: 255
+    VideoPut:
+      type: object
+      properties:
+        titulo:
+          type: string
+          minLength: 1
+          maxLength: 100
+        descricao:
+          type: string
+        url:
+          type: string
+          minLength: 10
+          maxLength: 255
+    
+    videoId:
+      $ref: "#/components/schemas/integerId"
+    integerId:
+      type: integer
+      format: int32
+  
+  responses:
+    NotFound:
+      description: "Could not find specific Entity"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorDto"
+    BadRequest:
+      description: "Could not created/update Entity"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorDto"
+    Updated:
+      description: "Successfully updated Entity"
+    Deleted:
+      description: "Successfully deleted Entity"
