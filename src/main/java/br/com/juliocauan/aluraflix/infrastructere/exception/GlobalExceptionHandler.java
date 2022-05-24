@@ -1,7 +1,8 @@
-package br.com.juliocauan.aluraflix.infrastructere.handler;
+package br.com.juliocauan.aluraflix.infrastructere.exception;
 
 import javax.persistence.EntityNotFoundException;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import br.com.juliocauan.openapi.model.ErrorFieldDto;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private ErrorDto responseError = new ErrorDto();
+    private ErrorDto responseError;
 
     private ErrorDto init(int code, Exception ex){
         ErrorDto error = new ErrorDto();
@@ -49,6 +50,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             e.setCode(error.getCode());
             responseError.addFieldListItem(e);
         });
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> dataIntegrityError(DataIntegrityViolationException ex){
+        responseError = init(3001, ex);
+        responseError.setMessage(ex.getMostSpecificCause().getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 

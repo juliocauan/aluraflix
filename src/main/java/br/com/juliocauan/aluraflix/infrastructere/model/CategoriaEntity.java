@@ -28,6 +28,7 @@ public class CategoriaEntity extends Categoria {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Size(min = 7, max = 7)
     private Cor cor;
 
     @Override

@@ -26,12 +26,13 @@ public abstract class BaseService<E, ID> {
     }
 
     public E save(E entity) {
-        try {
-            return getRepository().post(entity);
-        } catch (Exception e) {
-            //TODO: handle exception
-        }
-        return null;
+        // try {
+        //     return getRepository().post(entity);
+        // } catch (DataIntegrityViolationException e) {
+        //     System.out.println("Aqui: " + e.getMessage());
+        //     //TODO: handle exception
+        // }
+        return getRepository().post(entity);
     }
 
     public void update(ID id, E newEntity) {
