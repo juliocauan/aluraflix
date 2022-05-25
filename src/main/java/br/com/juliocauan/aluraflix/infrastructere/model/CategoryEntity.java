@@ -10,12 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import br.com.juliocauan.aluraflix.domain.model.Categoria;
+import br.com.juliocauan.aluraflix.domain.model.Category;
 import br.com.juliocauan.aluraflix.domain.model.Cor;
 
 @Entity
 @Table(name = "categorias")
-public class CategoryEntity extends Categoria {
+public class CategoryEntity extends Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
