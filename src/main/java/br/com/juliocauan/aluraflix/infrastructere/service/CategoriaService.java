@@ -1,0 +1,42 @@
+package br.com.juliocauan.aluraflix.infrastructere.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import br.com.juliocauan.aluraflix.domain.mapper.ServiceMapper;
+import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
+import br.com.juliocauan.aluraflix.domain.service.BaseService;
+import br.com.juliocauan.aluraflix.infrastructere.mapper.CategoriaMapper;
+import br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity;
+import br.com.juliocauan.aluraflix.infrastructere.repository.CategoriaRepository;
+
+@Service
+@Transactional
+public class CategoriaService extends BaseService<CategoriaEntity, Integer> {
+
+    private final CategoriaRepository categoriaRepository;
+    private final CategoriaMapper categoriaMapper;
+
+    @Autowired
+    public CategoriaService(CategoriaRepository categoryRepository, CategoriaMapper categoryMapper) {
+        this.categoriaRepository = categoryRepository;
+        this.categoriaMapper = categoryMapper;
+    }
+
+    @Override
+    protected BaseRepository<CategoriaEntity, Integer> getRepository() {
+        return categoriaRepository;
+    }
+
+    @Override
+    protected ServiceMapper<CategoriaEntity> getMapper() {
+        return categoriaMapper;
+    }
+
+    @Override
+    protected String getClassName() {
+        return CategoriaEntity.class.getName();
+    }
+
+}

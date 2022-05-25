@@ -11,11 +11,11 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 import br.com.juliocauan.aluraflix.domain.model.Categoria;
-import br.com.juliocauan.aluraflix.domain.model.Cor;
+import br.com.juliocauan.openapi.model.Cor;
 
 @Entity
 @Table(name = "categorias")
-public class CategoryEntity extends Categoria {
+public class CategoriaEntity extends Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,6 @@ public class CategoryEntity extends Categoria {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Size(min = 7, max = 7)
     private Cor cor;
 
     @Override

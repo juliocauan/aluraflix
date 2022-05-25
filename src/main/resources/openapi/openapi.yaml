@@ -6,7 +6,7 @@ info:
 
 tags:
   - name: "video"
-  - name: "category"
+  - name: "categoria"
 
 paths:
   /videos:
@@ -107,80 +107,80 @@ paths:
         '404':
           $ref: "#/components/responses/NotFound"
   
-  /categories:
+  /categorias:
     get:
       tags:
-        - "category"
-      operationId: "findAllCategories"
-      description: "Get a list of all Categories"
+        - "categoria"
+      operationId: "findAllCategorias"
+      description: "Get a list of all Categorias"
       responses:
         '200':
-          description: "Sucessfully found all Categories"
+          description: "Sucessfully found all Categorias"
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/CategoryGet"
+                  $ref: "#/components/schemas/CategoriaGet"
     post:
       tags:
-        - "category"
-      operationId: "addCategory"
-      description: "Post a new Category"
+        - "categoria"
+      operationId: "addCategoria"
+      description: "Post a new Categoria"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CategoryPost"
+              $ref: "#/components/schemas/CategoriaPost"
       responses:
         '201':
-          description: "Successfully created a new Category"
+          description: "Successfully created a new Categoria"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategoryGet"
+                $ref: "#/components/schemas/CategoriaGet"
         '400':
           $ref: "#/components/responses/BadRequest"
 
-  /categories/{categoryId}:
+  /categorias/{categoriaId}:
     get:
       tags:
-        - "category"
-      operationId: "findCategoryById"
-      description: "Get a specific Category by Id"
+        - "categoria"
+      operationId: "findCategoriaById"
+      description: "Get a specific Categoria by Id"
       parameters:
-        - name: categoryId
+        - name: categoriaId
           in: path
           required: true
           schema:
-            $ref: "#/components/schemas/categoryId"
+            $ref: "#/components/schemas/categoriaId"
       responses:
         '200':
-          description: "Sucessfully found Category"
+          description: "Sucessfully found Categoria"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategoryGet"
+                $ref: "#/components/schemas/CategoriaGet"
         '404':
           $ref: "#/components/responses/NotFound"
     put:
       tags:
-        - "category"
-      operationId: "updateCategory"
-      description: "Update Category parameters"
+        - "categoria"
+      operationId: "updateCategoria"
+      description: "Update Categoria parameters"
       parameters:
-        - name: categoryId
+        - name: categoriaId
           in: path
           required: true
           schema:
-            $ref: "#/components/schemas/categoryId"
+            $ref: "#/components/schemas/categoriaId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CategoryPut"
+              $ref: "#/components/schemas/CategoriaPut"
       responses:
         '204':
           $ref: "#/components/responses/Updated"
@@ -190,15 +190,15 @@ paths:
           $ref: "#/components/responses/NotFound"
     delete:
       tags:
-        - "category"
-      operationId: "deleteCategory"
-      description: "Delete Category"
+        - "categoria"
+      operationId: "deleteCategoria"
+      description: "Delete Categoria"
       parameters:
-        - name: categoryId
+        - name: categoriaId
           in: path
           required: true
           schema:
-            $ref: "#/components/schemas/categoryId"
+            $ref: "#/components/schemas/categoriaId"
       responses:
         '200':
           $ref: "#/components/responses/Deleted"
@@ -276,16 +276,16 @@ components:
           minLength: 10
           maxLength: 255
     
-    CategoryGet:
+    CategoriaGet:
       type: object
       properties:
         id:
-          $ref: "#/components/schemas/categoryId"
+          $ref: "#/components/schemas/categoriaId"
         titulo:
           type: string
         cor:
           $ref: "#/components/schemas/Cor"
-    CategoryPost:
+    CategoriaPost:
       type: object
       required:
         - titulo
@@ -297,7 +297,7 @@ components:
           maxLength: 30
         cor:
           $ref: "#/components/schemas/Cor"
-    CategoryPut:
+    CategoriaPut:
       type: object
       properties:
         titulo:
@@ -314,7 +314,7 @@ components:
         - "Teal"
     videoId:
       $ref: "#/components/schemas/integerId"
-    categoryId:
+    categoriaId:
       $ref: "#/components/schemas/integerId"
     integerId:
       type: integer

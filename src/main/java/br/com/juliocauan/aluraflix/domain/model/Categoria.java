@@ -1,5 +1,7 @@
 package br.com.juliocauan.aluraflix.domain.model;
 
+import br.com.juliocauan.openapi.model.Cor;
+
 public abstract class Categoria {
     
     public abstract String getTitulo();
