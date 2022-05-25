@@ -15,7 +15,7 @@ import br.com.juliocauan.aluraflix.domain.model.Cor;
 
 @Entity
 @Table(name = "categorias")
-public class CategoriaEntity extends Categoria {
+public class CategoryEntity extends Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

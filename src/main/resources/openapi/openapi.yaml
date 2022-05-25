@@ -6,6 +6,7 @@ info:
 
 tags:
   - name: "video"
+  - name: "category"
 
 paths:
   /videos:
@@ -105,6 +106,104 @@ paths:
           $ref: "#/components/responses/Deleted"
         '404':
           $ref: "#/components/responses/NotFound"
+  
+  /categories:
+    get:
+      tags:
+        - "category"
+      operationId: "findAllCategories"
+      description: "Get a list of all Categories"
+      responses:
+        '200':
+          description: "Sucessfully found all Categories"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CategoryGet"
+    post:
+      tags:
+        - "category"
+      operationId: "addCategory"
+      description: "Post a new Category"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryPost"
+      responses:
+        '201':
+          description: "Successfully created a new Category"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryGet"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+
+  /categories/{categoryId}:
+    get:
+      tags:
+        - "category"
+      operationId: "findCategoryById"
+      description: "Get a specific Category by Id"
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/categoryId"
+      responses:
+        '200':
+          description: "Sucessfully found Category"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryGet"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    put:
+      tags:
+        - "category"
+      operationId: "updateCategory"
+      description: "Update Category parameters"
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/categoryId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoryPut"
+      responses:
+        '204':
+          $ref: "#/components/responses/Updated"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - "category"
+      operationId: "deleteCategory"
+      description: "Delete Category"
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/categoryId"
+      responses:
+        '200':
+          $ref: "#/components/responses/Deleted"
+        '404':
+          $ref: "#/components/responses/NotFound"
 
 components:
   schemas:
@@ -134,6 +233,7 @@ components:
           type: string
         field:
           type: string
+    
     VideoGet:
       type: object
       properties:
@@ -176,7 +276,44 @@ components:
           minLength: 10
           maxLength: 255
     
+    CategoryGet:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/categoryId"
+        titulo:
+          type: string
+        cor:
+          $ref: "#/components/schemas/CorEnum"
+    CategoryPost:
+      type: object
+      required:
+        - titulo
+        - cor
+      properties:
+        titulo:
+          type: string
+          minLength: 2
+          maxLength: 30
+        cor:
+          $ref: "#/components/schemas/CorEnum"
+    CategoryPut:
+      type: object
+      properties:
+        titulo:
+          type: string
+          minLength: 2
+          maxLength: 30
+        cor:
+          $ref: "#/components/schemas/CorEnum"
+    
+    CorEnum:
+      type: string
+      enum:
+        - ""
     videoId:
+      $ref: "#/components/schemas/integerId"
+    categoryId:
       $ref: "#/components/schemas/integerId"
     integerId:
       type: integer
