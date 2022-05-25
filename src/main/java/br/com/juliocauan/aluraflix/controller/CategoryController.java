@@ -1,10 +1,12 @@
 package br.com.juliocauan.aluraflix.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,32 +31,34 @@ public class CategoryController implements CategoriesApi {
 
     @Override
     public ResponseEntity<CategoryGet> _addCategory(@Valid CategoryPost categoryPost) {
-        // TODO Auto-generated method stub
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+            categoryMapper.entityToGetDto(categoryService.save(categoryMapper.postDtoToEntity(categoryPost))));
     }
 
     @Override
     public ResponseEntity<Void> _deleteCategory(Integer categoryId) {
-        // TODO Auto-generated method stub
-        return null;
+        categoryService.delete(categoryId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Override
     public ResponseEntity<List<CategoryGet>> _findAllCategories() {
-        // TODO Auto-generated method stub
-        return null;
+        List<CategoryGet> categoryList = new ArrayList<>();
+        categoryService.findAll().forEach(
+            category -> categoryList.add(categoryMapper.entityToGetDto(category)));
+        return ResponseEntity.status(HttpStatus.OK).body(categoryList);
     }
 
     @Override
     public ResponseEntity<CategoryGet> _findCategoryById(Integer categoryId) {
-        // TODO Auto-generated method stub
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(
+            categoryMapper.entityToGetDto(categoryService.findById(categoryId)));
     }
 
     @Override
     public ResponseEntity<Void> _updateCategory(@Valid CategoryPut categoryPut, Integer categoryId) {
-        // TODO Auto-generated method stub
-        return null;
+        categoryService.update(categoryId, categoryMapper.putDtoToEntity(categoryPut));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
 }
