@@ -7,6 +7,6 @@ public abstract class Video {
     public abstract void setDescricao(String descricao);
     public abstract String getUrl();
     public abstract void setUrl(String url);
-    public abstract Category getCategoria();
-    public abstract void setCategoria(Category categoria);
+    public abstract Categoria getCategoria();
+    public abstract void setCategoria(Categoria categoria);
 }

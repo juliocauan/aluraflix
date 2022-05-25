@@ -239,8 +239,8 @@ components:
       properties:
         id:
           $ref: "#/components/schemas/videoId"
-        categoryId:
-          $ref: "#/components/schemas/categoryId"
+        categoriaId:
+          $ref: "#/components/schemas/categoriaId"
         titulo:
           type: string
         descricao:
@@ -250,13 +250,13 @@ components:
     VideoPost:
       type: object
       required:
-        - categoryId
+        - categoriaId
         - titulo
         - descricao
         - url
       properties:
-        categoryId:
-          $ref: "#/components/schemas/categoryId"
+        categoriaId:
+          $ref: "#/components/schemas/categoriaId"
         titulo:
           type: string
           minLength: 1
@@ -270,8 +270,8 @@ components:
     VideoPut:
       type: object
       properties:
-        categoryId:
-          $ref: "#/components/schemas/categoryId"
+        categoriaId:
+          $ref: "#/components/schemas/categoriaId"
         titulo:
           type: string
           minLength: 1

@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import br.com.juliocauan.aluraflix.domain.model.Category;
+import br.com.juliocauan.aluraflix.domain.model.Categoria;
 import br.com.juliocauan.aluraflix.domain.model.Video;
 
 @Entity
@@ -34,9 +34,9 @@ public class VideoEntity extends Video{
     @Column(nullable = false, unique = true)
     private String url;
 
-    @ManyToOne(optional = false, targetEntity = CategoryEntity.class, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, targetEntity = CategoriaEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "video_category_id", referencedColumnName = "category_id")
-    private Category categoria;
+    private Categoria categoria;
 
     public Integer getId(){
         return id;
@@ -66,11 +66,11 @@ public class VideoEntity extends Video{
         this.url = url;
     }
     @Override
-    public Category getCategoria() {
+    public Categoria getCategoria() {
         return categoria;
     }
     @Override
-    public void setCategoria(Category categoria) {
+    public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
 
