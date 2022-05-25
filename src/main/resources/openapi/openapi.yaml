@@ -284,7 +284,7 @@ components:
         titulo:
           type: string
         cor:
-          $ref: "#/components/schemas/CorEnum"
+          $ref: "#/components/schemas/Cor"
     CategoryPost:
       type: object
       required:
@@ -296,7 +296,7 @@ components:
           minLength: 2
           maxLength: 30
         cor:
-          $ref: "#/components/schemas/CorEnum"
+          $ref: "#/components/schemas/Cor"
     CategoryPut:
       type: object
       properties:
@@ -305,12 +305,13 @@ components:
           minLength: 2
           maxLength: 30
         cor:
-          $ref: "#/components/schemas/CorEnum"
+          $ref: "#/components/schemas/Cor"
     
-    CorEnum:
+    Cor:
       type: string
       enum:
-        - ""
+        - "White"
+        - "Teal"
     videoId:
       $ref: "#/components/schemas/integerId"
     categoryId:
