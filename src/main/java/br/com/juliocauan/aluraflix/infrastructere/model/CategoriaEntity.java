@@ -20,7 +20,7 @@ public class CategoriaEntity extends Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "categoria_id")
-    private Short id;
+    private Integer id;
 
     @Column(nullable = false)
     @Size(min = 2, max = 30)
@@ -30,6 +30,9 @@ public class CategoriaEntity extends Categoria {
     @Column(nullable = false)
     private Cor cor;
 
+    public Integer getId(){
+        return id;
+    }
     @Override
     public String getTitulo() {
         return titulo;
