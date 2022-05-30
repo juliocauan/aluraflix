@@ -1,6 +1,7 @@
 package br.com.juliocauan.aluraflix.infrastructere.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import br.com.juliocauan.aluraflix.infrastructere.mapper.config.BaseMapStruct;
@@ -13,7 +14,7 @@ import br.com.juliocauan.openapi.model.CategoriaPut;
 public interface CategoriaMapper extends BaseMapStruct<CategoriaEntity, CategoriaGet, CategoriaPost, CategoriaPut> {
 
     @Override
-    //TODO revisar
+    @Mapping(target = "id", ignore = true)
     void update(CategoriaEntity newEntity, @MappingTarget CategoriaEntity oldEntity);
 
 }
