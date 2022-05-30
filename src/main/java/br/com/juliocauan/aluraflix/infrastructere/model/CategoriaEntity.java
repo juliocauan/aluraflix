@@ -19,7 +19,7 @@ public class CategoriaEntity extends Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "categoria_id")
+    @Column(name = "id")
     private Integer id;
 
     @Column(nullable = false)
@@ -28,7 +28,6 @@ public class CategoriaEntity extends Categoria {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Size(max = 16)
     private Cor cor;
 
     public Integer getId(){

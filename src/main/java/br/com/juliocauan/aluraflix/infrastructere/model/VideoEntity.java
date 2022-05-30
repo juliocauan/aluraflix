@@ -2,12 +2,16 @@ package br.com.juliocauan.aluraflix.infrastructere.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import br.com.juliocauan.aluraflix.domain.model.Categoria;
 import br.com.juliocauan.aluraflix.domain.model.Video;
 
 @Entity
@@ -16,7 +20,7 @@ public class VideoEntity extends Video{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "video_id")
+    @Column(name = "id")
     private Integer id;
     
     @Size(min = 1, max = 100)
@@ -29,6 +33,10 @@ public class VideoEntity extends Video{
     @Size(min = 10, max = 255)
     @Column(nullable = false, unique = true)
     private String url;
+
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)
+    private CategoriaEntity categoria;
 
     public Integer getId(){
         return id;
@@ -56,6 +64,14 @@ public class VideoEntity extends Video{
     @Override
     public void setUrl(String url) {
         this.url = url;
+    }
+    @Override
+    public Categoria getCategoria() {
+        return categoria;
+    }
+    @Override
+    public void setCategoria(Categoria categoria) {
+        this.categoria = (CategoriaEntity) categoria;
     }
 
 }
