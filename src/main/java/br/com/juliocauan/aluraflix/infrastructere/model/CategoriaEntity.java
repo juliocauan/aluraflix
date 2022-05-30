@@ -20,7 +20,7 @@ public class CategoriaEntity extends Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "categoria_id")
-    private Integer id;
+    private Short id;
 
     @Column(nullable = false)
     @Size(min = 2, max = 30)
