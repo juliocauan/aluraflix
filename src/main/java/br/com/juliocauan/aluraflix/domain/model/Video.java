@@ -1,12 +1,14 @@
 package br.com.juliocauan.aluraflix.domain.model;
 
-public abstract class Video {
-    public abstract String getTitulo();
-    public abstract void setTitulo(String titulo);
-    public abstract String getDescricao();
-    public abstract void setDescricao(String descricao);
-    public abstract String getUrl();
-    public abstract void setUrl(String url);
-    public abstract Categoria getCategoria(); 
-    public abstract void setCategoria(Categoria categoria);
+public interface Video {
+    Integer getId();
+    void setId(Integer id);
+    String getTitulo();
+    void setTitulo(String titulo);
+    String getDescricao();
+    void setDescricao(String descricao);
+    String getUrl();
+    void setUrl(String url);
+    Categoria getCategoria(); 
+    void setCategoria(Categoria categoria);
 }

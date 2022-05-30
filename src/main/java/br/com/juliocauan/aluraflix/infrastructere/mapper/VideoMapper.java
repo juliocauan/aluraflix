@@ -19,9 +19,11 @@ public interface VideoMapper extends BaseMapStruct<VideoEntity, VideoGet, VideoP
     
     //TODO
     @Override
+    @Mapping(source = "categoria.id", target = "categoriaId")
     VideoGet entityToGetDto(VideoEntity entity);
 
     @Override
+    //@Mapping(source = "categoriaId", target = "categoria.id")
     VideoEntity postDtoToEntity(VideoPost postDto);
 
     @Override

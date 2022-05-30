@@ -15,7 +15,7 @@ import br.com.juliocauan.openapi.model.Cor;
 
 @Entity
 @Table(name = "categorias")
-public class CategoriaEntity extends Categoria {
+public class CategoriaEntity implements Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +30,13 @@ public class CategoriaEntity extends Categoria {
     @Column(nullable = false)
     private Cor cor;
 
+    @Override
     public Integer getId(){
         return id;
+    }
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
     }
     @Override
     public String getTitulo() {

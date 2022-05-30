@@ -16,7 +16,7 @@ import br.com.juliocauan.aluraflix.domain.model.Video;
 
 @Entity
 @Table(name = "videos")
-public class VideoEntity extends Video{
+public class VideoEntity implements Video{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +38,13 @@ public class VideoEntity extends Video{
     @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)
     private CategoriaEntity categoria;
 
-    public Integer getId(){
+    @Override
+    public Integer getId() {
         return id;
+    }
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
     }
     @Override
     public String getTitulo() {
