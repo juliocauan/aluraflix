@@ -18,7 +18,7 @@ import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
 
 @RestController
-public class VideoController implements VideosApi{
+public class VideoController implements VideosApi {
 
     private final VideoService videoService;
     private final VideoMapper videoMapper;
@@ -33,26 +33,27 @@ public class VideoController implements VideosApi{
     public ResponseEntity<List<VideoGet>> _findAllVideos() {
         List<VideoGet> videoList = new ArrayList<>();
         videoService.findAll().forEach(
-            video -> videoList.add(videoMapper.entityToGetDto(video)));
+                video -> videoList.add(videoMapper.entityToGetDto(video)));
         return ResponseEntity.status(HttpStatus.OK).body(videoList);
     }
 
     @Override
     public ResponseEntity<VideoGet> _findVideoById(Integer videoId) {
         return ResponseEntity.status(HttpStatus.OK).body(
-            videoMapper.entityToGetDto(videoService.findById(videoId)));
+                videoMapper.entityToGetDto(videoService.findById(videoId)));
     }
 
     @Override
     public ResponseEntity<VideoGet> _addVideo(@Valid VideoPost videoPost) {
         return ResponseEntity.status(HttpStatus.CREATED).body(videoMapper.entityToGetDto(
-            videoService.save(videoMapper.postDtoToEntity(videoPost))));
+                videoService.save(videoMapper.postDtoToEntity(videoPost))));
     }
 
     @Override
-    public ResponseEntity<Void> _updateVideo(@Valid VideoPut videoPut, Integer videoId) {
+    public ResponseEntity<VideoGet> _updateVideo(@Valid VideoPut videoPut, Integer videoId) {
         videoService.update(videoId, videoMapper.putDtoToEntity(videoPut));
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                videoMapper.entityToGetDto(videoMapper.putDtoToEntity(videoPut)));
     }
 
     @Override

@@ -84,8 +84,12 @@ paths:
             schema:
               $ref: "#/components/schemas/VideoPut"
       responses:
-        '204':
-          $ref: "#/components/responses/Updated"
+        '200':
+          description: "Successfully updated Entity"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoGet"
         '400':
           $ref: "#/components/responses/BadRequest"
         '404':
@@ -182,8 +186,12 @@ paths:
             schema:
               $ref: "#/components/schemas/CategoriaPut"
       responses:
-        '204':
-          $ref: "#/components/responses/Updated"
+        '200':
+          description: "Successfully updated Entity"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoriaGet"
         '400':
           $ref: "#/components/responses/BadRequest"
         '404':
@@ -333,7 +341,5 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ErrorDto"
-    Updated:
-      description: "Successfully updated Entity"
     Deleted:
       description: "Successfully deleted Entity"

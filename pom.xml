@@ -55,6 +55,11 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.4.2.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!--OPEN API DEPENDENCIES-->
 		<dependency>
@@ -68,12 +73,6 @@
 			<version>0.2.2</version>
 		</dependency>
 		<!--OPEN API DEPENDENCIES-->
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 
 		<!-- junit 5 -->
 		<dependency>
@@ -89,7 +88,7 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- junit 5 -->
-		
+
 	</dependencies>
 
 	<build>
