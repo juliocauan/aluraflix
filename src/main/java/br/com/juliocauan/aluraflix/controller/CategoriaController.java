@@ -32,7 +32,7 @@ public class CategoriaController implements CategoriasApi {
     @Override
     public ResponseEntity<CategoriaGet> _addCategoria(@Valid CategoriaPost categoriaPost) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
-            categoriaMapper.entityToGetDto(categoriaService.save(categoriaMapper.postDtoToEntity(categoriaPost))));
+                categoriaMapper.entityToGetDto(categoriaService.save(categoriaMapper.postDtoToEntity(categoriaPost))));
     }
 
     @Override
@@ -45,20 +45,21 @@ public class CategoriaController implements CategoriasApi {
     public ResponseEntity<List<CategoriaGet>> _findAllCategorias() {
         List<CategoriaGet> categoriaList = new ArrayList<>();
         categoriaService.findAll().forEach(
-            categoria -> categoriaList.add(categoriaMapper.entityToGetDto(categoria)));
+                categoria -> categoriaList.add(categoriaMapper.entityToGetDto(categoria)));
         return ResponseEntity.status(HttpStatus.OK).body(categoriaList);
     }
 
     @Override
     public ResponseEntity<CategoriaGet> _findCategoriaById(Integer categoriaId) {
         return ResponseEntity.status(HttpStatus.OK).body(
-            categoriaMapper.entityToGetDto(categoriaService.findById(categoriaId)));
+                categoriaMapper.entityToGetDto(categoriaService.findById(categoriaId)));
     }
 
     @Override
-    public ResponseEntity<Void> _updateCategoria(@Valid CategoriaPut categoriaPut, Integer categoriaId) {
+    public ResponseEntity<CategoriaGet> _updateCategoria(@Valid CategoriaPut categoriaPut, Integer categoriaId) {
         categoriaService.update(categoriaId, categoriaMapper.putDtoToEntity(categoriaPut));
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                categoriaMapper.entityToGetDto(categoriaMapper.putDtoToEntity(categoriaPut)));
     }
-    
+
 }
