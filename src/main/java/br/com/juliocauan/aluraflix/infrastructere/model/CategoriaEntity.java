@@ -28,6 +28,7 @@ public class CategoriaEntity extends Categoria {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Size(max = 16)
     private Cor cor;
 
     public Integer getId(){
