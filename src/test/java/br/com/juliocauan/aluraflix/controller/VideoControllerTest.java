@@ -82,7 +82,7 @@ public class VideoControllerTest extends TestContext {
         }
 
         @AfterAll
-        public void clean() throws Exception{
+        public void clean() throws Exception {
                 getMockMvc().perform(
                                 delete("/categorias/{categoriaId}", categoriaId));
         }
@@ -136,6 +136,25 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isBadRequest())
                                 .andExpect(jsonPath("$.code").value("2001"))
                                 .andExpect(jsonPath("$.fieldList", hasSize(3)));
+        }
+
+        @Test
+        @Order(1)
+        @DisplayName("Erro ao tentar cadastrar um Video com CategoriaId inválido")
+        public void givenVideo_WhenPostVideoWithInvalidCategoriaId_Then404() throws Exception {
+
+                videoPost.categoriaId(0);
+                getMockMvc().perform(
+                                post(url)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPost)))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.message").value(
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity with id 0"))
+                                .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
         @Test
@@ -252,10 +271,31 @@ public class VideoControllerTest extends TestContext {
         }
 
         @Test
+        @Order(3)
+        @DisplayName("Erro ao tentar atualizar Video com Categoria Id inválido")
+        public void givenVideo_WhenPutVideoWithInvalidCategoriaId_Then404() throws Exception {
+
+                postVideoAndUpdateLastVideoId();
+                videoPut.categoriaId(0);
+                getMockMvc().perform(
+                                put(urlId, lastVideoId)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPut)))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.message").value(
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity with id 0"))
+                                .andExpect(jsonPath("$.fieldList").doesNotExist());
+                deleteVideo();
+        }
+
+        @Test
         @Order(4)
         @DisplayName("Deleta Video")
         public void givenVideo_WhenDeleteVideo_Then200() throws Exception {
-        
+
                 postVideoAndUpdateLastVideoId();
                 getMockMvc().perform(
                                 delete(urlId, lastVideoId))
