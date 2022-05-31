@@ -12,9 +12,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.MediaType;
 
 import br.com.juliocauan.aluraflix.config.TestContext;
@@ -25,6 +29,8 @@ import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Order(1)
 public class VideoControllerTest extends TestContext {
 
         private final String url = "/videos";
@@ -34,6 +40,7 @@ public class VideoControllerTest extends TestContext {
         private VideoPost videoPost = new VideoPost();
         private VideoPut videoPut = new VideoPut();
         private Integer videoId;
+        private Integer categoriaId;
 
         private void postVideo() throws Exception {
                 String response = getMockMvc().perform(
@@ -59,7 +66,7 @@ public class VideoControllerTest extends TestContext {
 
         @BeforeEach
         public void setup() throws Exception {
-                Integer categoriaId = createCategoriaAndGetId();
+                categoriaId = createCategoriaAndGetId();
                 videoPost
                                 .descricao("Descrição teste POST")
                                 .titulo("Título teste POST")
@@ -70,6 +77,11 @@ public class VideoControllerTest extends TestContext {
                                 .titulo("Título teste PUT")
                                 .url("https://www.testePUT.com/")
                                 .categoriaId(categoriaId);
+        }
+
+        @AfterEach
+        public void clean() throws Exception {
+                getMockMvc().perform(delete("/categorias/{categoriaId}", categoriaId));
         }
 
         @Test

@@ -35,10 +35,6 @@ public class CategoriaEntity implements Categoria {
         return id;
     }
     @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    @Override
     public String getTitulo() {
         return titulo;
     }

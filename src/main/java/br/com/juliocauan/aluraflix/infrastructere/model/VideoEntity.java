@@ -43,10 +43,6 @@ public class VideoEntity implements Video{
         return id;
     }
     @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    @Override
     public String getTitulo() {
         return titulo;
     }

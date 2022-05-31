@@ -14,7 +14,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.MediaType;
 
 import br.com.juliocauan.aluraflix.config.TestContext;
@@ -23,6 +26,8 @@ import br.com.juliocauan.openapi.model.CategoriaPost;
 import br.com.juliocauan.openapi.model.CategoriaPut;
 import br.com.juliocauan.openapi.model.Cor;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Order(2)
 public class CategoriaControllerTest extends TestContext {
 
         private final String url = "/categorias";
@@ -97,7 +102,7 @@ public class CategoriaControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.[0].id").value("1"))
+                                .andExpect(jsonPath("$.[0].id").value(notNullValue()))
                                 .andExpect(jsonPath("$.[0].titulo").value(categoriaPost.getTitulo()))
                                 .andExpect(jsonPath("$.[0].cor").value(categoriaPost.getCor().getValue()));
         }
