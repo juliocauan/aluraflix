@@ -25,6 +25,8 @@ import br.com.juliocauan.openapi.model.CategoriaGet;
 import br.com.juliocauan.openapi.model.CategoriaPost;
 import br.com.juliocauan.openapi.model.CategoriaPut;
 import br.com.juliocauan.openapi.model.Cor;
+import br.com.juliocauan.openapi.model.VideoGet;
+import br.com.juliocauan.openapi.model.VideoPost;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Order(2)
@@ -32,6 +34,8 @@ public class CategoriaControllerTest extends TestContext {
 
         private final String url = "/categorias";
         private final String urlId = "/categorias/{categoriaId}";
+        private final String urlGetVideoListByCategoriaId = "/categorias/{categoriaId}/videos";
+        private final String urlGetVideoListByCategoriaInvalidId = "/categorias/0/videos";
         private final String urlInvalidId = "/categorias/0";
 
         private CategoriaPost categoriaPost = new CategoriaPost();
@@ -49,10 +53,28 @@ public class CategoriaControllerTest extends TestContext {
                                 .getId();
                 return result;
         }
-
         private void deleteCategoria() throws Exception {
                 getMockMvc().perform(
                                 delete(urlId, lastCategoriaId));
+        }
+        private VideoGet postVideo() throws Exception {
+                postCategoriaAndUpdateLastCategoriaId();
+                VideoPost videoPost = new VideoPost()
+                                .descricao("Descricao teste POST in Categoria")
+                                .titulo("Titulo teste POST in Categoria")
+                                .url("https://www.testePOSTInCategoria.com/")
+                                .categoriaId(lastCategoriaId);
+                String response = getMockMvc().perform(
+                                post("/videos")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPost)))
+                                .andReturn().getResponse().getContentAsString();
+                return getObjectMapper().readValue(response, VideoGet.class);
+        }
+        private void deleteVideo(VideoGet videoGet) throws Exception{
+                getMockMvc().perform(
+                                delete("/videos/{videoId}", videoGet.getId()));
+                deleteCategoria();
         }
 
         @BeforeEach
@@ -148,6 +170,43 @@ public class CategoriaControllerTest extends TestContext {
                                 .andExpect(jsonPath("$.message").value(
                                                 "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
+        }
+
+        @Test
+        @Order(2)
+        @DisplayName("Busca lista de Videos por Categoria")
+        public void givenCategoria_WhenGetVideoListByCategoria_Then200() throws Exception {
+
+                VideoGet videoGet = postVideo();
+                getMockMvc().perform(
+                                get(urlGetVideoListByCategoriaId, lastCategoriaId))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.[0].id").value(videoGet.getId()))
+                                .andExpect(jsonPath("$.[0].titulo").value(videoGet.getTitulo()))
+                                .andExpect(jsonPath("$.[0].descricao").value(videoGet.getDescricao()))
+                                .andExpect(jsonPath("$.[0].url").value(videoGet.getUrl()))
+                                .andExpect(jsonPath("$.[0].categoriaId").value(videoGet.getCategoriaId()));
+                deleteVideo(videoGet);
+        }
+
+        @Test
+        @Order(2)
+        @DisplayName("Erro ao tentar buscar lista de Videos por Categoria com Id inválido")
+        public void givenCategoria_WhenGetVideoListByInvalidCategoriaId_Then404() throws Exception {
+
+                VideoGet videoGet = postVideo();
+                getMockMvc().perform(
+                                get(urlGetVideoListByCategoriaInvalidId))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.message").value(
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity with id 0"))
+                                .andExpect(jsonPath("$.fieldList").doesNotExist());
+                deleteVideo(videoGet);
         }
 
         @Test

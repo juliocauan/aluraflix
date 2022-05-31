@@ -47,10 +47,10 @@ public class VideoService extends BaseService<VideoEntity, Integer> {
 
     public List<VideoGet> findAllByCategoria(CategoriaEntity categoria) {
         List<VideoGet> videoListByCategoria = new ArrayList<>();
-        this.findAll().stream()
-                .filter(video -> video.getCategoria().equals(categoria))
-                .collect(Collectors.toList())
-                .forEach(video -> videoListByCategoria.add(videoMapper.entityToGetDto(video)));
+        List<VideoEntity> list = this.findAll().stream()
+                .filter(video -> video.getCategoria().getId() == categoria.getId())
+                .collect(Collectors.toList());
+        list.forEach(video -> videoListByCategoria.add(videoMapper.entityToGetDto(video)));
         return videoListByCategoria;
     }
 
