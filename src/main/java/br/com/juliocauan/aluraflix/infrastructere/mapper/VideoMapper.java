@@ -22,7 +22,6 @@ public abstract class VideoMapper implements BaseMapStruct<VideoEntity, VideoGet
     @Mapping(target = "id", ignore = true)
     public abstract void update(VideoEntity newEntity, @MappingTarget VideoEntity oldEntity);
     
-    //TODO
     @Override
     @Mapping(source = "categoria.id", target = "categoriaId")
     public abstract VideoGet entityToGetDto(VideoEntity entity);

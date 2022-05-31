@@ -34,6 +34,7 @@ public class VideoEntity implements Video{
     @Column(nullable = false, unique = true)
     private String url;
 
+    //TODO REVISAR
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)
     private CategoriaEntity categoria;

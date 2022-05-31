@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.aluraflix.infrastructere.mapper.CategoriaMapper;
 import br.com.juliocauan.aluraflix.infrastructere.service.CategoriaService;
+import br.com.juliocauan.aluraflix.infrastructere.service.VideoService;
 import br.com.juliocauan.openapi.api.CategoriasApi;
 import br.com.juliocauan.openapi.model.CategoriaGet;
 import br.com.juliocauan.openapi.model.CategoriaPost;
@@ -23,11 +24,13 @@ public class CategoriaController implements CategoriasApi {
 
     private final CategoriaService categoriaService;
     private final CategoriaMapper categoriaMapper;
+    private final VideoService videoService;
 
     @Autowired
-    public CategoriaController(CategoriaService categoriaService, CategoriaMapper categoriaMapper) {
+    public CategoriaController(CategoriaService categoriaService, CategoriaMapper categoriaMapper, VideoService videoService) {
         this.categoriaService = categoriaService;
         this.categoriaMapper = categoriaMapper;
+        this.videoService = videoService;
     }
 
     @Override
@@ -66,7 +69,7 @@ public class CategoriaController implements CategoriasApi {
     @Override
     public ResponseEntity<List<VideoGet>> _findVideoListByCategoria(Integer categoriaId) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                categoriaService.findVideoListByCategoria(categoriaId));
+                videoService.findAllByCategoria(categoriaService.findById(categoriaId)));
     }
 
 }
