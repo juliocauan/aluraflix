@@ -16,6 +16,7 @@ import br.com.juliocauan.openapi.api.CategoriasApi;
 import br.com.juliocauan.openapi.model.CategoriaGet;
 import br.com.juliocauan.openapi.model.CategoriaPost;
 import br.com.juliocauan.openapi.model.CategoriaPut;
+import br.com.juliocauan.openapi.model.VideoGet;
 
 @RestController
 public class CategoriaController implements CategoriasApi {
@@ -60,6 +61,12 @@ public class CategoriaController implements CategoriasApi {
         categoriaService.update(categoriaId, categoriaMapper.putDtoToEntity(categoriaPut));
         return ResponseEntity.status(HttpStatus.OK).body(
                 categoriaMapper.entityToGetDto(categoriaMapper.putDtoToEntity(categoriaPut)));
+    }
+
+    @Override
+    public ResponseEntity<List<VideoGet>> _findVideoListByCategoria(Integer categoriaId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                categoriaService.findVideoListByCategoria(categoriaId));
     }
 
 }

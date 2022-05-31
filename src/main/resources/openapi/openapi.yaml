@@ -213,6 +213,30 @@ paths:
         '404':
           $ref: "#/components/responses/NotFound"
 
+  /categorias/{categoriaId}/videos:
+    get:
+      tags:
+        - "categoria"
+      operationId: "findVideoListByCategoria"
+      description: "Get list of Videos sorted by Categoria"
+      parameters:
+        - name: categoriaId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/categoriaId"
+      responses:
+        '200':
+          description: "Sucessfully found list of Videos"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/VideoGet"
+        '404':
+          $ref: "#/components/responses/NotFound"
+
 components:
   schemas:
     ErrorDto:
