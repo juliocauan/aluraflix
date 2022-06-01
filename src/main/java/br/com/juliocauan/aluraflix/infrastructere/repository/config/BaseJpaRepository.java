@@ -2,17 +2,25 @@ package br.com.juliocauan.aluraflix.infrastructere.repository.config;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
 
 @NoRepositoryBean
-public interface BaseJpaRepository<E, ID> extends BaseRepository<E, ID>, JpaRepository<E, ID>{
+public interface BaseJpaRepository<E, ID> extends BaseRepository<E, ID>, JpaRepository<E, ID>, JpaSpecificationExecutor<E>{
 
     @Override
     default List<E> findList() {
         return findAll();
+    }
+
+    @Override
+    default List<E> findList(Specification<E> spec) {
+        return findAll(spec, Sort.unsorted());
     }
 
     @Override

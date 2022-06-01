@@ -43,6 +43,7 @@ public class VideoService extends BaseService<VideoEntity, Integer> {
         return VideoEntity.class.getName();
     }
 
+    //TODO passar isso pro domínio
     public List<VideoEntity> findAllByCategoria(CategoriaEntity categoria) {
         List<VideoEntity> list = this.findAll().stream()
                 .filter(video -> video.getCategoria().equals(categoria))

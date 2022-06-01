@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.aluraflix.infrastructere.mapper.VideoMapper;
+import br.com.juliocauan.aluraflix.infrastructere.model.Specification.VideoSpecification;
 import br.com.juliocauan.aluraflix.infrastructere.service.VideoService;
 import br.com.juliocauan.openapi.api.VideosApi;
 import br.com.juliocauan.openapi.model.VideoGet;
@@ -29,12 +30,13 @@ public class VideoController implements VideosApi {
         this.videoMapper = videoMapper;
     }
 
-    //TODO Implementar busca
+    // TODO Implementar busca
     @Override
     public ResponseEntity<List<VideoGet>> _findAllVideos(@Valid String search) {
         List<VideoGet> videoList = new ArrayList<>();
-        videoService.findAll().forEach(
-                video -> videoList.add(videoMapper.entityToGetDto(video)));
+        videoService.findAll(
+                VideoSpecification.name(search)).forEach(
+                        video -> videoList.add(videoMapper.entityToGetDto(video)));
         return ResponseEntity.status(HttpStatus.OK).body(videoList);
     }
 
