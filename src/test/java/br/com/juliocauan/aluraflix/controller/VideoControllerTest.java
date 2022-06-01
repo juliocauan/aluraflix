@@ -153,7 +153,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity with id 0"))
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -206,7 +206,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity with id 0"))
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -266,7 +266,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity with id 0"))
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -286,7 +286,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity with id 0"))
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
                 deleteVideo();
         }
@@ -315,7 +315,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity with id 0"))
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 

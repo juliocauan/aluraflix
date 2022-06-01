@@ -1,13 +1,13 @@
-package br.com.juliocauan.aluraflix.infrastructere.mapper;
+package br.com.juliocauan.aluraflix.infrastructure.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.com.juliocauan.aluraflix.infrastructere.mapper.config.BaseMapStruct;
-import br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity;
-import br.com.juliocauan.aluraflix.infrastructere.service.CategoriaService;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.config.BaseMapStruct;
+import br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity;
+import br.com.juliocauan.aluraflix.infrastructure.service.CategoriaService;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;

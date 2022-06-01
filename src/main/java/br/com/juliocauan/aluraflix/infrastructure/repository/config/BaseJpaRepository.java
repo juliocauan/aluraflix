@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructere.repository.config;
+package br.com.juliocauan.aluraflix.infrastructure.repository.config;
 
 import java.util.List;
 

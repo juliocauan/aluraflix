@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructere.service;
+package br.com.juliocauan.aluraflix.infrastructure.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.juliocauan.aluraflix.domain.mapper.ServiceMapper;
 import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
 import br.com.juliocauan.aluraflix.domain.service.BaseService;
-import br.com.juliocauan.aluraflix.infrastructere.mapper.CategoriaMapper;
-import br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity;
-import br.com.juliocauan.aluraflix.infrastructere.repository.CategoriaRepository;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.CategoriaMapper;
+import br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity;
+import br.com.juliocauan.aluraflix.infrastructure.repository.CategoriaRepository;
 
 @Service
 @Transactional

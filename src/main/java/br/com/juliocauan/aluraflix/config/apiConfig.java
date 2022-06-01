@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @DependsOn("transactionManager")
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "br.com.juliocauan.aluraflix.infrastructere.repository")
-@EntityScan(basePackages = {"br.com.juliocauan.aluraflix.infrastructere.model"})
+@EnableJpaRepositories(basePackages = "br.com.juliocauan.aluraflix.infrastructure.repository")
+@EntityScan(basePackages = {"br.com.juliocauan.aluraflix.infrastructure.model"})
 public class apiConfig {
     
 }

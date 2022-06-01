@@ -1,10 +1,10 @@
-package br.com.juliocauan.aluraflix.infrastructere.model.Specification;
+package br.com.juliocauan.aluraflix.infrastructure.model.Specification;
 
 import javax.validation.Valid;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity;
+import br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity;
 
 public class VideoSpecification {
 

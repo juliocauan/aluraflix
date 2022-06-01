@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructere.model;
+package br.com.juliocauan.aluraflix.infrastructure.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

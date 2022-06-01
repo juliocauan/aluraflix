@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.juliocauan.aluraflix.infrastructere.mapper.VideoMapper;
-import br.com.juliocauan.aluraflix.infrastructere.model.Specification.VideoSpecification;
-import br.com.juliocauan.aluraflix.infrastructere.service.VideoService;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
+import br.com.juliocauan.aluraflix.infrastructure.model.Specification.VideoSpecification;
+import br.com.juliocauan.aluraflix.infrastructure.service.VideoService;
 import br.com.juliocauan.openapi.api.VideosApi;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;

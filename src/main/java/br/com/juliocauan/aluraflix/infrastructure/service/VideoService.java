@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructere.service;
+package br.com.juliocauan.aluraflix.infrastructure.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.juliocauan.aluraflix.domain.mapper.ServiceMapper;
 import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
 import br.com.juliocauan.aluraflix.domain.service.BaseService;
-import br.com.juliocauan.aluraflix.infrastructere.mapper.VideoMapper;
-import br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity;
-import br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity;
-import br.com.juliocauan.aluraflix.infrastructere.repository.VideoRepository;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
+import br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity;
+import br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity;
+import br.com.juliocauan.aluraflix.infrastructure.repository.VideoRepository;
 
 @Service
 @Transactional
