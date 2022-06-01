@@ -1,6 +1,5 @@
 package br.com.juliocauan.aluraflix.infrastructere.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +14,6 @@ import br.com.juliocauan.aluraflix.infrastructere.mapper.VideoMapper;
 import br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity;
 import br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity;
 import br.com.juliocauan.aluraflix.infrastructere.repository.VideoRepository;
-import br.com.juliocauan.openapi.model.VideoGet;
 
 @Service
 @Transactional
@@ -45,13 +43,11 @@ public class VideoService extends BaseService<VideoEntity, Integer> {
         return VideoEntity.class.getName();
     }
 
-    public List<VideoGet> findAllByCategoria(CategoriaEntity categoria) {
-        List<VideoGet> videoListByCategoria = new ArrayList<>();
+    public List<VideoEntity> findAllByCategoria(CategoriaEntity categoria) {
         List<VideoEntity> list = this.findAll().stream()
                 .filter(video -> video.getCategoria().equals(categoria))
                 .collect(Collectors.toList());
-        list.forEach(video -> videoListByCategoria.add(videoMapper.entityToGetDto(video)));
-        return videoListByCategoria;
+        return list;
     }
 
 }

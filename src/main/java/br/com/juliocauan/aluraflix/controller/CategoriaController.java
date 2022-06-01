@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.aluraflix.infrastructere.mapper.CategoriaMapper;
+import br.com.juliocauan.aluraflix.infrastructere.mapper.VideoMapper;
 import br.com.juliocauan.aluraflix.infrastructere.service.CategoriaService;
 import br.com.juliocauan.aluraflix.infrastructere.service.VideoService;
 import br.com.juliocauan.openapi.api.CategoriasApi;
@@ -25,12 +26,15 @@ public class CategoriaController implements CategoriasApi {
     private final CategoriaService categoriaService;
     private final CategoriaMapper categoriaMapper;
     private final VideoService videoService;
+    private final VideoMapper videoMapper;
 
     @Autowired
-    public CategoriaController(CategoriaService categoriaService, CategoriaMapper categoriaMapper, VideoService videoService) {
+    public CategoriaController(CategoriaService categoriaService, CategoriaMapper categoriaMapper,
+            VideoService videoService, VideoMapper videoMapper) {
         this.categoriaService = categoriaService;
         this.categoriaMapper = categoriaMapper;
         this.videoService = videoService;
+        this.videoMapper = videoMapper;
     }
 
     @Override
@@ -68,8 +72,10 @@ public class CategoriaController implements CategoriasApi {
 
     @Override
     public ResponseEntity<List<VideoGet>> _findVideoListByCategoria(Integer categoriaId) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                videoService.findAllByCategoria(categoriaService.findOneOrNotFound(categoriaId)));
+        List<VideoGet> response = new ArrayList<>();
+        videoService.findAllByCategoria(categoriaService.findOneOrNotFound(categoriaId))
+                .forEach(video -> response.add(videoMapper.entityToGetDto(video)));
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
