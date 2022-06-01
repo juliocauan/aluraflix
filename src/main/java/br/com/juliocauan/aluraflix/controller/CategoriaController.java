@@ -56,7 +56,7 @@ public class CategoriaController implements CategoriasApi {
     @Override
     public ResponseEntity<CategoriaGet> _findCategoriaById(Integer categoriaId) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                categoriaMapper.entityToGetDto(categoriaService.findById(categoriaId)));
+                categoriaMapper.entityToGetDto(categoriaService.findOneOrNotFound(categoriaId)));
     }
 
     @Override
@@ -69,7 +69,7 @@ public class CategoriaController implements CategoriasApi {
     @Override
     public ResponseEntity<List<VideoGet>> _findVideoListByCategoria(Integer categoriaId) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                videoService.findAllByCategoria(categoriaService.findById(categoriaId)));
+                videoService.findAllByCategoria(categoriaService.findOneOrNotFound(categoriaId)));
     }
 
 }

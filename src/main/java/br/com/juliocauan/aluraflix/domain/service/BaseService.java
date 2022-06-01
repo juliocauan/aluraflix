@@ -13,30 +13,34 @@ public abstract class BaseService<E, ID> {
     protected abstract ServiceMapper<E> getMapper();
     protected abstract String getClassName();
 
-    public List<E> findAll() {
+    public final List<E> findAll() {
         return getRepository().findList();
     }
 
-    public E findById(ID id) {
-        E entity = getRepository().findOne(id);
+    private final E findOneOrNull(ID id){
+        return getRepository().findOne(id);
+    }
+
+    public final E findOneOrNotFound(ID id) {
+        E entity = findOneOrNull(id);
         if(entity == null)
             throw new EntityNotFoundException(String.format("Unable to find %s with id %d",
                 getClassName(), id));
         return entity;
     }
 
-    public E save(E entity) {
+    public final E save(E entity) {
         return getRepository().post(entity);
     }
 
-    public void update(ID id, E newEntity) {
-        E oldEntity = findById(id);
+    public final void update(ID id, E newEntity) {
+        E oldEntity = findOneOrNotFound(id);
         getMapper().update(newEntity, oldEntity);
         save(oldEntity);
     }
 
-    public void delete(ID id) {
-        getRepository().remove(findById(id));
+    public final void delete(ID id) {
+        getRepository().remove(findOneOrNotFound(id));
     }
 
 }

@@ -41,7 +41,7 @@ public class VideoController implements VideosApi {
     @Override
     public ResponseEntity<VideoGet> _findVideoById(Integer videoId) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                videoMapper.entityToGetDto(videoService.findById(videoId)));
+                videoMapper.entityToGetDto(videoService.findOneOrNotFound(videoId)));
     }
 
     @Override
