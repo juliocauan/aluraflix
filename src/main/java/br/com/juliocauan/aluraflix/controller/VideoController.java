@@ -29,8 +29,9 @@ public class VideoController implements VideosApi {
         this.videoMapper = videoMapper;
     }
 
+    //TODO Implementar busca
     @Override
-    public ResponseEntity<List<VideoGet>> _findAllVideos() {
+    public ResponseEntity<List<VideoGet>> _findAllVideos(@Valid String search) {
         List<VideoGet> videoList = new ArrayList<>();
         videoService.findAll().forEach(
                 video -> videoList.add(videoMapper.entityToGetDto(video)));
