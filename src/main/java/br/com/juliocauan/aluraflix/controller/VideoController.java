@@ -30,7 +30,6 @@ public class VideoController implements VideosApi {
         this.videoMapper = videoMapper;
     }
 
-    // TODO Implementar teste
     @Override
     public ResponseEntity<List<VideoGet>> _findAllVideos(@Valid String search) {
         List<VideoGet> videoList = new ArrayList<>();
