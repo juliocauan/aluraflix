@@ -159,7 +159,7 @@ public class VideoControllerTest extends TestContext {
 
         @Test
         @Order(2)
-        @DisplayName("Busca lista de Videos")
+        @DisplayName("Busca lista de todos os Videos")
         public void givenVideo_WhenGetAllVideos_Then200() throws Exception {
                 postVideoAndUpdateLastVideoId();
                 getMockMvc().perform(
@@ -172,6 +172,41 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(jsonPath("$.[0].descricao").value(videoPost.getDescricao()))
                                 .andExpect(jsonPath("$.[0].url").value(videoPost.getUrl()))
                                 .andExpect(jsonPath("$.[0].categoriaId").value(videoPost.getCategoriaId()));
+                deleteVideo();
+        }
+
+        @Test
+        @Order(2)
+        @DisplayName("Busca lista de Videos por Titulo")
+        public void givenVideo_WhenGetVideosByTitle_Then200() throws Exception {
+                postVideoAndUpdateLastVideoId();
+                getMockMvc().perform(
+                                get(url)
+                                        .param("search", "tes"))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.[0].id").value(lastVideoId))
+                                .andExpect(jsonPath("$.[0].titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath("$.[0].descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath("$.[0].url").value(videoPost.getUrl()))
+                                .andExpect(jsonPath("$.[0].categoriaId").value(videoPost.getCategoriaId()));
+                deleteVideo();
+        }
+
+        @Test
+        @Order(2)
+        @DisplayName("Busca lista de Videos por Titulo não presente")
+        public void givenVideo_WhenGetVideosByNotPresentTitle_Then200() throws Exception {
+                postVideoAndUpdateLastVideoId();
+                getMockMvc().perform(
+                                get(url)
+                                        .param("search", "jogos"))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$").isArray())
+                                .andExpect(jsonPath("$").isEmpty());
                 deleteVideo();
         }
 
