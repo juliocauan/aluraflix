@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructure.model.Specification;
+package br.com.juliocauan.aluraflix.infrastructure.model.specification;
 
 import javax.validation.Valid;
 
