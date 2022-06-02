@@ -6,14 +6,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.juliocauan.aluraflix.domain.mapper.ServiceMapper;
 import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
-import br.com.juliocauan.aluraflix.domain.service.BaseService;
+import br.com.juliocauan.aluraflix.domain.service.CategoriaServiceDomain;
 import br.com.juliocauan.aluraflix.infrastructure.mapper.CategoriaMapper;
 import br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity;
 import br.com.juliocauan.aluraflix.infrastructure.repository.CategoriaRepository;
 
 @Service
 @Transactional
-public class CategoriaService extends BaseService<CategoriaEntity, Integer> {
+public class CategoriaService extends CategoriaServiceDomain<CategoriaEntity, Integer> {
 
     private final CategoriaRepository categoriaRepository;
     private final CategoriaMapper categoriaMapper;

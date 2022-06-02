@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.domain.service;
+package br.com.juliocauan.aluraflix.domain.service.config;
 
 import java.util.List;
 
