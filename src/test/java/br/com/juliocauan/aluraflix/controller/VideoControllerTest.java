@@ -165,7 +165,8 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(jsonPath(pos + "titulo").value(videoPost.getTitulo()))
                                 .andExpect(jsonPath(pos + "descricao").value(videoPost.getDescricao()))
                                 .andExpect(jsonPath(pos + "url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath(pos + "categoriaId").value(videoPost.getCategoriaId()));
+                                .andExpect(jsonPath(pos + "categoriaId").value(videoPost.getCategoriaId()))
+                                .andExpect(jsonPath("$", hasSize(videoIdList.size())));
         }
 
         @Test
