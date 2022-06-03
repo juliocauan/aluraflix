@@ -39,4 +39,9 @@ public class CategoriaService extends CategoriaServiceDomain<CategoriaEntity, In
         return CategoriaEntity.class.getName();
     }
 
+    @Override
+    protected Integer getDefaultId() {
+        return 1;
+    }
+
 }

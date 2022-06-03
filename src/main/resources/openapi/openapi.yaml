@@ -293,7 +293,6 @@ components:
     VideoPost:
       type: object
       required:
-        - categoriaId
         - titulo
         - descricao
         - url
