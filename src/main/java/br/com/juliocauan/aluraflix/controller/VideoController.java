@@ -53,9 +53,9 @@ public class VideoController implements VideosApi {
 
     @Override
     public ResponseEntity<VideoGet> _updateVideo(@Valid VideoPut videoPut, Integer videoId) {
-        videoService.update(videoId, videoMapper.putDtoToEntity(videoPut));
         return ResponseEntity.status(HttpStatus.OK).body(
-                videoMapper.entityToGetDto(videoMapper.putDtoToEntity(videoPut)));
+                videoMapper.entityToGetDto(videoService.update(
+                        videoId, videoMapper.putDtoToEntity(videoPut))));
     }
 
     @Override

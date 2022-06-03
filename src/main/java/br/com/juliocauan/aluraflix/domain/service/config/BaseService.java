@@ -39,10 +39,10 @@ public abstract class BaseService<E, ID> {
         return getRepository().post(entity);
     }
 
-    public final void update(ID id, E newEntity) {
+    public final E update(ID id, E newEntity) {
         E oldEntity = findOneOrNotFound(id);
         getMapper().update(newEntity, oldEntity);
-        save(oldEntity);
+        return save(oldEntity);
     }
 
     public final void delete(ID id) {
