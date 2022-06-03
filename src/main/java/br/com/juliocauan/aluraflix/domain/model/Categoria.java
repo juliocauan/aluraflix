@@ -2,11 +2,10 @@ package br.com.juliocauan.aluraflix.domain.model;
 
 import br.com.juliocauan.openapi.model.Cor;
 
-public abstract class Categoria {
-    
-    public abstract String getTitulo();
-    public abstract Cor getCor();
-    public abstract void setTitulo(String titulo);
-    public abstract void setCor(Cor cor);
-
+public interface Categoria { 
+    Integer getId();
+    String getTitulo();
+    Cor getCor();
+    void setTitulo(String titulo);
+    void setCor(Cor cor);
 }

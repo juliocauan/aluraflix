@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructere.exception;
+package br.com.juliocauan.aluraflix.infrastructure.exception;
 
 import javax.persistence.EntityNotFoundException;
 

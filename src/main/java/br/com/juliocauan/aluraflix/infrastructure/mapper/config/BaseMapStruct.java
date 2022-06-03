@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructere.mapper.config;
+package br.com.juliocauan.aluraflix.infrastructure.mapper.config;
 
 import br.com.juliocauan.aluraflix.domain.mapper.BaseMapper;
 import br.com.juliocauan.aluraflix.domain.mapper.ServiceMapper;

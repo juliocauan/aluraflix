@@ -10,8 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.juliocauan.aluraflix.infrastructere.mapper.VideoMapper;
-import br.com.juliocauan.aluraflix.infrastructere.service.VideoService;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
+import br.com.juliocauan.aluraflix.infrastructure.model.specification.VideoSpecification;
+import br.com.juliocauan.aluraflix.infrastructure.service.VideoService;
 import br.com.juliocauan.openapi.api.VideosApi;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
@@ -30,17 +31,18 @@ public class VideoController implements VideosApi {
     }
 
     @Override
-    public ResponseEntity<List<VideoGet>> _findAllVideos() {
+    public ResponseEntity<List<VideoGet>> _findAllVideos(@Valid String search) {
         List<VideoGet> videoList = new ArrayList<>();
-        videoService.findAll().forEach(
-                video -> videoList.add(videoMapper.entityToGetDto(video)));
+        videoService.findAll(
+                VideoSpecification.hasInTitle(search)).forEach(
+                        video -> videoList.add(videoMapper.entityToGetDto(video)));
         return ResponseEntity.status(HttpStatus.OK).body(videoList);
     }
 
     @Override
     public ResponseEntity<VideoGet> _findVideoById(Integer videoId) {
         return ResponseEntity.status(HttpStatus.OK).body(
-                videoMapper.entityToGetDto(videoService.findById(videoId)));
+                videoMapper.entityToGetDto(videoService.findOneOrNotFound(videoId)));
     }
 
     @Override
@@ -51,9 +53,9 @@ public class VideoController implements VideosApi {
 
     @Override
     public ResponseEntity<VideoGet> _updateVideo(@Valid VideoPut videoPut, Integer videoId) {
-        videoService.update(videoId, videoMapper.putDtoToEntity(videoPut));
         return ResponseEntity.status(HttpStatus.OK).body(
-                videoMapper.entityToGetDto(videoMapper.putDtoToEntity(videoPut)));
+                videoMapper.entityToGetDto(videoService.update(
+                        videoId, videoMapper.putDtoToEntity(videoPut))));
     }
 
     @Override

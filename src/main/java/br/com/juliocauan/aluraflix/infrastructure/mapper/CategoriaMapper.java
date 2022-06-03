@@ -1,16 +1,17 @@
-package br.com.juliocauan.aluraflix.infrastructere.mapper;
+package br.com.juliocauan.aluraflix.infrastructure.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import br.com.juliocauan.aluraflix.infrastructere.mapper.config.BaseMapStruct;
-import br.com.juliocauan.aluraflix.infrastructere.model.CategoriaEntity;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.config.BaseMapStruct;
+import br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity;
 import br.com.juliocauan.openapi.model.CategoriaGet;
 import br.com.juliocauan.openapi.model.CategoriaPost;
 import br.com.juliocauan.openapi.model.CategoriaPut;
 
-@Mapper(componentModel = "spring")
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CategoriaMapper extends BaseMapStruct<CategoriaEntity, CategoriaGet, CategoriaPost, CategoriaPut> {
 
     @Override

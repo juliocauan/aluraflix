@@ -1,8 +1,6 @@
 package br.com.juliocauan.aluraflix.controller;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -12,220 +10,350 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 
 import br.com.juliocauan.aluraflix.config.TestContext;
+import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Order(1)
+@TestInstance(Lifecycle.PER_CLASS)
 public class VideoControllerTest extends TestContext {
 
-    private final String url = "/videos";
-    private final String urlId = "/videos/1";
-    private final String urlInvalidId = "/videos/0";
+        private final String url = "/videos";
+        private final String urlWithId = "/videos/{videoId}";
+        private final String urlWithInvalidId = "/videos/0";
+        private final Integer categoriaDefaultId = 1;
 
-    private VideoPost videoPost = new VideoPost();
-    private VideoPut videoPut = new VideoPut();
+        private VideoPost videoPost = new VideoPost();
+        private VideoPut videoPut = new VideoPut();
+        private List<Integer> videoIdList = new ArrayList<>();
+        private Integer lastVideoId = 0;
 
-    private void postVideo() throws Exception{
-        getMockMvc().perform(
-                post(url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getObjectMapper().writeValueAsString(videoPost)));
-    }
+        private ResultActions postVideo() throws Exception {
+                ResultActions result = getMockMvc().perform(
+                                post(url)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPost)));
+                String videoGetString = result.andReturn().getResponse().getContentAsString();
+                lastVideoId = getObjectMapper()
+                                .readValue(videoGetString, VideoGet.class)
+                                .getId();
+                videoIdList.add(lastVideoId);
+                return result;
+        }
 
-    @BeforeEach
-    public void setup() {
-        videoPost
-                .descricao("Descrição teste POST")
-                .titulo("Título teste POST")
-                .url("https://www.testePOST.com/");
-        videoPut
-                .descricao("Descrição teste PUT")
-                .titulo("Título teste PUT")
-                .url("https://www.testePUT.com/");
-    }
+        @BeforeEach
+        public void setup() throws Exception {
+                videoPost
+                                .descricao("Descrição teste POST")
+                                .titulo("Título teste POST")
+                                .url("https://www.testePOST.com/" + lastVideoId)
+                                .categoriaId(categoriaDefaultId);
+                videoPut
+                                .descricao("Descrição teste PUT")
+                                .titulo("Título teste PUT")
+                                .url("https://www.testePUT.com/" + lastVideoId)
+                                .categoriaId(categoriaDefaultId);
+        }
 
-    @Test
-    @Order(1)
-    @DisplayName("Cadastra um Video válido")
-    public void givenVideo_WhenPostValidVideo_Then201() throws Exception {
+        @AfterAll
+        private void deleteAllVideos() {
+                videoIdList.forEach(videoId -> {
+                        try {
+                                getMockMvc().perform(delete(urlWithId, videoId));
+                        } catch (Exception e) {
+                                e.printStackTrace();
+                        }
+                });
+        }
 
-        getMockMvc().perform(
-                post(url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getObjectMapper().writeValueAsString(videoPost)))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(notNullValue()))
-                .andExpect(jsonPath("$.descricao").value(videoPost.getDescricao()))
-                .andExpect(jsonPath("$.titulo").value(videoPost.getTitulo()))
-                .andExpect(jsonPath("$.url").value(videoPost.getUrl()));
-    }
+        @Test
+        @DisplayName("Cadastra um Video válido")
+        public void givenVideo_WhenPostValidVideo_Then201() throws Exception {
 
-    @Test
-    @Order(1)
-    @DisplayName("Erro ao tentar cadastrar um Video inválido")
-    public void givenVideo_WhenPostInvalidVideo_Then400() throws Exception {
+                postVideo()
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isCreated())
+                                .andExpect(jsonPath("$.id").value(lastVideoId))
+                                .andExpect(jsonPath("$.descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath("$.titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath("$.url").value(videoPost.getUrl()))
+                                .andExpect(jsonPath("$.categoriaId").value(videoPost.getCategoriaId()));
+        }
 
-        videoPost.titulo(
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-                .descricao(null)
-                .url("url");
-        getMockMvc().perform(
-                post(url)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getObjectMapper().writeValueAsString(videoPost)))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("2001"))
-                .andExpect(jsonPath("$.fieldList", hasSize(3)));
-    }
+        @Test
+        @DisplayName("Cadastra um Video com Categoria padrão quando insere Categoria nula")
+        public void givenVideo_WhenPostVideoWithNullCategoryId_ThenCategoryDefaultId201() throws Exception {
 
-    @Test
-    @Order(2)
-    @DisplayName("Busca lista de Videos")
-    public void givenVideo_WhenGetAllVideos_Then200() throws Exception {
+                videoPost.categoriaId(null);
+                postVideo()
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isCreated())
+                                .andExpect(jsonPath("$.id").value(lastVideoId))
+                                .andExpect(jsonPath("$.descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath("$.titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath("$.url").value(videoPost.getUrl()))
+                                .andExpect(jsonPath("$.categoriaId").value(categoriaDefaultId));
+        }
 
-        postVideo();
-        getMockMvc().perform(
-                get(url))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.[0].id").value("1"))
-                .andExpect(jsonPath("$.[0].titulo").value(videoPost.getTitulo()))
-                .andExpect(jsonPath("$.[0].descricao").value(videoPost.getDescricao()))
-                .andExpect(jsonPath("$.[0].url").value(videoPost.getUrl()));
-    }
+        @Test
+        @DisplayName("Erro ao tentar cadastrar um Video inválido")
+        public void givenVideo_WhenPostInvalidVideo_Then400() throws Exception {
 
-    @Test
-    @Order(3)
-    @DisplayName("Busca Video por Id")
-    public void givenVideo_WhenGetVideoById_Then200() throws Exception {
+                videoPost.titulo(
+                                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                                .descricao(null)
+                                .url("url");
+                getMockMvc().perform(
+                                post(url)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPost)))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isBadRequest())
+                                .andExpect(jsonPath("$.code").value("2001"))
+                                .andExpect(jsonPath("$.fieldList", hasSize(3)));
+        }
 
-        postVideo();
-        getMockMvc().perform(
-                get(urlId))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value("1"))
-                .andExpect(jsonPath("$.titulo").value(videoPost.getTitulo()))
-                .andExpect(jsonPath("$.descricao").value(videoPost.getDescricao()))
-                .andExpect(jsonPath("$.url").value(videoPost.getUrl()));
-    }
+        @Test
+        @DisplayName("Erro ao tentar cadastrar um Video com CategoriaId inválido")
+        public void givenVideo_WhenPostVideoWithInvalidCategoriaId_Then404() throws Exception {
 
-    @Test
-    @Order(3)
-    @DisplayName("Erro ao tentar buscar Video por Id inválido")
-    public void givenVideo_WhenGetVideoByInvalidId_Then404() throws Exception {
+                videoPost.categoriaId(0);
+                getMockMvc().perform(
+                                post(url)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPost)))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.message").value(
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
+                                .andExpect(jsonPath("$.fieldList").doesNotExist());
+        }
 
-        getMockMvc().perform(
-                get(urlInvalidId))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("1001"))
-                .andExpect(jsonPath("$.message").value(
-                        "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity with id 0"))
-                .andExpect(jsonPath("$.fieldList").doesNotExist());
-    }
+        @Test
+        @DisplayName("Busca lista de todos os Videos")
+        public void givenVideo_WhenGetAllVideos_Then200() throws Exception {
+                postVideo();
+                String pos = String.format("$.[%d].", videoIdList.size() - 1);
+                getMockMvc().perform(
+                                get(url))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath(pos + "id").value(lastVideoId))
+                                .andExpect(jsonPath(pos + "titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath(pos + "descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath(pos + "url").value(videoPost.getUrl()))
+                                .andExpect(jsonPath(pos + "categoriaId").value(videoPost.getCategoriaId()))
+                                .andExpect(jsonPath("$", hasSize(videoIdList.size())));
+        }
 
-    @Test
-    @Order(4)
-    @DisplayName("Atualiza Video válido")
-    public void givenVideo_WhenPutValidVideo_Then200() throws Exception {
+        @Test
+        @DisplayName("Busca lista de Videos por Titulo")
+        public void givenVideo_WhenGetVideosByTitle_Then200() throws Exception {
+                postVideo();
+                String pos = String.format("$.[%d].", videoIdList.size() - 1);
+                getMockMvc().perform(
+                                get(url)
+                                                .param("search", "tes"))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath(pos + "id").value(lastVideoId))
+                                .andExpect(jsonPath(pos + "titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath(pos + "descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath(pos + "url").value(videoPost.getUrl()))
+                                .andExpect(jsonPath(pos + "categoriaId").value(videoPost.getCategoriaId()));
+        }
 
-        postVideo();
-        getMockMvc().perform(
-                put(urlId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getObjectMapper().writeValueAsString(videoPut)))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(nullValue()))
-                .andExpect(jsonPath("$.descricao").value(videoPut.getDescricao()))
-                .andExpect(jsonPath("$.titulo").value(videoPut.getTitulo()))
-                .andExpect(jsonPath("$.url").value(videoPut.getUrl()));
-    }
+        @Test
+        @DisplayName("Busca lista de Videos por Titulo não presente")
+        public void givenVideo_WhenGetVideosByNotPresentTitle_Then200() throws Exception {
+                postVideo();
+                getMockMvc().perform(
+                                get(url)
+                                                .param("search", "jogos"))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$").isArray())
+                                .andExpect(jsonPath("$").isEmpty());
+        }
 
-    @Test
-    @Order(4)
-    @DisplayName("Erro ao tentar atualizar Video inválido")
-    public void givenVideo_WhenPutInvalidVideo_Then400() throws Exception {
+        @Test
+        @DisplayName("Busca Video por Id")
+        public void givenVideo_WhenGetVideoById_Then200() throws Exception {
 
-        postVideo();
-        videoPut.titulo(
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-                .descricao(null)
-                .url("url");
-        getMockMvc().perform(
-                put(urlId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getObjectMapper().writeValueAsString(videoPut)))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("2001"))
-                .andExpect(jsonPath("$.fieldList", hasSize(2)));
-    }
+                postVideo();
+                getMockMvc().perform(
+                                get(urlWithId, lastVideoId))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.id").value(lastVideoId))
+                                .andExpect(jsonPath("$.titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath("$.descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath("$.url").value(videoPost.getUrl()))
+                                .andExpect(jsonPath("$.categoriaId").value(videoPost.getCategoriaId()));
+        }
 
-    @Test
-    @Order(4)
-    @DisplayName("Erro ao tentar atualizar Video válido por Id inválido")
-    public void givenVideo_WhenPutValidVideoByInvalidId_Then404() throws Exception {
+        @Test
+        @DisplayName("Erro ao tentar buscar Video por Id inválido")
+        public void givenVideo_WhenGetVideoByInvalidId_Then404() throws Exception {
 
-        getMockMvc().perform(
-                put(urlInvalidId)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(getObjectMapper().writeValueAsString(videoPut)))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("1001"))
-                .andExpect(jsonPath("$.message").value(
-                        "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity with id 0"))
-                .andExpect(jsonPath("$.fieldList").doesNotExist());
-    }
-    
-    @Test
-    @Order(5)
-    @DisplayName("Deleta Video")
-    public void givenVideo_WhenDeleteVideo_Then200() throws Exception {
+                getMockMvc().perform(
+                                get(urlWithInvalidId))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.message").value(
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity with id 0"))
+                                .andExpect(jsonPath("$.fieldList").doesNotExist());
+        }
 
-        postVideo();
-        getMockMvc().perform(
-                delete(urlId))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
+        @Test
+        @DisplayName("Atualiza Video válido")
+        public void givenVideo_WhenPutValidVideo_Then200() throws Exception {
 
-    @Test
-    @Order(5)
-    @DisplayName("Erro ao tentar deletar Video por Id inválido")
-    public void givenVideo_WhenDeleteVideoByInvalidId_Then404() throws Exception {
+                postVideo();
+                getMockMvc().perform(
+                                put(urlWithId, lastVideoId)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPut)))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.id").value(lastVideoId))
+                                .andExpect(jsonPath("$.descricao").value(videoPut.getDescricao()))
+                                .andExpect(jsonPath("$.titulo").value(videoPut.getTitulo()))
+                                .andExpect(jsonPath("$.url").value(videoPut.getUrl()))
+                                .andExpect(jsonPath("$.categoriaId").value(videoPost.getCategoriaId()));
+        }
 
-        getMockMvc().perform(
-                delete(urlInvalidId))
-                .andDo(print())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.code").value("1001"))
-                .andExpect(jsonPath("$.message").value(
-                        "Unable to find br.com.juliocauan.aluraflix.infrastructere.model.VideoEntity with id 0"))
-                .andExpect(jsonPath("$.fieldList").doesNotExist());
-    }
+        @Test
+        @DisplayName("Atualiza Video com Url e CategoriaId nulos")
+        public void givenVideo_WhenPutVideoWithNullUrlAndCategoriaId_Then200() throws Exception {
+
+                postVideo();
+                String url = videoPost.getUrl();
+                Integer categoriaId = videoPost.getCategoriaId();
+                videoPut.url(null).categoriaId(null);
+                getMockMvc().perform(
+                                put(urlWithId, lastVideoId)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPut)))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.id").value(lastVideoId))
+                                .andExpect(jsonPath("$.descricao").value(videoPut.getDescricao()))
+                                .andExpect(jsonPath("$.titulo").value(videoPut.getTitulo()))
+                                .andExpect(jsonPath("$.url").value(url))
+                                .andExpect(jsonPath("$.categoriaId").value(categoriaId));
+        }
+
+        @Test
+        @DisplayName("Erro ao tentar atualizar Video inválido")
+        public void givenVideo_WhenPutInvalidVideo_Then400() throws Exception {
+                postVideo();
+                videoPut.titulo(
+                                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                                .descricao(null)
+                                .url("url");
+                getMockMvc().perform(
+                                put(urlWithId, lastVideoId)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPut)))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isBadRequest())
+                                .andExpect(jsonPath("$.code").value("2001"))
+                                .andExpect(jsonPath("$.fieldList", hasSize(2)));
+        }
+
+        @Test
+        @DisplayName("Erro ao tentar atualizar Video válido por Id inválido")
+        public void givenVideo_WhenPutValidVideoByInvalidId_Then404() throws Exception {
+
+                getMockMvc().perform(
+                                put(urlWithInvalidId)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPut)))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.message").value(
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity with id 0"))
+                                .andExpect(jsonPath("$.fieldList").doesNotExist());
+        }
+
+        @Test
+        @DisplayName("Erro ao tentar atualizar Video com Categoria Id inválido")
+        public void givenVideo_WhenPutVideoWithInvalidCategoriaId_Then404() throws Exception {
+
+                postVideo();
+                videoPut.categoriaId(0);
+                getMockMvc().perform(
+                                put(urlWithId, lastVideoId)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(videoPut)))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.message").value(
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
+                                .andExpect(jsonPath("$.fieldList").doesNotExist());
+        }
+
+        @Test
+        @DisplayName("Deleta Video")
+        public void givenVideo_WhenDeleteVideo_Then200() throws Exception {
+
+                postVideo();
+                getMockMvc().perform(
+                                delete(urlWithId, lastVideoId))
+                                .andDo(print())
+                                .andExpect(status().isOk());
+                videoIdList.remove(videoIdList.size()-1);
+        }
+
+        @Test
+        @DisplayName("Erro ao tentar deletar Video por Id inválido")
+        public void givenVideo_WhenDeleteVideoByInvalidId_Then404() throws Exception {
+
+                getMockMvc().perform(
+                                delete(urlWithInvalidId))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isNotFound())
+                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.message").value(
+                                                "Unable to find br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity with id 0"))
+                                .andExpect(jsonPath("$.fieldList").doesNotExist());
+        }
 
 }
