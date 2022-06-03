@@ -25,7 +25,7 @@ public interface BaseJpaRepository<E, ID> extends BaseRepository<E, ID>, JpaRepo
 
     @Override
     default E findOne(ID id) {
-        return findById(id).orElse(null);
+        return id == null ? null : findById(id).orElse(null);
     }
 
     @Override
