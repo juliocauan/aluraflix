@@ -9,12 +9,14 @@ tags:
   - name: "categoria"
 
 paths:
+
   /videos:
     get:
       tags:
         - "video"
       operationId: "findAllVideos"
       description: "Get a list of all Videos"
+      x-spring-paginated: true
       parameters:
         - name: search
           in: query
@@ -32,9 +34,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VideoGet"
+                $ref: "#/components/schemas/VideoPage"
     post:
       tags:
         - "video"
@@ -276,7 +276,29 @@ components:
           type: string
         field:
           type: string
-    
+    PageDto:
+      type: object
+      properties:
+        page:
+          type: integer
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
+
+    VideoPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoGet"
+        page:
+          $ref: "#/components/schemas/PageDto"
     VideoGet:
       type: object
       properties:

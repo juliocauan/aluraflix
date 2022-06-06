@@ -71,11 +71,11 @@
 		<!--MYSQL-->
 
 		<!--HYBERNATE JPAMODELGEN-->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-jpamodelgen</artifactId>
-            <version>5.6.9.Final</version>
-        </dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>5.6.9.Final</version>
+		</dependency>
 		<!--HYBERNATE JPAMODELGEN-->
 
 		<!--OPEN API DEPENDENCIES-->
@@ -88,6 +88,11 @@
 			<groupId>org.openapitools</groupId>
 			<artifactId>jackson-databind-nullable</artifactId>
 			<version>0.2.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.9</version>
 		</dependency>
 		<!--OPEN API DEPENDENCIES-->
 
@@ -138,10 +143,10 @@
 							<version>5.6.9.Final</version>
 						</path>
 					</annotationProcessorPaths>
-                    <compilerArgs>
-                        <arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
-                        <arg>-Amapstruct.defaultComponentModel=spring</arg>
-                    </compilerArgs>
+					<compilerArgs>
+						<arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
+						<arg>-Amapstruct.defaultComponentModel=spring</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 			<!--MAVEN COMPILER-->

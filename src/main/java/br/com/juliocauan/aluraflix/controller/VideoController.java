@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import br.com.juliocauan.aluraflix.infrastructure.model.specification.VideoSpeci
 import br.com.juliocauan.aluraflix.infrastructure.service.VideoService;
 import br.com.juliocauan.openapi.api.VideosApi;
 import br.com.juliocauan.openapi.model.VideoGet;
+import br.com.juliocauan.openapi.model.VideoPage;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
 
@@ -30,25 +32,32 @@ public class VideoController implements VideosApi {
         this.videoMapper = videoMapper;
     }
 
+    //TODO Apagar
+    // @Override
+    // public ResponseEntity<List<VideoGet>> _findAllVideos(@Valid String search) {
+    //     List<VideoGet> videoList = new ArrayList<>();
+    //     videoService.findAll(
+    //             VideoSpecification.hasInTitle(search)).forEach(
+    //                     video -> videoList.add(videoMapper.entityToGetDto(video)));
+    //     return ResponseEntity.status(HttpStatus.OK).body(videoList);
+    // }
+
     @Override
-    public ResponseEntity<List<VideoGet>> _findAllVideos(@Valid String search) {
-        List<VideoGet> videoList = new ArrayList<>();
-        videoService.findAll(
-                VideoSpecification.hasInTitle(search)).forEach(
-                        video -> videoList.add(videoMapper.entityToGetDto(video)));
-        return ResponseEntity.status(HttpStatus.OK).body(videoList);
+    public ResponseEntity<VideoGet> _addVideo(@Valid VideoPost videoPost) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(videoMapper.entityToGetDto(
+                videoService.save(videoMapper.postDtoToEntity(videoPost))));
+    }
+
+    @Override
+    public ResponseEntity<VideoPage> _findAllVideos(@Valid String search, Pageable pageable) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
     public ResponseEntity<VideoGet> _findVideoById(Integer videoId) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 videoMapper.entityToGetDto(videoService.findOneOrNotFound(videoId)));
-    }
-
-    @Override
-    public ResponseEntity<VideoGet> _addVideo(@Valid VideoPost videoPost) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(videoMapper.entityToGetDto(
-                videoService.save(videoMapper.postDtoToEntity(videoPost))));
     }
 
     @Override
