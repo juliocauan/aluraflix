@@ -100,7 +100,6 @@ public class CategoriaControllerTest extends TestContext {
                 categoriaPut
                                 .titulo("Título teste PUT")
                                 .cor(Cor.WHITE);
-                ;
         }
 
         @Test
