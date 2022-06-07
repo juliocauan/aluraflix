@@ -166,7 +166,7 @@
 							<templateDirectory>${project.basedir}/src/main/resources/openapi/templates</templateDirectory>
 							<generatorName>spring</generatorName>
 							<library>spring-boot</library>
-							<typeMappings>VideoPage=Page&lt;VideoGet&gt;</typeMappings>
+							<typeMappings>VideoPage=Page&lt;VideoGet&gt;,CategoriaPage=Page&lt;CategoriaGet&gt;</typeMappings>
 							<configOptions>
 								<language>spring</language>
 								<sourceFolder>openapi</sourceFolder>

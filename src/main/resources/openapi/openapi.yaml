@@ -128,15 +128,14 @@ paths:
         - "categoria"
       operationId: "findAllCategorias"
       description: "Get a list of all Categorias"
+      x-spring-paginated: true
       responses:
         '200':
           description: "Sucessfully found all Categorias"
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/CategoriaGet"
+                $ref: "#/components/schemas/CategoriaPage"
     post:
       tags:
         - "categoria"
@@ -230,6 +229,7 @@ paths:
         - "categoria"
       operationId: "findVideoListByCategoria"
       description: "Get list of Videos sorted by Categoria"
+      x-spring-paginated: true
       parameters:
         - name: categoriaId
           in: path
@@ -242,9 +242,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VideoGet"
+                $ref: "#/components/schemas/VideoPage"
         '404':
           $ref: "#/components/responses/NotFound"
 
@@ -347,6 +345,15 @@ components:
           minLength: 10
           maxLength: 255
     
+    CategoriaPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoriaGet"
+        page:
+          $ref: "#/components/schemas/PageDto"
     CategoriaGet:
       type: object
       properties:

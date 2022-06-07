@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,12 +51,19 @@ public class CategoriaController implements CategoriasApi {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    //TODO apagar
+    // @Override
+    // public ResponseEntity<List<CategoriaGet>> _findAllCategorias() {
+    //     List<CategoriaGet> categoriaList = new ArrayList<>();
+    //     categoriaService.findAll().forEach(
+    //             categoria -> categoriaList.add(categoriaMapper.entityToGetDto(categoria)));
+    //     return ResponseEntity.status(HttpStatus.OK).body(categoriaList);
+    // }
+
     @Override
-    public ResponseEntity<List<CategoriaGet>> _findAllCategorias() {
-        List<CategoriaGet> categoriaList = new ArrayList<>();
-        categoriaService.findAll().forEach(
-                categoria -> categoriaList.add(categoriaMapper.entityToGetDto(categoria)));
-        return ResponseEntity.status(HttpStatus.OK).body(categoriaList);
+    public ResponseEntity<Page<CategoriaGet>> _findAllCategorias(Pageable pageable) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
@@ -70,12 +79,19 @@ public class CategoriaController implements CategoriasApi {
                         categoriaId, categoriaMapper.putDtoToEntity(categoriaPut))));
     }
 
+    //TODO apagar
+    // @Override
+    // public ResponseEntity<List<VideoGet>> _findVideoListByCategoria(Integer categoriaId) {
+    //     List<VideoGet> response = new ArrayList<>();
+    //     videoService.findAllByCategoria(categoriaService.findOneOrNotFound(categoriaId))
+    //             .forEach(video -> response.add(videoMapper.entityToGetDto(video)));
+    //     return ResponseEntity.status(HttpStatus.OK).body(response);
+    // }
+
     @Override
-    public ResponseEntity<List<VideoGet>> _findVideoListByCategoria(Integer categoriaId) {
-        List<VideoGet> response = new ArrayList<>();
-        videoService.findAllByCategoria(categoriaService.findOneOrNotFound(categoriaId))
-                .forEach(video -> response.add(videoMapper.entityToGetDto(video)));
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+    public ResponseEntity<Page<VideoGet>> _findVideoListByCategoria(Integer categoriaId, Pageable pageable) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
