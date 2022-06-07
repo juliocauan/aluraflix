@@ -155,36 +155,37 @@ public class VideoControllerTest extends TestContext {
         @DisplayName("Busca lista de todos os Videos")
         public void givenVideo_WhenGetAllVideos_Then200() throws Exception {
                 postVideo();
-                String pos = String.format("$.[%d].", videoIdList.size() - 1);
+                String content = String.format("$.content[%d].", videoIdList.size() - 1);
                 getMockMvc().perform(
                                 get(url))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath(pos + "id").value(lastVideoId))
-                                .andExpect(jsonPath(pos + "titulo").value(videoPost.getTitulo()))
-                                .andExpect(jsonPath(pos + "descricao").value(videoPost.getDescricao()))
-                                .andExpect(jsonPath(pos + "url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath(pos + "categoriaId").value(videoPost.getCategoriaId()))
-                                .andExpect(jsonPath("$", hasSize(videoIdList.size())));
+                                .andExpect(jsonPath(content + "id").value(lastVideoId))
+                                .andExpect(jsonPath(content + "titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath(content + "descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath(content + "url").value(videoPost.getUrl()))
+                                .andExpect(jsonPath(content + "categoriaId").value(videoPost.getCategoriaId()))
+                                .andExpect(jsonPath("$.numberOfElements").value(videoIdList.size()));
         }
 
         @Test
         @DisplayName("Busca lista de Videos por Titulo")
         public void givenVideo_WhenGetVideosByTitle_Then200() throws Exception {
                 postVideo();
-                String pos = String.format("$.[%d].", videoIdList.size() - 1);
+                String content = String.format("$.content[%d].", videoIdList.size() - 1);
                 getMockMvc().perform(
                                 get(url)
                                                 .param("search", "tes"))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath(pos + "id").value(lastVideoId))
-                                .andExpect(jsonPath(pos + "titulo").value(videoPost.getTitulo()))
-                                .andExpect(jsonPath(pos + "descricao").value(videoPost.getDescricao()))
-                                .andExpect(jsonPath(pos + "url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath(pos + "categoriaId").value(videoPost.getCategoriaId()));
+                                .andExpect(jsonPath(content + "id").value(lastVideoId))
+                                .andExpect(jsonPath(content + "titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath(content + "descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath(content + "url").value(videoPost.getUrl()))
+                                .andExpect(jsonPath(content + "categoriaId").value(videoPost.getCategoriaId()))
+                                .andExpect(jsonPath("$.numberOfElements").value(videoIdList.size()));
         }
 
         @Test
@@ -197,8 +198,8 @@ public class VideoControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$").isArray())
-                                .andExpect(jsonPath("$").isEmpty());
+                                .andExpect(jsonPath("$.content").isArray())
+                                .andExpect(jsonPath("$.content").isEmpty());
         }
 
         @Test

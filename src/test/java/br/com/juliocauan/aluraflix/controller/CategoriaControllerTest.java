@@ -136,16 +136,16 @@ public class CategoriaControllerTest extends TestContext {
         @DisplayName("Busca lista de Categorias")
         public void givenCategoria_WhenGetAllCategorias_Then200() throws Exception {
                 postCategoria();
-                String pos = String.format("$.[%d].", categoriaIdList.size());
+                String content = String.format("$.content[%d].", categoriaIdList.size());
                 getMockMvc().perform(
                                 get(url))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath(pos + "id").value(lastCategoriaId))
-                                .andExpect(jsonPath(pos + "titulo").value(categoriaPost.getTitulo()))
-                                .andExpect(jsonPath(pos + "cor").value(categoriaPost.getCor().getValue()))
-                                .andExpect(jsonPath("$", hasSize(categoriaIdList.size() + 1)));
+                                .andExpect(jsonPath(content + "id").value(lastCategoriaId))
+                                .andExpect(jsonPath(content + "titulo").value(categoriaPost.getTitulo()))
+                                .andExpect(jsonPath(content + "cor").value(categoriaPost.getCor().getValue()))
+                                .andExpect(jsonPath("$.numberOfElements").value(categoriaIdList.size() + 1));
         }
 
         @Test
@@ -184,11 +184,12 @@ public class CategoriaControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.[0].id").value(videoGet.getId()))
-                                .andExpect(jsonPath("$.[0].titulo").value(videoGet.getTitulo()))
-                                .andExpect(jsonPath("$.[0].descricao").value(videoGet.getDescricao()))
-                                .andExpect(jsonPath("$.[0].url").value(videoGet.getUrl()))
-                                .andExpect(jsonPath("$.[0].categoriaId").value(videoGet.getCategoriaId()));
+                                .andExpect(jsonPath("$.content[0].id").value(videoGet.getId()))
+                                .andExpect(jsonPath("$.content[0].titulo").value(videoGet.getTitulo()))
+                                .andExpect(jsonPath("$.content[0].descricao").value(videoGet.getDescricao()))
+                                .andExpect(jsonPath("$.content[0].url").value(videoGet.getUrl()))
+                                .andExpect(jsonPath("$.content[0].categoriaId").value(videoGet.getCategoriaId()))
+                                .andExpect(jsonPath("$.numberOfElements").value(1));
         }
 
         @Test
