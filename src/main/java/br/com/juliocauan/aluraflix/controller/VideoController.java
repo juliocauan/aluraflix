@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
+import br.com.juliocauan.aluraflix.infrastructure.model.specification.VideoSpecification;
 import br.com.juliocauan.aluraflix.infrastructure.service.VideoService;
 import br.com.juliocauan.openapi.api.VideosApi;
 import br.com.juliocauan.openapi.model.VideoGet;
@@ -28,26 +29,17 @@ public class VideoController implements VideosApi {
         this.videoMapper = videoMapper;
     }
 
-    //TODO Apagar
-    // @Override
-    // public ResponseEntity<List<VideoGet>> _findAllVideos(@Valid String search) {
-    //     List<VideoGet> videoList = new ArrayList<>();
-    //     videoService.findAll(
-    //             VideoSpecification.hasInTitle(search)).forEach(
-    //                     video -> videoList.add(videoMapper.entityToGetDto(video)));
-    //     return ResponseEntity.status(HttpStatus.OK).body(videoList);
-    // }
-
-    @Override
-    public ResponseEntity<Page<VideoGet>> _findAllVideos(@Valid String search, Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     @Override
     public ResponseEntity<VideoGet> _addVideo(@Valid VideoPost videoPost) {
         return ResponseEntity.status(HttpStatus.CREATED).body(videoMapper.entityToGetDto(
                 videoService.save(videoMapper.postDtoToEntity(videoPost))));
+    }
+
+    @Override
+    public ResponseEntity<Page<VideoGet>> _findAllVideos(@Valid String search, Pageable pageable) {
+        Page<VideoGet> response = videoService.find(VideoSpecification.hasInTitle(search), pageable)
+                .map(videoMapper::entityToGetDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override

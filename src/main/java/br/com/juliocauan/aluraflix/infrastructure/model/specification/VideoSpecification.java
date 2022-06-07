@@ -18,9 +18,10 @@ public class VideoSpecification {
         };
     }
 
-    //TODO implementar
-    public static Specification<VideoEntity> isInCategoria(CategoriaEntity findOneOrNotFound) {
-        return null;
+    public static Specification<VideoEntity> isInCategoria(CategoriaEntity categoria) {
+        return (root, query, cb) -> {
+            return cb.equal(root.get(VideoEntity_.categoria), categoria);
+        };
     }
 
 }

@@ -70,9 +70,8 @@ public class CategoriaController implements CategoriasApi {
 
     @Override
     public ResponseEntity<Page<VideoGet>> _findVideosByCategoria(Integer categoriaId, Pageable pageable) {
-        Page<VideoGet> response = videoService.find(VideoSpecification
-                .isInCategoria(categoriaService.findOneOrNotFound(categoriaId)),
-                pageable)
+        Page<VideoGet> response = videoService
+                .find(VideoSpecification.isInCategoria(categoriaService.findOneOrNotFound(categoriaId)), pageable)
                 .map(videoMapper::entityToGetDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
