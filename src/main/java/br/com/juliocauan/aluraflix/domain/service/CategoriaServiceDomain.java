@@ -6,7 +6,7 @@ public abstract class CategoriaServiceDomain<E, ID> extends BaseService<E, ID> {
 
     protected abstract ID getDefaultId();
     
-    public final E findOneOrDefault(ID id){
+    public final E findOneOrGetDefaultId(ID id){
         return (id == null ? findOneOrNotFound(getDefaultId()) : findOneOrNotFound(id));
     }
 

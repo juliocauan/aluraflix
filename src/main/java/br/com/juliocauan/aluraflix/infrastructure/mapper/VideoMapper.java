@@ -28,7 +28,7 @@ public abstract class VideoMapper implements BaseMapStruct<VideoEntity, VideoGet
     public abstract VideoGet entityToGetDto(VideoEntity entity);
 
     @Override
-    @Mapping(target = "categoria", expression = "java(categoriaService.findOneOrDefault(postDto.getCategoriaId()))")
+    @Mapping(target = "categoria", expression = "java(categoriaService.findOneOrGetDefaultId(postDto.getCategoriaId()))")
     public abstract VideoEntity postDtoToEntity(VideoPost postDto);
 
     //TODO estudar
