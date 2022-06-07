@@ -5,7 +5,7 @@ spring:
     data:
         web:
             pageable:
-                max-page-size: 5
+                default-page-size: 5
     datasource:
         url: jdbc:mysql://localhost:3308/aluraflix
         username: root
