@@ -15,7 +15,7 @@ public abstract class BaseService<E, ID> {
     protected abstract ServiceMapper<E> getMapper();
     protected abstract String getClassName();
 
-    public final Page<E> findAll(Specification<E> spec, Pageable pageable) {
+    public final Page<E> find(Specification<E> spec, Pageable pageable) {
         return getRepository().getPage(spec, pageable);
     }
 

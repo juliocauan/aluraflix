@@ -1,6 +1,6 @@
 package br.com.juliocauan.aluraflix.domain.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 import br.com.juliocauan.aluraflix.domain.model.Categoria;
 import br.com.juliocauan.aluraflix.domain.service.config.BaseService;
@@ -16,7 +16,7 @@ public abstract class VideoServiceDomain<E, ID> extends BaseService<E, ID> {
     // }
 
     //TODO implementar
-    public final List<E> findAllByCategoria(Categoria categoria) {
+    public final Page<E> findAllByCategoria(Categoria categoria) {
         return null;
     }
 

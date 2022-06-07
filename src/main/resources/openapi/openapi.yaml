@@ -227,7 +227,7 @@ paths:
     get:
       tags:
         - "categoria"
-      operationId: "findVideoListByCategoria"
+      operationId: "findVideosByCategoria"
       description: "Get list of Videos sorted by Categoria"
       x-spring-paginated: true
       parameters:

@@ -89,7 +89,7 @@ public class CategoriaController implements CategoriasApi {
     // }
 
     @Override
-    public ResponseEntity<Page<VideoGet>> _findVideoListByCategoria(Integer categoriaId, Pageable pageable) {
+    public ResponseEntity<Page<VideoGet>> _findVideosByCategoria(Integer categoriaId, Pageable pageable) {
         // TODO Auto-generated method stub
         return null;
     }
