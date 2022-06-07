@@ -155,7 +155,7 @@
 			<plugin>
 				<groupId>org.openapitools</groupId>
 				<artifactId>openapi-generator-maven-plugin</artifactId>
-				<version>5.4.0</version>
+				<version>6.0.0</version>
 				<executions>
 					<execution>
 						<goals>
@@ -163,8 +163,10 @@
 						</goals>
 						<configuration>
 							<inputSpec>${project.basedir}/src/main/resources/openapi/openapi.yaml</inputSpec>
+							<templateDirectory>${project.basedir}/src/main/resources/openapi/templates</templateDirectory>
 							<generatorName>spring</generatorName>
 							<library>spring-boot</library>
+							<typeMappings>VideoPage=Page&lt;VideoGet&gt;</typeMappings>
 							<configOptions>
 								<language>spring</language>
 								<sourceFolder>openapi</sourceFolder>
@@ -178,6 +180,7 @@
 								<generateSupportingFiles>false</generateSupportingFiles>
 								<delegatePattern>true</delegatePattern>
 								<disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
+								<documentationProvider>none</documentationProvider>
 							</configOptions>
 						</configuration>
 					</execution>

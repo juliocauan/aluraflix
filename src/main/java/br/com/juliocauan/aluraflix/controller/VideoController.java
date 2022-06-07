@@ -3,6 +3,7 @@ package br.com.juliocauan.aluraflix.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,6 @@ import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
 import br.com.juliocauan.aluraflix.infrastructure.service.VideoService;
 import br.com.juliocauan.openapi.api.VideosApi;
 import br.com.juliocauan.openapi.model.VideoGet;
-import br.com.juliocauan.openapi.model.VideoPage;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
 
@@ -39,15 +39,15 @@ public class VideoController implements VideosApi {
     // }
 
     @Override
-    public ResponseEntity<VideoGet> _addVideo(@Valid VideoPost videoPost) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(videoMapper.entityToGetDto(
-                videoService.save(videoMapper.postDtoToEntity(videoPost))));
+    public ResponseEntity<Page<VideoGet>> _findAllVideos(@Valid String search, Pageable pageable) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
-    public ResponseEntity<VideoPage> _findAllVideos(@Valid String search, Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
+    public ResponseEntity<VideoGet> _addVideo(@Valid VideoPost videoPost) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(videoMapper.entityToGetDto(
+                videoService.save(videoMapper.postDtoToEntity(videoPost))));
     }
 
     @Override
