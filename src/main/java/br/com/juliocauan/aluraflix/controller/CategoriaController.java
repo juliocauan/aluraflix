@@ -64,7 +64,7 @@ public class CategoriaController implements CategoriasApi {
     }
 
     @Override
-    public ResponseEntity<CategoriaGet> _updateCategoria(@Valid CategoriaPut categoriaPut, Integer categoriaId) {
+    public ResponseEntity<CategoriaGet> _updateCategoria(Integer categoriaId, @Valid CategoriaPut categoriaPut) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 categoriaMapper.entityToGetDto(categoriaService.update(
                         categoriaId, categoriaMapper.putDtoToEntity(categoriaPut))));

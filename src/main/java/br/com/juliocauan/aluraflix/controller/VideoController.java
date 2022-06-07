@@ -1,8 +1,5 @@
 package br.com.juliocauan.aluraflix.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
-import br.com.juliocauan.aluraflix.infrastructure.model.specification.VideoSpecification;
 import br.com.juliocauan.aluraflix.infrastructure.service.VideoService;
 import br.com.juliocauan.openapi.api.VideosApi;
 import br.com.juliocauan.openapi.model.VideoGet;
@@ -61,7 +57,7 @@ public class VideoController implements VideosApi {
     }
 
     @Override
-    public ResponseEntity<VideoGet> _updateVideo(@Valid VideoPut videoPut, Integer videoId) {
+    public ResponseEntity<VideoGet> _updateVideo(Integer videoId, @Valid VideoPut videoPut) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 videoMapper.entityToGetDto(videoService.update(
                         videoId, videoMapper.putDtoToEntity(videoPut))));

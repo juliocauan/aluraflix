@@ -164,23 +164,18 @@
 						<configuration>
 							<inputSpec>${project.basedir}/src/main/resources/openapi/openapi.yaml</inputSpec>
 							<generatorName>spring</generatorName>
+							<library>spring-boot</library>
 							<configOptions>
 								<language>spring</language>
-								<library>spring-boot</library>
 								<sourceFolder>openapi</sourceFolder>
 								<basePackage>br.com.juliocauan.openapi</basePackage>
 								<apiPackage>br.com.juliocauan.openapi.api</apiPackage>
 								<modelPackage>br.com.juliocauan.openapi.model</modelPackage>
-								<configPackage>br.com.juliocauan.openapi.configuration</configPackage>
-								<invokerPackage>br.com.juliocauan.openapi.invoker</invokerPackage>
 								<performBeanValidation>true</performBeanValidation>
-								<documentationProvider>springdoc</documentationProvider>
-								<prependFormOrBodyParameters>true</prependFormOrBodyParameters>
 								<openApiNullable>false</openApiNullable>
 								<skipDefaultInterface>true</skipDefaultInterface>
 								<interfaceOnly>true</interfaceOnly>
 								<generateSupportingFiles>false</generateSupportingFiles>
-								<hideGenerationTimestamp>true</hideGenerationTimestamp>
 								<delegatePattern>true</delegatePattern>
 								<disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
 							</configOptions>
