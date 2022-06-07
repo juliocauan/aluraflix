@@ -2,6 +2,10 @@ server:
     port: 8081
 
 spring:
+    data:
+        web:
+            pageable:
+                max-page-size: 5
     datasource:
         url: jdbc:mysql://localhost:3308/aluraflix
         username: root
