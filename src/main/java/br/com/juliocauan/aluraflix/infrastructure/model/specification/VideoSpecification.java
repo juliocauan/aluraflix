@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity;
 import br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity;
 import br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity_;
 
@@ -15,6 +16,11 @@ public class VideoSpecification {
                 return null;
             return cb.like(root.get(VideoEntity_.titulo), cb.literal('%' +  search + '%'));
         };
+    }
+
+    //TODO implementar
+    public static Specification<VideoEntity> isInCategoria(CategoriaEntity findOneOrNotFound) {
+        return null;
     }
 
 }

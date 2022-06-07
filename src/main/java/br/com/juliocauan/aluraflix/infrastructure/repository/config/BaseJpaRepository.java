@@ -13,6 +13,11 @@ import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
 public interface BaseJpaRepository<E, ID> extends BaseRepository<E, ID>, JpaRepository<E, ID>, JpaSpecificationExecutor<E>{
 
     @Override
+    default Page<E> getPage(Pageable pageable) {
+        return findAll(pageable);
+    }
+
+    @Override
     default Page<E> getPage(Specification<E> spec, Pageable pageable) {
         return findAll(spec, pageable);
     }

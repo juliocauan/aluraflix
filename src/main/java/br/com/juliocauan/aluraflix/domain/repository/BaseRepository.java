@@ -8,6 +8,7 @@ public interface BaseRepository<E, ID> {
     
     //TODO Revisar Specification
     Page<E> getPage(Specification<E> spec, Pageable pageable);
+    Page<E> getPage(Pageable pageable);
     E findOne(ID id);
     E post(E entity);
     void remove(E entity);

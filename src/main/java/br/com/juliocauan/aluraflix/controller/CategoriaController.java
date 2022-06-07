@@ -1,8 +1,5 @@
 package br.com.juliocauan.aluraflix.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.CategoriaMapper;
 import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
+import br.com.juliocauan.aluraflix.infrastructure.model.specification.VideoSpecification;
 import br.com.juliocauan.aluraflix.infrastructure.service.CategoriaService;
 import br.com.juliocauan.aluraflix.infrastructure.service.VideoService;
 import br.com.juliocauan.openapi.api.CategoriasApi;
@@ -46,24 +44,9 @@ public class CategoriaController implements CategoriasApi {
     }
 
     @Override
-    public ResponseEntity<Void> _deleteCategoria(Integer categoriaId) {
-        categoriaService.delete(categoriaId);
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    //TODO apagar
-    // @Override
-    // public ResponseEntity<List<CategoriaGet>> _findAllCategorias() {
-    //     List<CategoriaGet> categoriaList = new ArrayList<>();
-    //     categoriaService.findAll().forEach(
-    //             categoria -> categoriaList.add(categoriaMapper.entityToGetDto(categoria)));
-    //     return ResponseEntity.status(HttpStatus.OK).body(categoriaList);
-    // }
-
-    @Override
     public ResponseEntity<Page<CategoriaGet>> _findAllCategorias(Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
+        Page<CategoriaGet> response = categoriaService.findAll(pageable).map(categoriaMapper::entityToGetDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
@@ -79,19 +62,19 @@ public class CategoriaController implements CategoriasApi {
                         categoriaId, categoriaMapper.putDtoToEntity(categoriaPut))));
     }
 
-    //TODO apagar
-    // @Override
-    // public ResponseEntity<List<VideoGet>> _findVideoListByCategoria(Integer categoriaId) {
-    //     List<VideoGet> response = new ArrayList<>();
-    //     videoService.findAllByCategoria(categoriaService.findOneOrNotFound(categoriaId))
-    //             .forEach(video -> response.add(videoMapper.entityToGetDto(video)));
-    //     return ResponseEntity.status(HttpStatus.OK).body(response);
-    // }
+    @Override
+    public ResponseEntity<Void> _deleteCategoria(Integer categoriaId) {
+        categoriaService.delete(categoriaId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
     @Override
     public ResponseEntity<Page<VideoGet>> _findVideosByCategoria(Integer categoriaId, Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
+        Page<VideoGet> response = videoService.find(VideoSpecification
+                .isInCategoria(categoriaService.findOneOrNotFound(categoriaId)),
+                pageable)
+                .map(videoMapper::entityToGetDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
