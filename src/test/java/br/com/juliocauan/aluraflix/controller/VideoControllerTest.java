@@ -39,6 +39,7 @@ public class VideoControllerTest extends TestContext {
         private final String urlWithId = "/videos/{videoId}";
         private final String urlWithInvalidId = "/videos/0";
         private final Integer categoriaDefaultId = 1;
+        private final Integer pageSize = 5;
 
         private VideoPost videoPost = new VideoPost();
         private VideoPut videoPut = new VideoPut();
@@ -155,9 +156,11 @@ public class VideoControllerTest extends TestContext {
         @DisplayName("Busca lista de todos os Videos")
         public void givenVideo_WhenGetAllVideos_Then200() throws Exception {
                 postVideo();
-                String content = String.format("$.content[%d].", videoIdList.size() - 1);
+                String page = String.valueOf(videoIdList.size() / pageSize);
+                String content = String.format("$.content[%d].", videoIdList.size() - 1 - Integer.valueOf(page) * pageSize);
                 getMockMvc().perform(
-                                get(url))
+                                get(url)
+                                        .queryParam("page", page))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
@@ -165,18 +168,19 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(jsonPath(content + "titulo").value(videoPost.getTitulo()))
                                 .andExpect(jsonPath(content + "descricao").value(videoPost.getDescricao()))
                                 .andExpect(jsonPath(content + "url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath(content + "categoriaId").value(videoPost.getCategoriaId()))
-                                .andExpect(jsonPath("$.numberOfElements").value(videoIdList.size()));
+                                .andExpect(jsonPath(content + "categoriaId").value(videoPost.getCategoriaId()));
         }
 
         @Test
         @DisplayName("Busca lista de Videos por Titulo")
         public void givenVideo_WhenGetVideosByTitle_Then200() throws Exception {
                 postVideo();
-                String content = String.format("$.content[%d].", videoIdList.size() - 1);
+                String page = String.valueOf(videoIdList.size() / pageSize);
+                String content = String.format("$.content[%d].", videoIdList.size() - 1 - Integer.valueOf(page) * pageSize);
                 getMockMvc().perform(
                                 get(url)
-                                                .param("search", "tes"))
+                                                .queryParam("search", "tes")
+                                                .queryParam("page", page))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
@@ -184,8 +188,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(jsonPath(content + "titulo").value(videoPost.getTitulo()))
                                 .andExpect(jsonPath(content + "descricao").value(videoPost.getDescricao()))
                                 .andExpect(jsonPath(content + "url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath(content + "categoriaId").value(videoPost.getCategoriaId()))
-                                .andExpect(jsonPath("$.numberOfElements").value(videoIdList.size()));
+                                .andExpect(jsonPath(content + "categoriaId").value(videoPost.getCategoriaId()));
         }
 
         @Test
@@ -339,7 +342,7 @@ public class VideoControllerTest extends TestContext {
                                 delete(urlWithId, lastVideoId))
                                 .andDo(print())
                                 .andExpect(status().isOk());
-                videoIdList.remove(videoIdList.size()-1);
+                videoIdList.remove(videoIdList.size() - 1);
         }
 
         @Test

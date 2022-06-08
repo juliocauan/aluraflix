@@ -80,19 +80,9 @@
 
 		<!--OPEN API DEPENDENCIES-->
 		<dependency>
-			<groupId>io.swagger.parser.v3</groupId>
-			<artifactId>swagger-parser</artifactId>
-			<version>2.0.32</version>
-		</dependency>
-		<dependency>
 			<groupId>org.openapitools</groupId>
-			<artifactId>jackson-databind-nullable</artifactId>
-			<version>0.2.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.9</version>
+			<artifactId>openapi-generator</artifactId>
+			<version>6.0.0</version>
 		</dependency>
 		<!--OPEN API DEPENDENCIES-->
 
@@ -168,7 +158,6 @@
 							<library>spring-boot</library>
 							<typeMappings>VideoPage=Page&lt;VideoGet&gt;,CategoriaPage=Page&lt;CategoriaGet&gt;</typeMappings>
 							<configOptions>
-								<language>spring</language>
 								<sourceFolder>openapi</sourceFolder>
 								<basePackage>br.com.juliocauan.openapi</basePackage>
 								<apiPackage>br.com.juliocauan.openapi.api</apiPackage>
