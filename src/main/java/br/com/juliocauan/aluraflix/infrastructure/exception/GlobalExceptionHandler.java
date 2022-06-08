@@ -1,6 +1,7 @@
 package br.com.juliocauan.aluraflix.infrastructure.exception;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -57,6 +58,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> dataIntegrityError(DataIntegrityViolationException ex){
         responseError = init(3001, ex);
         responseError.setMessage(ex.getMostSpecificCause().getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Object> validationExceptionError(ValidationException ex){
+        responseError = init(4001, ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 

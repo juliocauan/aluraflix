@@ -1,6 +1,7 @@
 package br.com.juliocauan.aluraflix.domain.service.config;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,15 @@ public abstract class BaseService<E, ID> {
     public final E findOneOrNotFound(ID id) {
         E entity = findOneOrNull(id);
         if(entity == null)
-            throw new EntityNotFoundException(String.format("Unable to find %s with id %d",
+            throw new EntityNotFoundException(String.format("GET/DELETE method: Unable to find %s with id %d",
+                getClassName(), id));
+        return entity;
+    }
+
+    public final E findOneOrBadRequest(ID id) {
+        E entity = findOneOrNull(id);
+        if(entity == null)
+            throw new ValidationException(String.format("POST/PUT method: Unable to find %s with id %d",
                 getClassName(), id));
         return entity;
     }

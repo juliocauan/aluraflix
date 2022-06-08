@@ -267,6 +267,10 @@ components:
             $ref: "#/components/schemas/ErrorField"
     ErrorField:
       type: object
+      required:
+        - code
+        - message
+        - field
       properties:
         code:
           type: string
@@ -406,7 +410,7 @@ components:
           schema:
             $ref: "#/components/schemas/Error"
     BadRequest:
-      description: "Could not created/update Entity"
+      description: "Could not create/update Entity"
       content:
         application/json:
           schema:
