@@ -136,7 +136,7 @@ public class VideoControllerTest extends TestContext {
 
         @Test
         @DisplayName("Erro ao tentar cadastrar um Video com CategoriaId inválido")
-        public void givenVideo_WhenPostVideoWithInvalidCategoriaId_Then404() throws Exception {
+        public void givenVideo_WhenPostVideoWithInvalidCategoriaId_Then400() throws Exception {
 
                 videoPost.categoriaId(0);
                 getMockMvc().perform(
@@ -316,7 +316,7 @@ public class VideoControllerTest extends TestContext {
 
         @Test
         @DisplayName("Erro ao tentar atualizar Video com Categoria Id inválido")
-        public void givenVideo_WhenPutVideoWithInvalidCategoriaId_Then404() throws Exception {
+        public void givenVideo_WhenPutVideoWithInvalidCategoriaId_Then400() throws Exception {
 
                 postVideo();
                 videoPut.categoriaId(0);
