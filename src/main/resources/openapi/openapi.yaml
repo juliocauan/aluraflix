@@ -248,7 +248,7 @@ paths:
 
 components:
   schemas:
-    ErrorDto:
+    Error:
       type: object
       required:
         - code
@@ -264,8 +264,8 @@ components:
         fieldList:
           type: array
           items:
-            $ref: "#/components/schemas/ErrorFieldDto"
-    ErrorFieldDto:
+            $ref: "#/components/schemas/ErrorField"
+    ErrorField:
       type: object
       properties:
         code:
@@ -274,7 +274,7 @@ components:
           type: string
         field:
           type: string
-    PageDto:
+    Page:
       type: object
       properties:
         page:
@@ -296,7 +296,7 @@ components:
           items:
             $ref: "#/components/schemas/VideoGet"
         page:
-          $ref: "#/components/schemas/PageDto"
+          $ref: "#/components/schemas/Page"
     VideoGet:
       type: object
       properties:
@@ -353,7 +353,7 @@ components:
           items:
             $ref: "#/components/schemas/CategoriaGet"
         page:
-          $ref: "#/components/schemas/PageDto"
+          $ref: "#/components/schemas/Page"
     CategoriaGet:
       type: object
       properties:
@@ -404,12 +404,12 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorDto"
+            $ref: "#/components/schemas/Error"
     BadRequest:
       description: "Could not created/update Entity"
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorDto"
+            $ref: "#/components/schemas/Error"
     Deleted:
       description: "Successfully deleted Entity"

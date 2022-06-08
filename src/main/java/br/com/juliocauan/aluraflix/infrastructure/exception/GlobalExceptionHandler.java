@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import br.com.juliocauan.openapi.model.ErrorDto;
-import br.com.juliocauan.openapi.model.ErrorFieldDto;
+import br.com.juliocauan.openapi.model.Error;
+import br.com.juliocauan.openapi.model.ErrorField;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private ErrorDto responseError;
+    private Error responseError;
 
-    private ErrorDto init(int code, Exception ex){
-        ErrorDto error = new ErrorDto();
+    private Error init(int code, Exception ex){
+        Error error = new Error();
         error.setCode(code);
         error.setTrace(stackTraceString(ex.getStackTrace()));
         error.setMessage(ex.getMessage());
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                                                                   WebRequest request) {
         responseError = init(2001, ex);
         ex.getFieldErrors().forEach(error -> {
-            ErrorFieldDto e = new ErrorFieldDto();
+            ErrorField e = new ErrorField();
             e.setField(error.getObjectName() + "." + error.getField());
             e.setMessage(error.getDefaultMessage());
             e.setCode(error.getCode());
