@@ -84,6 +84,11 @@
 			<artifactId>openapi-generator</artifactId>
 			<version>6.0.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.2</version>
+		</dependency>
 		<!--OPEN API DEPENDENCIES-->
 
 		<!-- junit 5 -->
@@ -156,21 +161,23 @@
 							<templateDirectory>${project.basedir}/src/main/resources/openapi/templates</templateDirectory>
 							<generatorName>spring</generatorName>
 							<library>spring-boot</library>
-							<typeMappings>VideoPage=Page&lt;VideoGet&gt;,CategoriaPage=Page&lt;CategoriaGet&gt;</typeMappings>
 							<configOptions>
 								<sourceFolder>openapi</sourceFolder>
 								<basePackage>br.com.juliocauan.openapi</basePackage>
 								<apiPackage>br.com.juliocauan.openapi.api</apiPackage>
 								<modelPackage>br.com.juliocauan.openapi.model</modelPackage>
 								<performBeanValidation>true</performBeanValidation>
-								<openApiNullable>false</openApiNullable>
+								<openApiNullable>true</openApiNullable>
 								<skipDefaultInterface>true</skipDefaultInterface>
 								<interfaceOnly>true</interfaceOnly>
 								<generateSupportingFiles>false</generateSupportingFiles>
 								<delegatePattern>true</delegatePattern>
-								<disallowAdditionalPropertiesIfNotPresent>false</disallowAdditionalPropertiesIfNotPresent>
 								<documentationProvider>none</documentationProvider>
 							</configOptions>
+							<typeMappings>
+								<typeMapping>VideoPage=Page&lt;VideoGet&gt;</typeMapping>
+								<typeMapping>CategoriaPage=Page&lt;CategoriaGet&gt;</typeMapping>
+							</typeMappings>
 						</configuration>
 					</execution>
 				</executions>
