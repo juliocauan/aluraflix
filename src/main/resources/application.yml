@@ -23,4 +23,6 @@ spring:
     sql:
         init:
             mode: always
-            
+    mustache:  
+        check-template-location: false
+    

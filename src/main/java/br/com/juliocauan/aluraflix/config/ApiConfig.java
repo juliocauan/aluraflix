@@ -11,6 +11,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "br.com.juliocauan.aluraflix.infrastructure.repository")
 @EntityScan(basePackages = {"br.com.juliocauan.aluraflix.infrastructure.model"})
-public class apiConfig {
+public class ApiConfig {
     
 }

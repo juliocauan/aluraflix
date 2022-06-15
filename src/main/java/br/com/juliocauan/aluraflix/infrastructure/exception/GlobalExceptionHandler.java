@@ -39,6 +39,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseError);
     }
     
+    //OPENAPI VALIDATION ERROR
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
@@ -54,6 +55,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 
+    //POST/PUT VALIDATION INTEGRITY ERROR NOT SOLVED BY MAPPER
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> dataIntegrityError(DataIntegrityViolationException ex){
         responseError = init(3001, ex);
@@ -61,6 +63,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 
+    //POST/PUT VALIDATION INTEGRITY ERROR SOLVED BY MAPPER
     @ExceptionHandler(ValidationException.class)
     public ResponseEntity<Object> validationExceptionError(ValidationException ex){
         responseError = init(4001, ex);

@@ -31,7 +31,7 @@ public abstract class BaseService<E, ID> {
     public final E findOneOrNotFound(ID id) {
         E entity = findOneOrNull(id);
         if(entity == null)
-            throw new EntityNotFoundException(String.format("GET/DELETE method: Unable to find %s with id %d",
+            throw new EntityNotFoundException(String.format("GET/DELETE method: Unable to find %s with id %s",
                 getClassName(), id));
         return entity;
     }
@@ -39,7 +39,7 @@ public abstract class BaseService<E, ID> {
     public final E findOneOrBadRequest(ID id) {
         E entity = findOneOrNull(id);
         if(entity == null)
-            throw new ValidationException(String.format("POST/PUT method: Unable to find %s with id %d",
+            throw new ValidationException(String.format("POST/PUT method: Unable to find %s with id %s",
                 getClassName(), id));
         return entity;
     }
