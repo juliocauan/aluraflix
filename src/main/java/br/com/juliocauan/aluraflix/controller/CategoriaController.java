@@ -2,7 +2,6 @@ package br.com.juliocauan.aluraflix.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -19,23 +18,16 @@ import br.com.juliocauan.openapi.model.CategoriaGet;
 import br.com.juliocauan.openapi.model.CategoriaPost;
 import br.com.juliocauan.openapi.model.CategoriaPut;
 import br.com.juliocauan.openapi.model.VideoGet;
+import lombok.AllArgsConstructor;
 
 @RestController
+@AllArgsConstructor
 public class CategoriaController implements CategoriasApi {
 
     private final CategoriaService categoriaService;
     private final CategoriaMapper categoriaMapper;
     private final VideoService videoService;
     private final VideoMapper videoMapper;
-
-    @Autowired
-    public CategoriaController(CategoriaService categoriaService, CategoriaMapper categoriaMapper,
-            VideoService videoService, VideoMapper videoMapper) {
-        this.categoriaService = categoriaService;
-        this.categoriaMapper = categoriaMapper;
-        this.videoService = videoService;
-        this.videoMapper = videoMapper;
-    }
 
     @Override
     public ResponseEntity<CategoriaGet> _addCategoria(@Valid CategoriaPost categoriaPost) {

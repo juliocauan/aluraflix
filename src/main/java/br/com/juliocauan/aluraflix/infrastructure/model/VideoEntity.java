@@ -13,9 +13,15 @@ import javax.validation.constraints.Size;
 
 import br.com.juliocauan.aluraflix.domain.model.Categoria;
 import br.com.juliocauan.aluraflix.domain.model.Video;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "videos")
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 public class VideoEntity implements Video{
     
     @Id
@@ -39,40 +45,31 @@ public class VideoEntity implements Video{
     private CategoriaEntity categoria;
 
     @Override
-    public Integer getId() {
-        return id;
-    }
-    @Override
-    public String getTitulo() {
-        return titulo;
-    }
-    @Override
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;        
-    }
-    @Override
-    public String getDescricao() {
-        return descricao;
-    }
-    @Override
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-    @Override
-    public String getUrl() {
-        return url;
-    }
-    @Override
-    public void setUrl(String url) {
-        this.url = url;
-    }
-    @Override
-    public Categoria getCategoria() {
-        return categoria;
-    }
-    @Override
     public void setCategoria(Categoria categoria) {
         this.categoria = (CategoriaEntity) categoria;
+    }
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((url == null) ? 0 : url.hashCode());
+        return result;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        VideoEntity other = (VideoEntity) obj;
+        if (url == null) {
+            if (other.url != null)
+                return false;
+        } else if (!url.equals(other.url))
+            return false;
+        return true;
     }
 
 }

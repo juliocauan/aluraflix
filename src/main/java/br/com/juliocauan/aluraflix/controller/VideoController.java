@@ -2,7 +2,6 @@ package br.com.juliocauan.aluraflix.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,18 +15,14 @@ import br.com.juliocauan.openapi.api.VideosApi;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
+import lombok.AllArgsConstructor;
 
 @RestController
+@AllArgsConstructor
 public class VideoController implements VideosApi {
 
     private final VideoService videoService;
     private final VideoMapper videoMapper;
-
-    @Autowired
-    public VideoController(VideoService videoService, VideoMapper videoMapper) {
-        this.videoService = videoService;
-        this.videoMapper = videoMapper;
-    }
 
     @Override
     public ResponseEntity<VideoGet> _addVideo(@Valid VideoPost videoPost) {

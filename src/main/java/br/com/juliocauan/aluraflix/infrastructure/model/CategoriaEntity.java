@@ -12,9 +12,15 @@ import javax.validation.constraints.Size;
 
 import br.com.juliocauan.aluraflix.domain.model.Categoria;
 import br.com.juliocauan.openapi.model.Cor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "categorias")
+@Getter @Setter
+@AllArgsConstructor @NoArgsConstructor
 public class CategoriaEntity implements Categoria {
 
     @Id
@@ -31,32 +37,10 @@ public class CategoriaEntity implements Categoria {
     private Cor cor;
 
     @Override
-    public Integer getId(){
-        return id;
-    }
-    @Override
-    public String getTitulo() {
-        return titulo;
-    }
-    @Override
-    public Cor getCor() {
-        return cor;
-    }
-    @Override
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-    @Override
-    public void setCor(Cor cor) {
-        this.cor = cor;
-    }
-    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((cor == null) ? 0 : cor.hashCode());
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
         return result;
     }
     @Override
@@ -69,16 +53,6 @@ public class CategoriaEntity implements Categoria {
             return false;
         CategoriaEntity other = (CategoriaEntity) obj;
         if (cor != other.cor)
-            return false;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        if (titulo == null) {
-            if (other.titulo != null)
-                return false;
-        } else if (!titulo.equals(other.titulo))
             return false;
         return true;
     }
