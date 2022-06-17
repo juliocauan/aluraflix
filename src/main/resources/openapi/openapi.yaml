@@ -417,7 +417,7 @@ components:
       properties:
         token:
           type: string
-        tokenType:
+        type:
           $ref: "#/components/schemas/TokenType"
     TokenType:
       type: string

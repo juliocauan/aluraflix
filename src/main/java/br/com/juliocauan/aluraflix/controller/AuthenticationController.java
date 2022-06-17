@@ -31,7 +31,7 @@ public class AuthenticationController implements AuthApi {
         return ResponseEntity.status(HttpStatus.OK).body(
             new Token()
                 .token(tokenService.generateToken(auth))
-                .tokenType(TokenType.BEARER));
+                .type(TokenType.BEARER));
     }
 
     private UsernamePasswordAuthenticationToken parseAsToken(@Valid LoginForm loginForm) {
