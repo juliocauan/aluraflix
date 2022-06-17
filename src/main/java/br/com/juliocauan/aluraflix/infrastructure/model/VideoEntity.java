@@ -30,10 +30,10 @@ public class VideoEntity implements Video{
     
     @Size(min = 1, max = 100)
     @Column(nullable = false)
-    private String titulo;
+    private String title;
 
     @Column(nullable = false, columnDefinition = "TEXT")
-    private String descricao;
+    private String description;
 
     @Size(min = 10, max = 255)
     @Column(nullable = false, unique = true)
@@ -41,7 +41,7 @@ public class VideoEntity implements Video{
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)
-    private CategoriaEntity categoria;
+    private CategoryEntity category;
 
     @Override
     public int hashCode() {

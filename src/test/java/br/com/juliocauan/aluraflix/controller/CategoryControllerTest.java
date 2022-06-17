@@ -27,51 +27,51 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import br.com.juliocauan.aluraflix.config.TestContext;
-import br.com.juliocauan.openapi.model.CategoriaGet;
-import br.com.juliocauan.openapi.model.CategoriaPost;
-import br.com.juliocauan.openapi.model.CategoriaPut;
-import br.com.juliocauan.openapi.model.Cor;
+import br.com.juliocauan.openapi.model.CategoryGet;
+import br.com.juliocauan.openapi.model.CategoryPost;
+import br.com.juliocauan.openapi.model.CategoryPut;
+import br.com.juliocauan.openapi.model.Color;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Order(2)
 @TestInstance(Lifecycle.PER_CLASS)
-public class CategoriaControllerTest extends TestContext {
+public class CategoryControllerTest extends TestContext {
 
-        private final String url = "/categorias";
-        private final String urlWithId = "/categorias/{categoriaId}";
-        private final String urlWithInvalidId = "/categorias/0";
-        private final String urlGetVideoListByCategoriaId = "/categorias/{categoriaId}/videos";
-        private final String urlGetVideoListByCategoriaInvalidId = "/categorias/0/videos";
-        private final Integer categoriaDefaultId = 1;
+        private final String url = "/categories";
+        private final String urlWithId = "/categories/{categoryId}";
+        private final String urlWithInvalidId = "/categories/0";
+        private final String urlGetVideoListByCategoryId = "/categories/{categoryId}/videos";
+        private final String urlGetVideoListByCategoryInvalidId = "/categories/0/videos";
+        private final Integer categoryDefaultId = 1;
 
-        private CategoriaPost categoriaPost = new CategoriaPost();
-        private CategoriaPut categoriaPut = new CategoriaPut();
-        private List<Integer> categoriaIdList = new ArrayList<>();
-        private Integer lastCategoriaId = 0;
+        private CategoryPost categoryPost = new CategoryPost();
+        private CategoryPut categoryPut = new CategoryPut();
+        private List<Integer> categoryIdList = new ArrayList<>();
+        private Integer lastCategoryId = 0;
         private VideoGet videoGet = new VideoGet();
 
-        private ResultActions postCategoria() throws Exception {
+        private ResultActions postCategory() throws Exception {
                 ResultActions result = getMockMvc().perform(
                                 post(url)
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .content(getObjectMapper().writeValueAsString(categoriaPost)));
+                                                .content(getObjectMapper().writeValueAsString(categoryPost)));
                 String videoGetString = result.andReturn().getResponse().getContentAsString();
-                lastCategoriaId = getObjectMapper()
-                                .readValue(videoGetString, CategoriaGet.class)
+                lastCategoryId = getObjectMapper()
+                                .readValue(videoGetString, CategoryGet.class)
                                 .getId();
-                categoriaIdList.add(lastCategoriaId);
+                categoryIdList.add(lastCategoryId);
                 return result;
         }
 
         @BeforeAll
         private void init() throws Exception {
                 VideoPost videoPost = new VideoPost()
-                                .descricao("Descricao teste POST in Categoria")
-                                .titulo("Titulo teste POST in Categoria")
-                                .url("https://www.testePOSTInCategoria.com/")
-                                .categoriaId(categoriaDefaultId);
+                                .description("Descricao teste POST in Category")
+                                .title("Titulo teste POST in Category")
+                                .url("https://www.testePOSTInCategory.com/")
+                                .categoryId(categoryDefaultId);
                 String response = getMockMvc().perform(
                                 post("/videos")
                                                 .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +83,7 @@ public class CategoriaControllerTest extends TestContext {
         @AfterAll
         private void clean() throws Exception {
                 getMockMvc().perform(delete("/videos/{videoId}", videoGet.getId()));
-                categoriaIdList.forEach(categoriaId -> {
+                categoryIdList.forEach(categoriaId -> {
                         try {
                                 getMockMvc().perform(delete(urlWithId, categoriaId));
                         } catch (Exception e) {
@@ -94,37 +94,37 @@ public class CategoriaControllerTest extends TestContext {
 
         @BeforeEach
         public void setup() {
-                categoriaPost
-                                .titulo("Título teste POST")
-                                .cor(Cor.TEAL);
-                categoriaPut
-                                .titulo("Título teste PUT")
-                                .cor(Cor.WHITE);
+                categoryPost
+                                .title("Título teste POST")
+                                .color(Color.TEAL);
+                categoryPut
+                                .title("Título teste PUT")
+                                .color(Color.WHITE);
         }
 
         @Test
-        @DisplayName("Cadastra um Categoria válido")
-        public void givenCategoria_WhenPostValidCategoria_Then201() throws Exception {
-                postCategoria()
+        @DisplayName("Cadastra um Category válido")
+        public void givenCategory_WhenPostValidCategory_Then201() throws Exception {
+                postCategory()
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isCreated())
-                                .andExpect(jsonPath("$.id").value(lastCategoriaId))
-                                .andExpect(jsonPath("$.titulo").value(categoriaPost.getTitulo()))
-                                .andExpect(jsonPath("$.cor").value(categoriaPost.getCor().getValue()));
+                                .andExpect(jsonPath("$.id").value(lastCategoryId))
+                                .andExpect(jsonPath("$.title").value(categoryPost.getTitle()))
+                                .andExpect(jsonPath("$.color").value(categoryPost.getColor().getValue()));
         }
 
         @Test
-        @DisplayName("Erro ao tentar cadastrar um Categoria inválido")
-        public void givenCategoria_WhenPostInvalidCategoria_Then400() throws Exception {
+        @DisplayName("Erro ao tentar cadastrar um Category inválido")
+        public void givenCategory_WhenPostInvalidCategory_Then400() throws Exception {
 
-                categoriaPost.titulo(
+                categoryPost.title(
                                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-                                .cor(null);
+                                .color(null);
                 getMockMvc().perform(
                                 post(url)
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .content(getObjectMapper().writeValueAsString(categoriaPost)))
+                                                .content(getObjectMapper().writeValueAsString(categoryPost)))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isBadRequest())
@@ -133,38 +133,38 @@ public class CategoriaControllerTest extends TestContext {
         }
 
         @Test
-        @DisplayName("Busca lista de Categorias")
-        public void givenCategoria_WhenGetAllCategorias_Then200() throws Exception {
-                postCategoria();
-                String content = String.format("$.content[%d].", categoriaIdList.size());
+        @DisplayName("Busca lista de Categorys")
+        public void givenCategory_WhenGetAllCategorys_Then200() throws Exception {
+                postCategory();
+                String content = String.format("$.content[%d].", categoryIdList.size());
                 getMockMvc().perform(
                                 get(url))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath(content + "id").value(lastCategoriaId))
-                                .andExpect(jsonPath(content + "titulo").value(categoriaPost.getTitulo()))
-                                .andExpect(jsonPath(content + "cor").value(categoriaPost.getCor().getValue()))
-                                .andExpect(jsonPath("$.numberOfElements").value(categoriaIdList.size() + 1));
+                                .andExpect(jsonPath(content + "id").value(lastCategoryId))
+                                .andExpect(jsonPath(content + "title").value(categoryPost.getTitle()))
+                                .andExpect(jsonPath(content + "color").value(categoryPost.getColor().getValue()))
+                                .andExpect(jsonPath("$.numberOfElements").value(categoryIdList.size() + 1));
         }
 
         @Test
-        @DisplayName("Busca Categoria por Id")
-        public void givenCategoria_WhenGetCategoriaById_Then200() throws Exception {
-                postCategoria();
+        @DisplayName("Busca Category por Id")
+        public void givenCategory_WhenGetCategoryById_Then200() throws Exception {
+                postCategory();
                 getMockMvc().perform(
-                                get(urlWithId, lastCategoriaId))
+                                get(urlWithId, lastCategoryId))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.id").value(lastCategoriaId))
-                                .andExpect(jsonPath("$.titulo").value(categoriaPost.getTitulo()))
-                                .andExpect(jsonPath("$.cor").value(categoriaPost.getCor().getValue()));
+                                .andExpect(jsonPath("$.id").value(lastCategoryId))
+                                .andExpect(jsonPath("$.title").value(categoryPost.getTitle()))
+                                .andExpect(jsonPath("$.color").value(categoryPost.getColor().getValue()));
         }
 
         @Test
-        @DisplayName("Erro ao tentar buscar Categoria por Id inválido")
-        public void givenCategoria_WhenGetCategoriaByInvalidId_Then404() throws Exception {
+        @DisplayName("Erro ao tentar buscar Category por Id inválido")
+        public void givenCategory_WhenGetCategoryByInvalidId_Then404() throws Exception {
                 getMockMvc().perform(
                                 get(urlWithInvalidId))
                                 .andDo(print())
@@ -172,83 +172,83 @@ public class CategoriaControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
         @Test
-        @DisplayName("Busca lista de Videos por Categoria")
-        public void givenCategoria_WhenGetVideoListByCategoria_Then200() throws Exception {
+        @DisplayName("Busca lista de Videos por Category")
+        public void givenCategory_WhenGetVideoListByCategory_Then200() throws Exception {
                 getMockMvc().perform(
-                                get(urlGetVideoListByCategoriaId, categoriaDefaultId))
+                                get(urlGetVideoListByCategoryId, categoryDefaultId))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.content[0].id").value(videoGet.getId()))
-                                .andExpect(jsonPath("$.content[0].titulo").value(videoGet.getTitulo()))
-                                .andExpect(jsonPath("$.content[0].descricao").value(videoGet.getDescricao()))
+                                .andExpect(jsonPath("$.content[0].title").value(videoGet.getTitle()))
+                                .andExpect(jsonPath("$.content[0].description").value(videoGet.getDescription()))
                                 .andExpect(jsonPath("$.content[0].url").value(videoGet.getUrl()))
-                                .andExpect(jsonPath("$.content[0].categoriaId").value(videoGet.getCategoriaId()))
+                                .andExpect(jsonPath("$.content[0].categoryId").value(videoGet.getCategoryId()))
                                 .andExpect(jsonPath("$.numberOfElements").value(1));
         }
 
         @Test
-        @DisplayName("Erro ao tentar buscar lista de Videos por Categoria com Id inválido")
-        public void givenCategoria_WhenGetVideoListByInvalidCategoriaId_Then404() throws Exception {
+        @DisplayName("Erro ao tentar buscar lista de Videos por Category com Id inválido")
+        public void givenCategory_WhenGetVideoListByInvalidCategoryId_Then404() throws Exception {
                 getMockMvc().perform(
-                                get(urlGetVideoListByCategoriaInvalidId))
+                                get(urlGetVideoListByCategoryInvalidId))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
         @Test
-        @DisplayName("Atualiza Categoria válido")
-        public void givenCategoria_WhenPutValidCategoria_Then200() throws Exception {
-                postCategoria();
+        @DisplayName("Atualiza Category válido")
+        public void givenCategory_WhenPutValidCategory_Then200() throws Exception {
+                postCategory();
                 getMockMvc().perform(
-                                put(urlWithId, lastCategoriaId)
+                                put(urlWithId, lastCategoryId)
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .content(getObjectMapper().writeValueAsString(categoriaPut)))
+                                                .content(getObjectMapper().writeValueAsString(categoryPut)))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.id").value(lastCategoriaId))
-                                .andExpect(jsonPath("$.titulo").value(categoriaPut.getTitulo()))
-                                .andExpect(jsonPath("$.cor").value(categoriaPut.getCor().getValue()));
+                                .andExpect(jsonPath("$.id").value(lastCategoryId))
+                                .andExpect(jsonPath("$.title").value(categoryPut.getTitle()))
+                                .andExpect(jsonPath("$.color").value(categoryPut.getColor().getValue()));
         }
 
         @Test
-        @DisplayName("Atualiza Categoria com Titulo nulo")
-        public void givenCategoria_WhenPutCategoriaWithTituloNull_Then200() throws Exception {
-                postCategoria();
-                String titulo = categoriaPost.getTitulo();
-                categoriaPut.titulo(null);
+        @DisplayName("Atualiza Category com Titulo nulo")
+        public void givenCategory_WhenPutCategoryWithTituloNull_Then200() throws Exception {
+                postCategory();
+                String title = categoryPost.getTitle();
+                categoryPut.title(null);
                 getMockMvc().perform(
-                                put(urlWithId, lastCategoriaId)
+                                put(urlWithId, lastCategoryId)
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .content(getObjectMapper().writeValueAsString(categoriaPut)))
+                                                .content(getObjectMapper().writeValueAsString(categoryPut)))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.id").value(lastCategoriaId))
-                                .andExpect(jsonPath("$.titulo").value(titulo))
-                                .andExpect(jsonPath("$.cor").value(categoriaPut.getCor().getValue()));
+                                .andExpect(jsonPath("$.id").value(lastCategoryId))
+                                .andExpect(jsonPath("$.title").value(title))
+                                .andExpect(jsonPath("$.color").value(categoryPut.getColor().getValue()));
         }
 
         @Test
-        @DisplayName("Erro ao tentar atualizar Categoria inválido")
-        public void givenCategoria_WhenPutInvalidCategoria_Then400() throws Exception {
-                postCategoria();
-                categoriaPut.titulo("a").cor(null);
+        @DisplayName("Erro ao tentar atualizar Category inválido")
+        public void givenCategory_WhenPutInvalidCategory_Then400() throws Exception {
+                postCategory();
+                categoryPut.title("a").color(null);
                 getMockMvc().perform(
-                                put(urlWithId, lastCategoriaId)
+                                put(urlWithId, lastCategoryId)
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .content(getObjectMapper().writeValueAsString(categoriaPut)))
+                                                .content(getObjectMapper().writeValueAsString(categoryPut)))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isBadRequest())
@@ -257,35 +257,35 @@ public class CategoriaControllerTest extends TestContext {
         }
 
         @Test
-        @DisplayName("Erro ao tentar atualizar Categoria válido por Id inválido")
-        public void givenCategoria_WhenPutValidCategoriaByInvalidId_Then404() throws Exception {
+        @DisplayName("Erro ao tentar atualizar Category válido por Id inválido")
+        public void givenCategory_WhenPutValidCategoryByInvalidId_Then404() throws Exception {
                 getMockMvc().perform(
                                 put(urlWithInvalidId)
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .content(getObjectMapper().writeValueAsString(categoriaPut)))
+                                                .content(getObjectMapper().writeValueAsString(categoryPut)))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
         @Test
-        @DisplayName("Deleta Categoria")
-        public void givenCategoria_WhenDeleteCategoria_Then200() throws Exception {
-                postCategoria();
+        @DisplayName("Deleta Category")
+        public void givenCategory_WhenDeleteCategory_Then200() throws Exception {
+                postCategory();
                 getMockMvc().perform(
-                                delete(urlWithId, lastCategoriaId))
+                                delete(urlWithId, lastCategoryId))
                                 .andDo(print())
                                 .andExpect(status().isOk());
-                categoriaIdList.remove(categoriaIdList.size()-1);
+                categoryIdList.remove(categoryIdList.size()-1);
         }
 
         @Test
-        @DisplayName("Erro ao tentar deletar Categoria por Id inválido")
-        public void givenCategoria_WhenDeleteCategoriaByInvalidId_Then404() throws Exception {
+        @DisplayName("Erro ao tentar deletar Category por Id inválido")
+        public void givenCategory_WhenDeleteCategoryByInvalidId_Then404() throws Exception {
                 getMockMvc().perform(
                                 delete(urlWithInvalidId))
                                 .andDo(print())
@@ -293,7 +293,7 @@ public class CategoriaControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 

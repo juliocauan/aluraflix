@@ -10,18 +10,18 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import br.com.juliocauan.aluraflix.domain.model.Categoria;
-import br.com.juliocauan.openapi.model.Cor;
+import br.com.juliocauan.aluraflix.domain.model.Category;
+import br.com.juliocauan.openapi.model.Color;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "categorias")
+@Table(name = "categories")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class CategoriaEntity implements Categoria {
+public class CategoryEntity implements Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,17 +30,17 @@ public class CategoriaEntity implements Categoria {
 
     @Column(nullable = false)
     @Size(min = 2, max = 30)
-    private String titulo;
+    private String title;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Cor cor;
+    private Color color;
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((cor == null) ? 0 : cor.hashCode());
+        result = prime * result + ((color == null) ? 0 : color.hashCode());
         return result;
     }
     @Override
@@ -51,8 +51,8 @@ public class CategoriaEntity implements Categoria {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CategoriaEntity other = (CategoriaEntity) obj;
-        if (cor != other.cor)
+        CategoryEntity other = (CategoryEntity) obj;
+        if (color != other.color)
             return false;
         return true;
     }

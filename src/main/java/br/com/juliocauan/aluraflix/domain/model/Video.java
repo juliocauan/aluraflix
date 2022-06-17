@@ -1,8 +1,8 @@
 package br.com.juliocauan.aluraflix.domain.model;
 
 public interface Video {
-    String getTitulo();
-    String getDescricao();
+    String getTitle();
+    String getDescription();
     String getUrl();
-    Categoria getCategoria();
+    Category getCategory();
 }

@@ -4,32 +4,32 @@ import org.springframework.stereotype.Service;
 
 import br.com.juliocauan.aluraflix.domain.mapper.ServiceMapper;
 import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
-import br.com.juliocauan.aluraflix.domain.service.CategoriaServiceDomain;
+import br.com.juliocauan.aluraflix.domain.service.CategoryServiceDomain;
 import br.com.juliocauan.aluraflix.infrastructure.mapper.CategoriaMapper;
-import br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity;
-import br.com.juliocauan.aluraflix.infrastructure.repository.CategoriaRepository;
+import br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity;
+import br.com.juliocauan.aluraflix.infrastructure.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class CategoriaService extends CategoriaServiceDomain<CategoriaEntity, Integer> {
+public class CategoryService extends CategoryServiceDomain<CategoryEntity, Integer> {
 
-    private final CategoriaRepository categoriaRepository;
+    private final CategoryRepository categoriaRepository;
     private final CategoriaMapper categoriaMapper;
 
     @Override
-    protected BaseRepository<CategoriaEntity, Integer> getRepository() {
+    protected BaseRepository<CategoryEntity, Integer> getRepository() {
         return categoriaRepository;
     }
 
     @Override
-    protected ServiceMapper<CategoriaEntity> getMapper() {
+    protected ServiceMapper<CategoryEntity> getMapper() {
         return categoriaMapper;
     }
 
     @Override
     protected String getClassName() {
-        return CategoriaEntity.class.getName();
+        return CategoryEntity.class.getName();
     }
 
     @Override

@@ -38,7 +38,7 @@ public class VideoControllerTest extends TestContext {
         private final String url = "/videos";
         private final String urlWithId = "/videos/{videoId}";
         private final String urlWithInvalidId = "/videos/0";
-        private final Integer categoriaDefaultId = 1;
+        private final Integer categoryDefaultId = 1;
         private final Integer pageSize = 5;
 
         private VideoPost videoPost = new VideoPost();
@@ -62,15 +62,15 @@ public class VideoControllerTest extends TestContext {
         @BeforeEach
         public void setup() throws Exception {
                 videoPost
-                                .descricao("Descrição teste POST")
-                                .titulo("Título teste POST")
+                                .description("Descrição teste POST")
+                                .title("Título teste POST")
                                 .url("https://www.testePOST.com/" + lastVideoId)
-                                .categoriaId(categoriaDefaultId);
+                                .categoryId(categoryDefaultId);
                 videoPut
-                                .descricao("Descrição teste PUT")
-                                .titulo("Título teste PUT")
+                                .description("Descrição teste PUT")
+                                .title("Título teste PUT")
                                 .url("https://www.testePUT.com/" + lastVideoId)
-                                .categoriaId(categoriaDefaultId);
+                                .categoryId(categoryDefaultId);
         }
 
         @AfterAll
@@ -93,35 +93,35 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isCreated())
                                 .andExpect(jsonPath("$.id").value(lastVideoId))
-                                .andExpect(jsonPath("$.descricao").value(videoPost.getDescricao()))
-                                .andExpect(jsonPath("$.titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath("$.description").value(videoPost.getDescription()))
+                                .andExpect(jsonPath("$.title").value(videoPost.getTitle()))
                                 .andExpect(jsonPath("$.url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath("$.categoriaId").value(videoPost.getCategoriaId()));
+                                .andExpect(jsonPath("$.categoryId").value(videoPost.getCategoryId()));
         }
 
         @Test
         @DisplayName("Cadastra um Video com Categoria padrão quando insere Categoria nula")
         public void givenVideo_WhenPostVideoWithNullCategoryId_ThenCategoryDefaultId201() throws Exception {
 
-                videoPost.categoriaId(null);
+                videoPost.categoryId(null);
                 postVideo()
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isCreated())
                                 .andExpect(jsonPath("$.id").value(lastVideoId))
-                                .andExpect(jsonPath("$.descricao").value(videoPost.getDescricao()))
-                                .andExpect(jsonPath("$.titulo").value(videoPost.getTitulo()))
+                                .andExpect(jsonPath("$.description").value(videoPost.getDescription()))
+                                .andExpect(jsonPath("$.title").value(videoPost.getTitle()))
                                 .andExpect(jsonPath("$.url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath("$.categoriaId").value(categoriaDefaultId));
+                                .andExpect(jsonPath("$.categoryId").value(categoryDefaultId));
         }
 
         @Test
         @DisplayName("Erro ao tentar cadastrar um Video inválido")
         public void givenVideo_WhenPostInvalidVideo_Then400() throws Exception {
 
-                videoPost.titulo(
+                videoPost.title(
                                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-                                .descricao(null)
+                                .description(null)
                                 .url("url");
                 getMockMvc().perform(
                                 post(url)
@@ -138,7 +138,7 @@ public class VideoControllerTest extends TestContext {
         @DisplayName("Erro ao tentar cadastrar um Video com CategoriaId inválido")
         public void givenVideo_WhenPostVideoWithInvalidCategoriaId_Then400() throws Exception {
 
-                videoPost.categoriaId(0);
+                videoPost.categoryId(0);
                 getMockMvc().perform(
                                 post(url)
                                                 .contentType(MediaType.APPLICATION_JSON)
@@ -148,7 +148,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isBadRequest())
                                 .andExpect(jsonPath("$.code").value("4001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
+                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -165,10 +165,10 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath(content + "id").value(lastVideoId))
-                                .andExpect(jsonPath(content + "titulo").value(videoPost.getTitulo()))
-                                .andExpect(jsonPath(content + "descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath(content + "title").value(videoPost.getTitle()))
+                                .andExpect(jsonPath(content + "description").value(videoPost.getDescription()))
                                 .andExpect(jsonPath(content + "url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath(content + "categoriaId").value(videoPost.getCategoriaId()));
+                                .andExpect(jsonPath(content + "categoryId").value(videoPost.getCategoryId()));
         }
 
         @Test
@@ -185,10 +185,10 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath(content + "id").value(lastVideoId))
-                                .andExpect(jsonPath(content + "titulo").value(videoPost.getTitulo()))
-                                .andExpect(jsonPath(content + "descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath(content + "title").value(videoPost.getTitle()))
+                                .andExpect(jsonPath(content + "description").value(videoPost.getDescription()))
                                 .andExpect(jsonPath(content + "url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath(content + "categoriaId").value(videoPost.getCategoriaId()));
+                                .andExpect(jsonPath(content + "categoryId").value(videoPost.getCategoryId()));
         }
 
         @Test
@@ -216,10 +216,10 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.id").value(lastVideoId))
-                                .andExpect(jsonPath("$.titulo").value(videoPost.getTitulo()))
-                                .andExpect(jsonPath("$.descricao").value(videoPost.getDescricao()))
+                                .andExpect(jsonPath("$.title").value(videoPost.getTitle()))
+                                .andExpect(jsonPath("$.description").value(videoPost.getDescription()))
                                 .andExpect(jsonPath("$.url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath("$.categoriaId").value(videoPost.getCategoriaId()));
+                                .andExpect(jsonPath("$.categoryId").value(videoPost.getCategoryId()));
         }
 
         @Test
@@ -250,10 +250,10 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.id").value(lastVideoId))
-                                .andExpect(jsonPath("$.descricao").value(videoPut.getDescricao()))
-                                .andExpect(jsonPath("$.titulo").value(videoPut.getTitulo()))
+                                .andExpect(jsonPath("$.description").value(videoPut.getDescription()))
+                                .andExpect(jsonPath("$.title").value(videoPut.getTitle()))
                                 .andExpect(jsonPath("$.url").value(videoPut.getUrl()))
-                                .andExpect(jsonPath("$.categoriaId").value(videoPost.getCategoriaId()));
+                                .andExpect(jsonPath("$.categoryId").value(videoPost.getCategoryId()));
         }
 
         @Test
@@ -262,8 +262,8 @@ public class VideoControllerTest extends TestContext {
 
                 postVideo();
                 String url = videoPost.getUrl();
-                Integer categoriaId = videoPost.getCategoriaId();
-                videoPut.url(null).categoriaId(null);
+                Integer categoryId = videoPost.getCategoryId();
+                videoPut.url(null).categoryId(null);
                 getMockMvc().perform(
                                 put(urlWithId, lastVideoId)
                                                 .contentType(MediaType.APPLICATION_JSON)
@@ -272,19 +272,19 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.id").value(lastVideoId))
-                                .andExpect(jsonPath("$.descricao").value(videoPut.getDescricao()))
-                                .andExpect(jsonPath("$.titulo").value(videoPut.getTitulo()))
+                                .andExpect(jsonPath("$.description").value(videoPut.getDescription()))
+                                .andExpect(jsonPath("$.title").value(videoPut.getTitle()))
                                 .andExpect(jsonPath("$.url").value(url))
-                                .andExpect(jsonPath("$.categoriaId").value(categoriaId));
+                                .andExpect(jsonPath("$.categoryId").value(categoryId));
         }
 
         @Test
         @DisplayName("Erro ao tentar atualizar Video inválido")
         public void givenVideo_WhenPutInvalidVideo_Then400() throws Exception {
                 postVideo();
-                videoPut.titulo(
+                videoPut.title(
                                 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-                                .descricao(null)
+                                .description(null)
                                 .url("url");
                 getMockMvc().perform(
                                 put(urlWithId, lastVideoId)
@@ -319,7 +319,7 @@ public class VideoControllerTest extends TestContext {
         public void givenVideo_WhenPutVideoWithInvalidCategoriaId_Then400() throws Exception {
 
                 postVideo();
-                videoPut.categoriaId(0);
+                videoPut.categoryId(0);
                 getMockMvc().perform(
                                 put(urlWithId, lastVideoId)
                                                 .contentType(MediaType.APPLICATION_JSON)
@@ -329,7 +329,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isBadRequest())
                                 .andExpect(jsonPath("$.code").value("4001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity with id 0"))
+                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 

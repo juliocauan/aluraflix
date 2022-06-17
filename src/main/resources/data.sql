@@ -1,1 +1,1 @@
-INSERT INTO categorias (titulo, cor) VALUES ('LIVRE', 'WHITE');
+INSERT INTO categories (title, color) VALUES ('LIVRE', 'WHITE');

@@ -4,7 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import br.com.juliocauan.aluraflix.infrastructure.model.CategoriaEntity;
+import br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity;
 import br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity;
 import br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity_;
 
@@ -14,13 +14,13 @@ public class VideoSpecification {
         return (root, query, cb) -> {
             if (search == null)
                 return null;
-            return cb.like(root.get(VideoEntity_.titulo), cb.literal('%' +  search + '%'));
+            return cb.like(root.get(VideoEntity_.title), cb.literal('%' +  search + '%'));
         };
     }
 
-    public static Specification<VideoEntity> isInCategoria(CategoriaEntity categoria) {
+    public static Specification<VideoEntity> isInCategoria(CategoryEntity category) {
         return (root, query, cb) -> {
-            return cb.equal(root.get(VideoEntity_.categoria), categoria);
+            return cb.equal(root.get(VideoEntity_.category), category);
         };
     }
 
