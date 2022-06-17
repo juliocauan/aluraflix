@@ -10,6 +10,22 @@ tags:
 
 paths:
 
+  /auth:
+    post:
+      operationId: 'authenticate'
+      description: 'Validate User authentication'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginForm"
+      responses:
+        '200':
+          description: Successfully Authenticated
+        '404':
+          description: Invalid data
+
   /videos:
     get:
       tags:
@@ -388,7 +404,19 @@ components:
           maxLength: 30
         color:
           $ref: "#/components/schemas/Color"
-    
+
+    LoginForm:
+      type: object
+      required:
+        - email
+        - pswd
+      properties:
+        email:
+          type: string
+          format: email
+        pswd:
+          type: string
+          format: password
     Color:
       type: string
       enum:
