@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import br.com.juliocauan.aluraflix.domain.model.auth.Profile;
 import br.com.juliocauan.openapi.model.ProfileType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,7 @@ import lombok.Setter;
 @Table(name = "profiles")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class ProfileEntity implements GrantedAuthority {
+public class ProfileEntity implements Profile, GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,21 +30,20 @@ public class ProfileEntity implements GrantedAuthority {
 	private Short id;
 	
     @Enumerated(EnumType.STRING)
-	private ProfileType nome;
+	private ProfileType name;
 
     @Override
     public String getAuthority() {
-        return this.nome.getValue();
+        return this.name.getValue();
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -53,7 +53,7 @@ public class ProfileEntity implements GrantedAuthority {
         if (getClass() != obj.getClass())
             return false;
         ProfileEntity other = (ProfileEntity) obj;
-        if (nome != other.nome)
+        if (name != other.name)
             return false;
         return true;
     }
