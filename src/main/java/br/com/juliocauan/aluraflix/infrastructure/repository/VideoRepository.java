@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructure.repository.domain;
+package br.com.juliocauan.aluraflix.infrastructure.repository;
 
 import org.springframework.stereotype.Repository;
 

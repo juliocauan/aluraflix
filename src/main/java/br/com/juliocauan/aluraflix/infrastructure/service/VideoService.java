@@ -7,7 +7,7 @@ import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
 import br.com.juliocauan.aluraflix.domain.service.VideoServiceDomain;
 import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
 import br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity;
-import br.com.juliocauan.aluraflix.infrastructure.repository.domain.VideoRepository;
+import br.com.juliocauan.aluraflix.infrastructure.repository.VideoRepository;
 import lombok.AllArgsConstructor;
 
 @Service
