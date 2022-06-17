@@ -7,6 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -72,9 +73,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<Object> authenticationError(UsernameNotFoundException ex){
+    public ResponseEntity<Object> authenticationInvalidDataError(UsernameNotFoundException ex){
         responseError = init(5001, ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseError);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Object> authenticationError(AuthenticationException ex){
+        responseError = init(6001, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 
 }
