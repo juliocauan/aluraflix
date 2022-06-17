@@ -23,6 +23,10 @@ paths:
       responses:
         '200':
           description: Successfully Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
         '404':
           description: Invalid data
 
@@ -405,6 +409,20 @@ components:
         color:
           $ref: "#/components/schemas/Color"
 
+    Token:
+      type: object
+      required:
+        - token
+        - tokenType
+      properties:
+        token:
+          type: string
+        tokenType:
+          $ref: "#/components/schemas/TokenType"
+    TokenType:
+      type: string
+      enum:
+        - "Bearer"
     LoginForm:
       type: object
       required:

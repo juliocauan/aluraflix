@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.juliocauan.aluraflix.config.security.TokenService;
 import br.com.juliocauan.openapi.api.AuthApi;
 import br.com.juliocauan.openapi.model.LoginForm;
+import br.com.juliocauan.openapi.model.Token;
+import br.com.juliocauan.openapi.model.TokenType;
 
 @RestController
 public class AuthenticationController implements AuthApi {
@@ -24,11 +26,12 @@ public class AuthenticationController implements AuthApi {
     private TokenService tokenService;
 
     @Override
-    public ResponseEntity<Void> _authenticate(@Valid LoginForm loginForm) {
+    public ResponseEntity<Token> _authenticate(@Valid LoginForm loginForm) {
         Authentication auth = authManager.authenticate(parseAsToken(loginForm));
-        String token = tokenService.generateToken(auth);
-        System.out.println(token);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new Token()
+                .token(tokenService.generateToken(auth))
+                .tokenType(TokenType.BEARER));
     }
 
     private UsernamePasswordAuthenticationToken parseAsToken(@Valid LoginForm loginForm) {
