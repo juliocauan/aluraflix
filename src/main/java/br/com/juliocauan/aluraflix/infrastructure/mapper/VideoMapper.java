@@ -7,7 +7,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.config.BaseMapStruct;
-import br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity;
+import br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity;
 import br.com.juliocauan.aluraflix.infrastructure.service.CategoryService;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;

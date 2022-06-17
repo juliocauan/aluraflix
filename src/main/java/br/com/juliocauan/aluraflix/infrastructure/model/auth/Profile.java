@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructure.model;
+package br.com.juliocauan.aluraflix.infrastructure.model.auth;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,41 +8,42 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
-import br.com.juliocauan.aluraflix.domain.model.Category;
-import br.com.juliocauan.openapi.model.Color;
+import org.springframework.security.core.GrantedAuthority;
+
+import br.com.juliocauan.openapi.model.ProfileType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "profiles")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class CategoryEntity implements Category {
+public class Profile implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
-
-    @Column(nullable = false)
-    @Size(min = 2, max = 30)
-    private String title;
-
+	private Short id;
+	
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Color color;
+	private ProfileType nome;
+
+    @Override
+    public String getAuthority() {
+        return this.nome.getValue();
+    }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((color == null) ? 0 : color.hashCode());
+        result = prime * result + ((nome == null) ? 0 : nome.hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -51,10 +52,10 @@ public class CategoryEntity implements Category {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CategoryEntity other = (CategoryEntity) obj;
-        if (color != other.color)
+        Profile other = (Profile) obj;
+        if (nome != other.nome)
             return false;
         return true;
     }
-    
+
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.CategoriaMapper;
 import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
-import br.com.juliocauan.aluraflix.infrastructure.model.specification.VideoSpecification;
+import br.com.juliocauan.aluraflix.infrastructure.model.domain.specification.VideoSpecification;
 import br.com.juliocauan.aluraflix.infrastructure.service.CategoryService;
 import br.com.juliocauan.aluraflix.infrastructure.service.VideoService;
 import br.com.juliocauan.openapi.api.CategoriesApi;

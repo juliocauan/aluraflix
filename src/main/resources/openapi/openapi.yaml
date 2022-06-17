@@ -394,6 +394,11 @@ components:
       enum:
         - "White"
         - "Teal"
+    ProfileType:
+      type: string
+      enum:
+        - "admin"
+        - "client"
     videoId:
       $ref: "#/components/schemas/integerId"
     categoryId:

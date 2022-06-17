@@ -6,7 +6,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.config.BaseMapStruct;
-import br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity;
+import br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity;
 import br.com.juliocauan.openapi.model.CategoryGet;
 import br.com.juliocauan.openapi.model.CategoryPost;
 import br.com.juliocauan.openapi.model.CategoryPut;
