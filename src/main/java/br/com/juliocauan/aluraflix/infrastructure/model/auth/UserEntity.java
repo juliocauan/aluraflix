@@ -20,6 +20,7 @@ import javax.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import br.com.juliocauan.aluraflix.domain.model.auth.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ import lombok.Setter;
 @Table(name = "users")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class User implements UserDetails {
+public class UserEntity implements User, UserDetails {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +47,7 @@ public class User implements UserDetails {
     private String secret;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Profile> profiles = new ArrayList<>();
+    private List<ProfileEntity> profiles = new ArrayList<>();
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -91,7 +92,7 @@ public class User implements UserDetails {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        User other = (User) obj;
+        UserEntity other = (UserEntity) obj;
         if (email == null) {
             if (other.email != null)
                 return false;

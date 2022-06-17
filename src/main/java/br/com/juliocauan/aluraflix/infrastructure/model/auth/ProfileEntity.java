@@ -21,7 +21,7 @@ import lombok.Setter;
 @Table(name = "profiles")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class Profile implements GrantedAuthority {
+public class ProfileEntity implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,7 +52,7 @@ public class Profile implements GrantedAuthority {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Profile other = (Profile) obj;
+        ProfileEntity other = (ProfileEntity) obj;
         if (nome != other.nome)
             return false;
         return true;
