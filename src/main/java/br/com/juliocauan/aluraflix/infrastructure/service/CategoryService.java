@@ -7,7 +7,7 @@ import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
 import br.com.juliocauan.aluraflix.domain.service.CategoryServiceDomain;
 import br.com.juliocauan.aluraflix.infrastructure.mapper.CategoriaMapper;
 import br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity;
-import br.com.juliocauan.aluraflix.infrastructure.repository.CategoryRepository;
+import br.com.juliocauan.aluraflix.infrastructure.repository.domain.CategoryRepository;
 import lombok.AllArgsConstructor;
 
 @Service
