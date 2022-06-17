@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import br.com.juliocauan.aluraflix.domain.model.Categoria;
 import br.com.juliocauan.aluraflix.domain.model.Video;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,10 +43,6 @@ public class VideoEntity implements Video{
     @JoinColumn(name = "categoria_id", referencedColumnName = "id", nullable = false)
     private CategoriaEntity categoria;
 
-    @Override
-    public void setCategoria(Categoria categoria) {
-        this.categoria = (CategoriaEntity) categoria;
-    }
     @Override
     public int hashCode() {
         final int prime = 31;

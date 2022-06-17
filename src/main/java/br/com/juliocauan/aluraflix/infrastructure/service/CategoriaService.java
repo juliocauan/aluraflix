@@ -1,7 +1,6 @@
 package br.com.juliocauan.aluraflix.infrastructure.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.juliocauan.aluraflix.domain.mapper.ServiceMapper;
 import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
@@ -12,7 +11,6 @@ import br.com.juliocauan.aluraflix.infrastructure.repository.CategoriaRepository
 import lombok.AllArgsConstructor;
 
 @Service
-@Transactional
 @AllArgsConstructor
 public class CategoriaService extends CategoriaServiceDomain<CategoriaEntity, Integer> {
 
