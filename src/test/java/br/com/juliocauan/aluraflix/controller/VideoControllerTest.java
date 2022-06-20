@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -26,6 +27,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import br.com.juliocauan.aluraflix.config.TestContext;
+import br.com.juliocauan.openapi.model.LoginForm;
+import br.com.juliocauan.openapi.model.Token;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
@@ -38,6 +41,7 @@ public class VideoControllerTest extends TestContext {
         private final String url = "/videos";
         private final String urlWithId = "/videos/{videoId}";
         private final String urlWithInvalidId = "/videos/0";
+        private final String tokenUrl = "/auth";
         private final Integer categoryDefaultId = 1;
         private final Integer pageSize = 5;
 
@@ -45,10 +49,12 @@ public class VideoControllerTest extends TestContext {
         private VideoPut videoPut = new VideoPut();
         private List<Integer> videoIdList = new ArrayList<>();
         private Integer lastVideoId = 0;
+        private String token;
 
         private ResultActions postVideo() throws Exception {
                 ResultActions result = getMockMvc().perform(
                                 post(url)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(videoPost)));
                 String videoGetString = result.andReturn().getResponse().getContentAsString();
@@ -57,6 +63,18 @@ public class VideoControllerTest extends TestContext {
                                 .getId();
                 videoIdList.add(lastVideoId);
                 return result;
+        }
+
+        @BeforeAll
+        public void start() throws Exception {
+                LoginForm login = new LoginForm().email("julio@test.com").pswd("123456");
+                String content = getMockMvc().perform(
+                                post(tokenUrl)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(login)))
+                                .andReturn().getResponse().getContentAsString();
+                Token aux = getObjectMapper().readValue(content, Token.class);
+                token = String.format("%s %s", aux.getType().getValue(), aux.getToken());
         }
 
         @BeforeEach
@@ -77,7 +95,7 @@ public class VideoControllerTest extends TestContext {
         private void deleteAllVideos() {
                 videoIdList.forEach(videoId -> {
                         try {
-                                getMockMvc().perform(delete(urlWithId, videoId));
+                                getMockMvc().perform(delete(urlWithId, videoId).header("Authorization", token));
                         } catch (Exception e) {
                                 e.printStackTrace();
                         }
@@ -125,6 +143,7 @@ public class VideoControllerTest extends TestContext {
                                 .url("url");
                 getMockMvc().perform(
                                 post(url)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(videoPost)))
                                 .andDo(print())
@@ -141,6 +160,7 @@ public class VideoControllerTest extends TestContext {
                 videoPost.categoryId(0);
                 getMockMvc().perform(
                                 post(url)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(videoPost)))
                                 .andDo(print())
@@ -148,7 +168,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isBadRequest())
                                 .andExpect(jsonPath("$.code").value("4001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
+                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -157,10 +177,12 @@ public class VideoControllerTest extends TestContext {
         public void givenVideo_WhenGetAllVideos_Then200() throws Exception {
                 postVideo();
                 String page = String.valueOf(videoIdList.size() / pageSize);
-                String content = String.format("$.content[%d].", videoIdList.size() - 1 - Integer.valueOf(page) * pageSize);
+                String content = String.format("$.content[%d].",
+                                videoIdList.size() - 1 - Integer.valueOf(page) * pageSize);
                 getMockMvc().perform(
                                 get(url)
-                                        .queryParam("page", page))
+                                                .header("Authorization", token)
+                                                .queryParam("page", page))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
@@ -176,9 +198,11 @@ public class VideoControllerTest extends TestContext {
         public void givenVideo_WhenGetVideosByTitle_Then200() throws Exception {
                 postVideo();
                 String page = String.valueOf(videoIdList.size() / pageSize);
-                String content = String.format("$.content[%d].", videoIdList.size() - 1 - Integer.valueOf(page) * pageSize);
+                String content = String.format("$.content[%d].",
+                                videoIdList.size() - 1 - Integer.valueOf(page) * pageSize);
                 getMockMvc().perform(
                                 get(url)
+                                                .header("Authorization", token)
                                                 .queryParam("search", "tes")
                                                 .queryParam("page", page))
                                 .andDo(print())
@@ -197,6 +221,7 @@ public class VideoControllerTest extends TestContext {
                 postVideo();
                 getMockMvc().perform(
                                 get(url)
+                                                .header("Authorization", token)
                                                 .param("search", "jogos"))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -211,7 +236,8 @@ public class VideoControllerTest extends TestContext {
 
                 postVideo();
                 getMockMvc().perform(
-                                get(urlWithId, lastVideoId))
+                                get(urlWithId, lastVideoId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
@@ -227,13 +253,14 @@ public class VideoControllerTest extends TestContext {
         public void givenVideo_WhenGetVideoByInvalidId_Then404() throws Exception {
 
                 getMockMvc().perform(
-                                get(urlWithInvalidId))
+                                get(urlWithInvalidId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -244,6 +271,7 @@ public class VideoControllerTest extends TestContext {
                 postVideo();
                 getMockMvc().perform(
                                 put(urlWithId, lastVideoId)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(videoPut)))
                                 .andDo(print())
@@ -266,6 +294,7 @@ public class VideoControllerTest extends TestContext {
                 videoPut.url(null).categoryId(null);
                 getMockMvc().perform(
                                 put(urlWithId, lastVideoId)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(videoPut)))
                                 .andDo(print())
@@ -288,6 +317,7 @@ public class VideoControllerTest extends TestContext {
                                 .url("url");
                 getMockMvc().perform(
                                 put(urlWithId, lastVideoId)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(videoPut)))
                                 .andDo(print())
@@ -303,6 +333,7 @@ public class VideoControllerTest extends TestContext {
 
                 getMockMvc().perform(
                                 put(urlWithInvalidId)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(videoPut)))
                                 .andDo(print())
@@ -310,7 +341,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -322,6 +353,7 @@ public class VideoControllerTest extends TestContext {
                 videoPut.categoryId(0);
                 getMockMvc().perform(
                                 put(urlWithId, lastVideoId)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(videoPut)))
                                 .andDo(print())
@@ -329,7 +361,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isBadRequest())
                                 .andExpect(jsonPath("$.code").value("4001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
+                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -339,7 +371,8 @@ public class VideoControllerTest extends TestContext {
 
                 postVideo();
                 getMockMvc().perform(
-                                delete(urlWithId, lastVideoId))
+                                delete(urlWithId, lastVideoId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(status().isOk());
                 videoIdList.remove(videoIdList.size() - 1);
@@ -350,13 +383,14 @@ public class VideoControllerTest extends TestContext {
         public void givenVideo_WhenDeleteVideoByInvalidId_Then404() throws Exception {
 
                 getMockMvc().perform(
-                                delete(urlWithInvalidId))
+                                delete(urlWithInvalidId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
