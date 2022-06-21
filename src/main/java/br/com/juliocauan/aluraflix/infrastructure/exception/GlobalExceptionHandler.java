@@ -7,8 +7,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -72,16 +71,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 
-    //TODO review why is not working
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<Object> authenticationInvalidDataError(UsernameNotFoundException ex){
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> badCredentialsError(BadCredentialsException ex){
         responseError = init(5001, ex);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseError);
-    }
-
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Object> authenticationError(AuthenticationException ex){
-        responseError = init(6001, ex);
+        responseError.message("Invalid User or Password!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 

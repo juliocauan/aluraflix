@@ -21,7 +21,7 @@ public class AuthenticationService implements UserDetailsService {
     Optional<UserEntity> user = userRepository.findByEmail(username);
     if (user.isPresent())
       return user.get();
-    throw new UsernameNotFoundException("Dados inválidos!");
+    throw new UsernameNotFoundException("Invalid User or Password!");
   }
 
 }

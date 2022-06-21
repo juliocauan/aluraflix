@@ -34,7 +34,7 @@ import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Order(1)
+@Order(3)
 @TestInstance(Lifecycle.PER_CLASS)
 public class VideoControllerTest extends TestContext {
 
