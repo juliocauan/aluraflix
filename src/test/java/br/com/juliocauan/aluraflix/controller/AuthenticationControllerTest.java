@@ -88,9 +88,9 @@ public class AuthenticationControllerTest extends TestContext {
                         .header("Authorization", "saofkasodkasokdaogmvadksodma"))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.code").value("6001"))
-                .andExpect(jsonPath("$.message").value("Invalid User or Password"));
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.code").value("5002"))
+                .andExpect(jsonPath("$.message").value("Bad Credentials!"));
     }
 
 }

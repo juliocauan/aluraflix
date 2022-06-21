@@ -11,8 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import br.com.juliocauan.aluraflix.infrastructure.exception.CustomAuthenticationEntryPoint;
 import lombok.AllArgsConstructor;
 
 @Configuration
@@ -23,6 +25,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   private final AuthenticationService authenticationService;
   private final TokenService tokenService;
   private final UserRepository userRepository;
+  
+  @Bean
+  public AuthenticationEntryPoint authenticationEntryPoint(){
+      return new CustomAuthenticationEntryPoint();
+  }
 
   @Override
   @Bean
@@ -40,11 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.authorizeRequests()
         .antMatchers(HttpMethod.POST, "/auth").permitAll()
         .anyRequest().authenticated()
+        .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
         .and().csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .addFilterBefore(new TokenAuthenticationFilter(tokenService, userRepository),
-            UsernamePasswordAuthenticationFilter.class);
+        .and().addFilterBefore(new TokenAuthenticationFilter(tokenService, userRepository), UsernamePasswordAuthenticationFilter.class);
   }
 
   @Override
