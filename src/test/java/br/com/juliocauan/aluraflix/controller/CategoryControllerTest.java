@@ -31,6 +31,8 @@ import br.com.juliocauan.openapi.model.CategoryGet;
 import br.com.juliocauan.openapi.model.CategoryPost;
 import br.com.juliocauan.openapi.model.CategoryPut;
 import br.com.juliocauan.openapi.model.Color;
+import br.com.juliocauan.openapi.model.LoginForm;
+import br.com.juliocauan.openapi.model.Token;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 
@@ -44,6 +46,7 @@ public class CategoryControllerTest extends TestContext {
         private final String urlWithInvalidId = "/categories/0";
         private final String urlGetVideoListByCategoryId = "/categories/{categoryId}/videos";
         private final String urlGetVideoListByCategoryInvalidId = "/categories/0/videos";
+        private final String tokenUrl = "/auth";
         private final Integer categoryDefaultId = 1;
 
         private CategoryPost categoryPost = new CategoryPost();
@@ -51,10 +54,12 @@ public class CategoryControllerTest extends TestContext {
         private List<Integer> categoryIdList = new ArrayList<>();
         private Integer lastCategoryId = 0;
         private VideoGet videoGet = new VideoGet();
+        private String token;
 
         private ResultActions postCategory() throws Exception {
                 ResultActions result = getMockMvc().perform(
                                 post(url)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(categoryPost)));
                 String videoGetString = result.andReturn().getResponse().getContentAsString();
@@ -67,17 +72,29 @@ public class CategoryControllerTest extends TestContext {
 
         @BeforeAll
         private void init() throws Exception {
+
+                LoginForm login = new LoginForm().email("julio@test.com").pswd("123456");
+                String content = getMockMvc().perform(
+                                post(tokenUrl)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(getObjectMapper().writeValueAsString(login)))
+                                .andReturn().getResponse().getContentAsString();
+                Token aux = getObjectMapper().readValue(content, Token.class);
+                token = String.format("%s %s", aux.getType().getValue(), aux.getToken());
+
                 VideoPost videoPost = new VideoPost()
                                 .description("Descricao teste POST in Category")
                                 .title("Titulo teste POST in Category")
                                 .url("https://www.testePOSTInCategory.com/")
                                 .categoryId(categoryDefaultId);
-                String response = getMockMvc().perform(
+                content = getMockMvc().perform(
                                 post("/videos")
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(videoPost)))
                                 .andReturn().getResponse().getContentAsString();
-                videoGet = getObjectMapper().readValue(response, VideoGet.class);
+
+                videoGet = getObjectMapper().readValue(content, VideoGet.class);
         }
 
         @AfterAll
@@ -85,7 +102,7 @@ public class CategoryControllerTest extends TestContext {
                 getMockMvc().perform(delete("/videos/{videoId}", videoGet.getId()));
                 categoryIdList.forEach(categoriaId -> {
                         try {
-                                getMockMvc().perform(delete(urlWithId, categoriaId));
+                                getMockMvc().perform(delete(urlWithId, categoriaId).header("Authorization", token));
                         } catch (Exception e) {
                                 e.printStackTrace();
                         }
@@ -123,6 +140,7 @@ public class CategoryControllerTest extends TestContext {
                                 .color(null);
                 getMockMvc().perform(
                                 post(url)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(categoryPost)))
                                 .andDo(print())
@@ -138,7 +156,8 @@ public class CategoryControllerTest extends TestContext {
                 postCategory();
                 String content = String.format("$.content[%d].", categoryIdList.size());
                 getMockMvc().perform(
-                                get(url))
+                                get(url)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
@@ -153,7 +172,8 @@ public class CategoryControllerTest extends TestContext {
         public void givenCategory_WhenGetCategoryById_Then200() throws Exception {
                 postCategory();
                 getMockMvc().perform(
-                                get(urlWithId, lastCategoryId))
+                                get(urlWithId, lastCategoryId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
@@ -166,13 +186,14 @@ public class CategoryControllerTest extends TestContext {
         @DisplayName("Erro ao tentar buscar Category por Id inválido")
         public void givenCategory_WhenGetCategoryByInvalidId_Then404() throws Exception {
                 getMockMvc().perform(
-                                get(urlWithInvalidId))
+                                get(urlWithInvalidId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -180,7 +201,8 @@ public class CategoryControllerTest extends TestContext {
         @DisplayName("Busca lista de Videos por Category")
         public void givenCategory_WhenGetVideoListByCategory_Then200() throws Exception {
                 getMockMvc().perform(
-                                get(urlGetVideoListByCategoryId, categoryDefaultId))
+                                get(urlGetVideoListByCategoryId, categoryDefaultId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
@@ -196,13 +218,14 @@ public class CategoryControllerTest extends TestContext {
         @DisplayName("Erro ao tentar buscar lista de Videos por Category com Id inválido")
         public void givenCategory_WhenGetVideoListByInvalidCategoryId_Then404() throws Exception {
                 getMockMvc().perform(
-                                get(urlGetVideoListByCategoryInvalidId))
+                                get(urlGetVideoListByCategoryInvalidId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -212,6 +235,7 @@ public class CategoryControllerTest extends TestContext {
                 postCategory();
                 getMockMvc().perform(
                                 put(urlWithId, lastCategoryId)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(categoryPut)))
                                 .andDo(print())
@@ -230,6 +254,7 @@ public class CategoryControllerTest extends TestContext {
                 categoryPut.title(null);
                 getMockMvc().perform(
                                 put(urlWithId, lastCategoryId)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(categoryPut)))
                                 .andDo(print())
@@ -247,6 +272,7 @@ public class CategoryControllerTest extends TestContext {
                 categoryPut.title("a").color(null);
                 getMockMvc().perform(
                                 put(urlWithId, lastCategoryId)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(categoryPut)))
                                 .andDo(print())
@@ -261,6 +287,7 @@ public class CategoryControllerTest extends TestContext {
         public void givenCategory_WhenPutValidCategoryByInvalidId_Then404() throws Exception {
                 getMockMvc().perform(
                                 put(urlWithInvalidId)
+                                                .header("Authorization", token)
                                                 .contentType(MediaType.APPLICATION_JSON)
                                                 .content(getObjectMapper().writeValueAsString(categoryPut)))
                                 .andDo(print())
@@ -268,7 +295,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -277,23 +304,25 @@ public class CategoryControllerTest extends TestContext {
         public void givenCategory_WhenDeleteCategory_Then200() throws Exception {
                 postCategory();
                 getMockMvc().perform(
-                                delete(urlWithId, lastCategoryId))
+                                delete(urlWithId, lastCategoryId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(status().isOk());
-                categoryIdList.remove(categoryIdList.size()-1);
+                categoryIdList.remove(categoryIdList.size() - 1);
         }
 
         @Test
         @DisplayName("Erro ao tentar deletar Category por Id inválido")
         public void givenCategory_WhenDeleteCategoryByInvalidId_Then404() throws Exception {
                 getMockMvc().perform(
-                                delete(urlWithInvalidId))
+                                delete(urlWithInvalidId)
+                                                .header("Authorization", token))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("1001"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.CategoryEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 

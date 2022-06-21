@@ -72,6 +72,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 
+    //TODO review why is not working
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Object> authenticationInvalidDataError(UsernameNotFoundException ex){
         responseError = init(5001, ex);
