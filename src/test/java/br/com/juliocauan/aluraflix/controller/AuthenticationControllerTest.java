@@ -60,7 +60,7 @@ public class AuthenticationControllerTest extends TestContext {
                         .content(getObjectMapper().writeValueAsString(loginForm)))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.code").value("5001"))
                 .andExpect(jsonPath("$.message").value("Invalid User or Password!"));
     }
@@ -75,7 +75,7 @@ public class AuthenticationControllerTest extends TestContext {
                         .content(getObjectMapper().writeValueAsString(loginForm)))
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.code").value("5001"))
                 .andExpect(jsonPath("$.message").value("Invalid User or Password!"));
     }

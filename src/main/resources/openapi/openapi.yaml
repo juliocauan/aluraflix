@@ -27,8 +27,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Token"
-        '404':
-          description: Invalid data
+        '401':
+          $ref: "#/components/responses/Unauthorized"
 
   /videos:
     get:
@@ -55,6 +55,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VideoPage"
+        '403':
+          $ref: "#/components/responses/Forbidden"
     post:
       tags:
         - "video"
@@ -75,6 +77,8 @@ paths:
                 $ref: "#/components/schemas/VideoGet"
         '400':
           $ref: "#/components/responses/BadRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
           
   /videos/{videoId}:
     get:
@@ -95,6 +99,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VideoGet"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
     put:
@@ -123,6 +129,8 @@ paths:
                 $ref: "#/components/schemas/VideoGet"
         '400':
           $ref: "#/components/responses/BadRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
     delete:
@@ -139,6 +147,8 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/Deleted"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
   
@@ -156,6 +166,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CategoryPage"
+        '403':
+          $ref: "#/components/responses/Forbidden"
     post:
       tags:
         - "category"
@@ -176,6 +188,8 @@ paths:
                 $ref: "#/components/schemas/CategoryGet"
         '400':
           $ref: "#/components/responses/BadRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
 
   /categories/{categoryId}:
     get:
@@ -196,6 +210,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CategoryGet"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
     put:
@@ -224,6 +240,8 @@ paths:
                 $ref: "#/components/schemas/CategoryGet"
         '400':
           $ref: "#/components/responses/BadRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
     delete:
@@ -240,6 +258,8 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/Deleted"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
 
@@ -263,6 +283,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VideoPage"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
 
@@ -470,3 +492,7 @@ components:
             $ref: "#/components/schemas/Error"
     Deleted:
       description: "Successfully deleted Entity"
+    Unauthorized:
+      description: "Unauthorized: Login Error"
+    Forbidden:
+      description: "Forbidden: Invalid Token"

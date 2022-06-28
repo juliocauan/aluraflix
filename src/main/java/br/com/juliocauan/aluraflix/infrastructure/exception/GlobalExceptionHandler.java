@@ -61,7 +61,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> dataIntegrityError(DataIntegrityViolationException ex){
         responseError = init(3001, ex);
         responseError.setMessage(ex.getMostSpecificCause().getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(responseError);
     }
 
     //POST/PUT VALIDATION INTEGRITY ERROR SOLVED BY MAPPER
@@ -72,10 +72,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Object> badCredentialsError(BadCredentialsException ex){
+    public ResponseEntity<Object> loginError(BadCredentialsException ex){
         responseError = init(5001, ex);
         responseError.message("Invalid User or Password!");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseError);
     }
 
 }
