@@ -56,4 +56,10 @@ public class VideoController implements VideosApi {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    @Override
+    public ResponseEntity<Page<VideoGet>> _findAllFreeVideos(Pageable pageable) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

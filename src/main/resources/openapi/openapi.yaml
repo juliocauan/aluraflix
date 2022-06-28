@@ -165,6 +165,21 @@ paths:
         '404':
           $ref: "#/components/responses/NotFound"
   
+  /videos/free:
+    get:
+      tags:
+        - "video"
+      operationId: "findAllFreeVideos"
+      description: "Get a list of all free Videos"
+      x-spring-paginated: true
+      responses:
+        '200':
+          description: "Sucessfully found all free Videos"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VideoPage"
+
   /categories:
     get:
       tags:

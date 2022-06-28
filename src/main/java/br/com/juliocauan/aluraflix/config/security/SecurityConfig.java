@@ -46,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.authorizeRequests()
         .antMatchers(HttpMethod.POST, "/auth").permitAll()
+        .antMatchers(HttpMethod.GET, "/videos/free").permitAll()
         .anyRequest().authenticated()
         .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
         .and().csrf().disable()

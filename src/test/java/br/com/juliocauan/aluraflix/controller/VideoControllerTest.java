@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -41,10 +42,12 @@ public class VideoControllerTest extends TestContext {
         private final String url = "/videos";
         private final String urlWithId = "/videos/{videoId}";
         private final String urlWithInvalidId = "/videos/0";
+        private final String urlFree = "/videos/free";
         private final String tokenUrl = "/auth";
         private final Integer categoryDefaultId = 1;
-        private final Integer pageSize = 5;
-
+        
+        @Value("spring.data.web.pageable.default-page-size")
+        private Integer pageSize;
         private VideoPost videoPost = new VideoPost();
         private VideoPut videoPut = new VideoPut();
         private List<Integer> videoIdList = new ArrayList<>();
@@ -228,6 +231,24 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isOk())
                                 .andExpect(jsonPath("$.content").isArray())
                                 .andExpect(jsonPath("$.content").isEmpty());
+        }
+
+        //TODO
+        @Test
+        @DisplayName("Busca lista de todos os Videos gratuitos")
+        public void givenVideo_WhenGetAllFreeVideos_Then200() throws Exception {
+                postVideo();
+                getMockMvc().perform(
+                                get(urlFree)
+                                                .queryParam("page", page))
+                                .andDo(print())
+                                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(jsonPath("$.content[0].id").value(lastVideoId))
+                                .andExpect(jsonPath("$.content[%d].title").value(videoPost.getTitle()))
+                                .andExpect(jsonPath("$.content[%d].description").value(videoPost.getDescription()))
+                                .andExpect(jsonPath("$.content[%d].url").value(videoPost.getUrl()))
+                                .andExpect(jsonPath("$.content[%d].categoryId").value(videoPost.getCategoryId()));
         }
 
         @Test
