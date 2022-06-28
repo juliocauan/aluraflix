@@ -7,11 +7,14 @@ info:
 tags:
   - name: "video"
   - name: "category"
+  - name: "auth"
 
 paths:
 
   /auth:
     post:
+      tags:
+        - auth
       operationId: 'authenticate'
       description: 'Validate User authentication'
       requestBody:
@@ -34,6 +37,8 @@ paths:
     get:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "findAllVideos"
       description: "Get a list of all Videos"
       x-spring-paginated: true
@@ -60,6 +65,8 @@ paths:
     post:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "addVideo"
       description: "Post a new Video"
       requestBody:
@@ -84,6 +91,8 @@ paths:
     get:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "findVideoById"
       description: "Get a specific Video by Id"
       parameters:
@@ -106,6 +115,8 @@ paths:
     put:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "updateVideo"
       description: "Update Video parameters"
       parameters:
@@ -136,6 +147,8 @@ paths:
     delete:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "deleteVideo"
       description: "Delete Video"
       parameters:
@@ -156,6 +169,8 @@ paths:
     get:
       tags:
         - "category"
+      security:
+        - bearerAuth: []
       operationId: "findAllCategories"
       description: "Get a list of all Categories"
       x-spring-paginated: true
@@ -171,6 +186,8 @@ paths:
     post:
       tags:
         - "category"
+      security:
+        - bearerAuth: []
       operationId: "addCategory"
       description: "Post a new Category"
       requestBody:
@@ -195,6 +212,8 @@ paths:
     get:
       tags:
         - "category"
+      security:
+        - bearerAuth: []
       operationId: "findCategoryById"
       description: "Get a specific Category by Id"
       parameters:
@@ -217,6 +236,8 @@ paths:
     put:
       tags:
         - "category"
+      security:
+        - bearerAuth: []
       operationId: "updateCategory"
       description: "Update Category parameters"
       parameters:
@@ -247,6 +268,8 @@ paths:
     delete:
       tags:
         - "category"
+      security:
+        - bearerAuth: []
       operationId: "deleteCategory"
       description: "Delete Category"
       parameters:
@@ -267,6 +290,8 @@ paths:
     get:
       tags:
         - "category"
+      security:
+        - bearerAuth: []
       operationId: "findVideosByCategory"
       description: "Get list of Videos sorted by Category"
       x-spring-paginated: true
@@ -496,3 +521,9 @@ components:
       description: "Unauthorized: Login Error"
     Forbidden:
       description: "Forbidden: Invalid Token"
+
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+      bearerFormat: JWT
