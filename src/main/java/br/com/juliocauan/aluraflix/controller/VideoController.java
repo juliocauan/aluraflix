@@ -3,6 +3,7 @@ package br.com.juliocauan.aluraflix.controller;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,9 +58,10 @@ public class VideoController implements VideosApi {
     }
 
     @Override
-    public ResponseEntity<Page<VideoGet>> _findAllFreeVideos(Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
+    public ResponseEntity<Page<VideoGet>> _findAllFreeVideos() {
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<VideoGet> response = videoService.findAll(pageable).map(videoMapper::entityToGetDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

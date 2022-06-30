@@ -45,8 +45,9 @@ public class VideoControllerTest extends TestContext {
         private final String urlFree = "/videos/free";
         private final String tokenUrl = "/auth";
         private final Integer categoryDefaultId = 1;
+        private final Integer freePageSize = 5;
         
-        @Value("spring.data.web.pageable.default-page-size")
+        @Value("${spring.data.web.pageable.default-page-size}")
         private Integer pageSize;
         private VideoPost videoPost = new VideoPost();
         private VideoPut videoPut = new VideoPut();
@@ -233,22 +234,17 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(jsonPath("$.content").isEmpty());
         }
 
-        //TODO
         @Test
         @DisplayName("Busca lista de todos os Videos gratuitos")
         public void givenVideo_WhenGetAllFreeVideos_Then200() throws Exception {
                 postVideo();
                 getMockMvc().perform(
-                                get(urlFree)
-                                                .queryParam("page", page))
+                                get(urlFree))
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isOk())
-                                .andExpect(jsonPath("$.content[0].id").value(lastVideoId))
-                                .andExpect(jsonPath("$.content[%d].title").value(videoPost.getTitle()))
-                                .andExpect(jsonPath("$.content[%d].description").value(videoPost.getDescription()))
-                                .andExpect(jsonPath("$.content[%d].url").value(videoPost.getUrl()))
-                                .andExpect(jsonPath("$.content[%d].categoryId").value(videoPost.getCategoryId()));
+                                .andExpect(jsonPath("$.pageable.pageSize").value(freePageSize))
+                                .andExpect(jsonPath("$.content[0].id").value("1"));
         }
 
         @Test

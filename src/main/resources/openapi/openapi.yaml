@@ -171,7 +171,7 @@ paths:
         - "video"
       operationId: "findAllFreeVideos"
       description: "Get a list of all free Videos"
-      x-spring-paginated: true
+      x-spring-paginated: false
       responses:
         '200':
           description: "Sucessfully found all free Videos"
