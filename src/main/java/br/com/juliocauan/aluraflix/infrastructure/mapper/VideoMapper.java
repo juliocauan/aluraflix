@@ -3,17 +3,17 @@ package br.com.juliocauan.aluraflix.infrastructure.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.config.BaseMapStruct;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.config.MapperConfiguration;
 import br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity;
 import br.com.juliocauan.aluraflix.infrastructure.service.CategoryService;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
 
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(config = MapperConfiguration.class)
 public abstract class VideoMapper implements BaseMapStruct<VideoEntity, VideoGet, VideoPost, VideoPut> {
 
     @Autowired
