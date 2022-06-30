@@ -1,8 +1,7 @@
 package br.com.juliocauan.aluraflix.infrastructure.repository.config;
 
-import java.util.List;
-
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -14,13 +13,13 @@ import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
 public interface BaseJpaRepository<E, ID> extends BaseRepository<E, ID>, JpaRepository<E, ID>, JpaSpecificationExecutor<E>{
 
     @Override
-    default List<E> findList() {
-        return findAll();
+    default Page<E> getPage(Pageable pageable) {
+        return findAll(pageable);
     }
 
     @Override
-    default List<E> findList(Specification<E> spec) {
-        return findAll(spec, Sort.unsorted());
+    default Page<E> getPage(Specification<E> spec, Pageable pageable) {
+        return findAll(spec, pageable);
     }
 
     @Override

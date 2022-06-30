@@ -7,8 +7,8 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.config.BaseMapStruct;
-import br.com.juliocauan.aluraflix.infrastructure.model.VideoEntity;
-import br.com.juliocauan.aluraflix.infrastructure.service.CategoriaService;
+import br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity;
+import br.com.juliocauan.aluraflix.infrastructure.service.CategoryService;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
@@ -17,21 +17,21 @@ import br.com.juliocauan.openapi.model.VideoPut;
 public abstract class VideoMapper implements BaseMapStruct<VideoEntity, VideoGet, VideoPost, VideoPut> {
 
     @Autowired
-    protected CategoriaService categoriaService;
+    protected CategoryService categoryService;
 
     @Override
     @Mapping(target = "id", ignore = true)
     public abstract void update(VideoEntity newEntity, @MappingTarget VideoEntity oldEntity);
 
     @Override
-    @Mapping(source = "categoria.id", target = "categoriaId")
+    @Mapping(source = "category.id", target = "categoryId")
     public abstract VideoGet entityToGetDto(VideoEntity entity);
 
     @Override
-    @Mapping(target = "categoria", expression = "java(categoriaService.findOneOrDefault(postDto.getCategoriaId()))")
+    @Mapping(target = "category", expression = "java(categoryService.findOneOrGetDefaultId(postDto.getCategoryId()))")
     public abstract VideoEntity postDtoToEntity(VideoPost postDto);
 
     @Override
-    @Mapping(target = "categoria", expression = "java(putDto.getCategoriaId() == null ? null : categoriaService.findOneOrNotFound(putDto.getCategoriaId()))")
+    @Mapping(target = "category", expression = "java(putDto.getCategoryId() == null ? null : categoryService.findOneOrBadRequest(putDto.getCategoryId()))")
     public abstract VideoEntity putDtoToEntity(VideoPut putDto);
 }

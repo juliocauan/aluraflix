@@ -6,15 +6,42 @@ info:
 
 tags:
   - name: "video"
-  - name: "categoria"
+  - name: "category"
+  - name: "auth"
 
 paths:
+
+  /auth:
+    post:
+      tags:
+        - auth
+      operationId: 'authenticate'
+      description: 'Validate User authentication'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginForm"
+      responses:
+        '200':
+          description: Successfully Authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Token"
+        '401':
+          $ref: "#/components/responses/Unauthorized"
+
   /videos:
     get:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "findAllVideos"
       description: "Get a list of all Videos"
+      x-spring-paginated: true
       parameters:
         - name: search
           in: query
@@ -32,12 +59,14 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VideoGet"
+                $ref: "#/components/schemas/VideoPage"
+        '403':
+          $ref: "#/components/responses/Forbidden"
     post:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "addVideo"
       description: "Post a new Video"
       requestBody:
@@ -55,11 +84,15 @@ paths:
                 $ref: "#/components/schemas/VideoGet"
         '400':
           $ref: "#/components/responses/BadRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
           
   /videos/{videoId}:
     get:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "findVideoById"
       description: "Get a specific Video by Id"
       parameters:
@@ -75,11 +108,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/VideoGet"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
     put:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "updateVideo"
       description: "Update Video parameters"
       parameters:
@@ -103,11 +140,15 @@ paths:
                 $ref: "#/components/schemas/VideoGet"
         '400':
           $ref: "#/components/responses/BadRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
     delete:
       tags:
         - "video"
+      security:
+        - bearerAuth: []
       operationId: "deleteVideo"
       description: "Delete Video"
       parameters:
@@ -119,138 +160,177 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/Deleted"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
   
-  /categorias:
+  /videos/free:
     get:
       tags:
-        - "categoria"
-      operationId: "findAllCategorias"
-      description: "Get a list of all Categorias"
+        - "video"
+      operationId: "findAllFreeVideos"
+      description: "Get a list of all free Videos"
+      x-spring-paginated: false
       responses:
         '200':
-          description: "Sucessfully found all Categorias"
+          description: "Sucessfully found all free Videos"
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/CategoriaGet"
+                $ref: "#/components/schemas/VideoPage"
+
+  /categories:
+    get:
+      tags:
+        - "category"
+      security:
+        - bearerAuth: []
+      operationId: "findAllCategories"
+      description: "Get a list of all Categories"
+      x-spring-paginated: true
+      responses:
+        '200':
+          description: "Sucessfully found all Categories"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CategoryPage"
+        '403':
+          $ref: "#/components/responses/Forbidden"
     post:
       tags:
-        - "categoria"
-      operationId: "addCategoria"
-      description: "Post a new Categoria"
+        - "category"
+      security:
+        - bearerAuth: []
+      operationId: "addCategory"
+      description: "Post a new Category"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CategoriaPost"
+              $ref: "#/components/schemas/CategoryPost"
       responses:
         '201':
-          description: "Successfully created a new Categoria"
+          description: "Successfully created a new Category"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategoriaGet"
+                $ref: "#/components/schemas/CategoryGet"
         '400':
           $ref: "#/components/responses/BadRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
 
-  /categorias/{categoriaId}:
+  /categories/{categoryId}:
     get:
       tags:
-        - "categoria"
-      operationId: "findCategoriaById"
-      description: "Get a specific Categoria by Id"
+        - "category"
+      security:
+        - bearerAuth: []
+      operationId: "findCategoryById"
+      description: "Get a specific Category by Id"
       parameters:
-        - name: categoriaId
+        - name: categoryId
           in: path
           required: true
           schema:
-            $ref: "#/components/schemas/categoriaId"
+            $ref: "#/components/schemas/categoryId"
       responses:
         '200':
-          description: "Sucessfully found Categoria"
+          description: "Sucessfully found Category"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategoriaGet"
+                $ref: "#/components/schemas/CategoryGet"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
     put:
       tags:
-        - "categoria"
-      operationId: "updateCategoria"
-      description: "Update Categoria parameters"
+        - "category"
+      security:
+        - bearerAuth: []
+      operationId: "updateCategory"
+      description: "Update Category parameters"
       parameters:
-        - name: categoriaId
+        - name: categoryId
           in: path
           required: true
           schema:
-            $ref: "#/components/schemas/categoriaId"
+            $ref: "#/components/schemas/categoryId"
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CategoriaPut"
+              $ref: "#/components/schemas/CategoryPut"
       responses:
         '200':
           description: "Successfully updated Entity"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CategoriaGet"
+                $ref: "#/components/schemas/CategoryGet"
         '400':
           $ref: "#/components/responses/BadRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
     delete:
       tags:
-        - "categoria"
-      operationId: "deleteCategoria"
-      description: "Delete Categoria"
+        - "category"
+      security:
+        - bearerAuth: []
+      operationId: "deleteCategory"
+      description: "Delete Category"
       parameters:
-        - name: categoriaId
+        - name: categoryId
           in: path
           required: true
           schema:
-            $ref: "#/components/schemas/categoriaId"
+            $ref: "#/components/schemas/categoryId"
       responses:
         '200':
           $ref: "#/components/responses/Deleted"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
 
-  /categorias/{categoriaId}/videos:
+  /categories/{categoryId}/videos:
     get:
       tags:
-        - "categoria"
-      operationId: "findVideoListByCategoria"
-      description: "Get list of Videos sorted by Categoria"
+        - "category"
+      security:
+        - bearerAuth: []
+      operationId: "findVideosByCategory"
+      description: "Get list of Videos sorted by Category"
+      x-spring-paginated: true
       parameters:
-        - name: categoriaId
+        - name: categoryId
           in: path
           required: true
           schema:
-            $ref: "#/components/schemas/categoriaId"
+            $ref: "#/components/schemas/categoryId"
       responses:
         '200':
           description: "Sucessfully found list of Videos"
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/VideoGet"
+                $ref: "#/components/schemas/VideoPage"
+        '403':
+          $ref: "#/components/responses/Forbidden"
         '404':
           $ref: "#/components/responses/NotFound"
 
 components:
   schemas:
-    ErrorDto:
+    Error:
       type: object
       required:
         - code
@@ -266,9 +346,13 @@ components:
         fieldList:
           type: array
           items:
-            $ref: "#/components/schemas/ErrorFieldDto"
-    ErrorFieldDto:
+            $ref: "#/components/schemas/ErrorField"
+    ErrorField:
       type: object
+      required:
+        - code
+        - message
+        - field
       properties:
         code:
           type: string
@@ -276,34 +360,56 @@ components:
           type: string
         field:
           type: string
-    
+    Page:
+      type: object
+      properties:
+        page:
+          type: integer
+        numberOfElements:
+          type: integer
+        size:
+          type: integer
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
+
+    VideoPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/VideoGet"
+        page:
+          $ref: "#/components/schemas/Page"
     VideoGet:
       type: object
       properties:
         id:
           $ref: "#/components/schemas/videoId"
-        categoriaId:
-          $ref: "#/components/schemas/categoriaId"
-        titulo:
+        categoryId:
+          $ref: "#/components/schemas/categoryId"
+        title:
           type: string
-        descricao:
+        description:
           type: string
         url:
           type: string
     VideoPost:
       type: object
       required:
-        - titulo
-        - descricao
+        - title
+        - description
         - url
       properties:
-        categoriaId:
-          $ref: "#/components/schemas/categoriaId"
-        titulo:
+        categoryId:
+          $ref: "#/components/schemas/categoryId"
+        title:
           type: string
           minLength: 1
           maxLength: 100
-        descricao:
+        description:
           type: string
         url:
           type: string
@@ -312,58 +418,100 @@ components:
     VideoPut:
       type: object
       properties:
-        categoriaId:
-          $ref: "#/components/schemas/categoriaId"
-        titulo:
+        categoryId:
+          $ref: "#/components/schemas/categoryId"
+        title:
           type: string
           minLength: 1
           maxLength: 100
-        descricao:
+        description:
           type: string
         url:
           type: string
           minLength: 10
           maxLength: 255
     
-    CategoriaGet:
+    CategoryPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/CategoryGet"
+        page:
+          $ref: "#/components/schemas/Page"
+    CategoryGet:
       type: object
       properties:
         id:
-          $ref: "#/components/schemas/categoriaId"
-        titulo:
+          $ref: "#/components/schemas/categoryId"
+        title:
           type: string
-        cor:
-          $ref: "#/components/schemas/Cor"
-    CategoriaPost:
+        color:
+          $ref: "#/components/schemas/Color"
+    CategoryPost:
       type: object
       required:
-        - titulo
-        - cor
+        - title
+        - color
       properties:
-        titulo:
+        title:
           type: string
           minLength: 2
           maxLength: 30
-        cor:
-          $ref: "#/components/schemas/Cor"
-    CategoriaPut:
+        color:
+          $ref: "#/components/schemas/Color"
+    CategoryPut:
       type: object
       properties:
-        titulo:
+        title:
           type: string
           minLength: 2
           maxLength: 30
-        cor:
-          $ref: "#/components/schemas/Cor"
-    
-    Cor:
+        color:
+          $ref: "#/components/schemas/Color"
+
+    Token:
+      type: object
+      required:
+        - token
+        - tokenType
+      properties:
+        token:
+          type: string
+        type:
+          $ref: "#/components/schemas/TokenType"
+    TokenType:
+      type: string
+      enum:
+        - "Bearer"
+        - "Basic"
+        - "Digest"
+    LoginForm:
+      type: object
+      required:
+        - email
+        - pswd
+      properties:
+        email:
+          type: string
+          format: email
+        pswd:
+          type: string
+          format: password
+    Color:
       type: string
       enum:
         - "White"
         - "Teal"
+    ProfileType:
+      type: string
+      enum:
+        - "admin"
+        - "client"
     videoId:
       $ref: "#/components/schemas/integerId"
-    categoriaId:
+    categoryId:
       $ref: "#/components/schemas/integerId"
     integerId:
       type: integer
@@ -375,12 +523,22 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorDto"
+            $ref: "#/components/schemas/Error"
     BadRequest:
-      description: "Could not created/update Entity"
+      description: "Could not create/update Entity"
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorDto"
+            $ref: "#/components/schemas/Error"
     Deleted:
       description: "Successfully deleted Entity"
+    Unauthorized:
+      description: "Unauthorized: Login Error"
+    Forbidden:
+      description: "Forbidden: Invalid Token"
+
+  securitySchemes:
+    bearerAuth:
+      scheme: bearer
+      type: http
+      bearerFormat: JWT

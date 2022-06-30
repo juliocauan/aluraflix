@@ -1,9 +1,10 @@
 package br.com.juliocauan.aluraflix.domain.service.config;
 
-import java.util.List;
-
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
 import br.com.juliocauan.aluraflix.domain.mapper.ServiceMapper;
@@ -15,12 +16,12 @@ public abstract class BaseService<E, ID> {
     protected abstract ServiceMapper<E> getMapper();
     protected abstract String getClassName();
 
-    public final List<E> findAll() {
-        return getRepository().findList();
+    public final Page<E> findAll(Pageable pageable) {
+        return getRepository().getPage(pageable);
     }
 
-    public final List<E> findAll(Specification<E> spec) {
-        return getRepository().findList(spec);
+    public final Page<E> find(Specification<E> spec, Pageable pageable) {
+        return getRepository().getPage(spec, pageable);
     }
 
     private final E findOneOrNull(ID id){
@@ -30,7 +31,15 @@ public abstract class BaseService<E, ID> {
     public final E findOneOrNotFound(ID id) {
         E entity = findOneOrNull(id);
         if(entity == null)
-            throw new EntityNotFoundException(String.format("Unable to find %s with id %d",
+            throw new EntityNotFoundException(String.format("GET/DELETE method: Unable to find %s with id %s",
+                getClassName(), id));
+        return entity;
+    }
+
+    public final E findOneOrBadRequest(ID id) {
+        E entity = findOneOrNull(id);
+        if(entity == null)
+            throw new ValidationException(String.format("POST/PUT method: Unable to find %s with id %s",
                 getClassName(), id));
         return entity;
     }
