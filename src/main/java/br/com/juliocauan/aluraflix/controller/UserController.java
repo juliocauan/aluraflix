@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.juliocauan.aluraflix.infrastructure.mapper.auth.UserMapper;
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.UserEntity;
 import br.com.juliocauan.aluraflix.infrastructure.repository.auth.UserRepository;
+import br.com.juliocauan.aluraflix.infrastructure.service.ProfileService;
 import br.com.juliocauan.openapi.api.UsersApi;
 import br.com.juliocauan.openapi.model.UserGet;
 import br.com.juliocauan.openapi.model.UserPost;
@@ -23,11 +24,12 @@ public class UserController implements UsersApi{
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final ProfileService profileService;
 
     @Override
     public ResponseEntity<UserGet> _addUser(@Valid UserPost userPost) {
         UserEntity user = userMapper.postDtoToEntity(userPost);
-        
+        user.setProfiles(profileService.newUserProfiles());
         UserGet response = userMapper.entityToGetDto(userRepository.save(user));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
