@@ -8,6 +8,7 @@ tags:
   - name: "video"
   - name: "category"
   - name: "auth"
+  - name: "user"
 
 paths:
 
@@ -32,6 +33,134 @@ paths:
                 $ref: "#/components/schemas/Token"
         '401':
           $ref: "#/components/responses/Unauthorized"
+
+  /users:
+    get:
+      tags:
+        - "user"
+      security:
+        - bearerAuth: []
+      operationId: "findAllUsers"
+      description: "Get a list of all Users"
+      x-spring-paginated: true
+      parameters:
+        - name: search
+          in: query
+          required: false
+          allowEmptyValue: false
+          description: "Search by email"
+          example: "test@email.com"
+          explode: true
+          style: form
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Sucessfully found all Users"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPage"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+    post:
+      tags:
+        - "user"
+      operationId: "addUser"
+      description: "Post a new User"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPost"
+      responses:
+        '201':
+          description: "Successfully created a new User"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGet"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+
+  /users/{userId}:
+    get:
+      tags:
+        - "user"
+      security:
+        - bearerAuth: []
+      operationId: "findUserById"
+      description: "Get a specific User by Id"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/userId"
+      responses:
+        '200':
+          description: "Sucessfully found User"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGet"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    put:
+      tags:
+        - "user"
+      security:
+        - bearerAuth: []
+      operationId: "updateUser"
+      description: "Update User parameters"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/userId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPut"
+      responses:
+        '200':
+          description: "Successfully updated Entity"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserGet"
+        '400':
+          $ref: "#/components/responses/BadRequest"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+        '404':
+          $ref: "#/components/responses/NotFound"
+    delete:
+      tags:
+        - "user"
+      security:
+        - bearerAuth: []
+      operationId: "deleteUser"
+      description: "Delete User"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/userId"
+      responses:
+        '200':
+          $ref: "#/components/responses/Deleted"
+        '403':
+          $ref: "#/components/responses/Forbidden"
+        '404':
+          $ref: "#/components/responses/NotFound"
 
   /videos:
     get:
@@ -374,6 +503,51 @@ components:
         hasPrevious:
           type: boolean
 
+    UserPage:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserGet"
+        page:
+          $ref: "#/components/schemas/Page"
+    UserGet:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/userId"
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+    UserPost:
+      type: object
+      required:
+        - name
+        - email
+        - secret
+      properties:
+        name:
+          type: string
+          minLength: 5
+        email:
+          type: string
+          format: email
+        secret:
+          type: string
+          format: password
+    UserPut:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        secret:
+          type: string
+          format: password
+
     VideoPage:
       type: object
       properties:
@@ -507,12 +681,17 @@ components:
     ProfileType:
       type: string
       enum:
-        - "admin"
-        - "client"
+        - "ADMIN"
+        - "CLIENT"
     videoId:
       $ref: "#/components/schemas/integerId"
     categoryId:
       $ref: "#/components/schemas/integerId"
+    userId:
+      $ref: "#/components/schemas/longId"
+    longId:
+      type: integer
+      format: int64
     integerId:
       type: integer
       format: int32
