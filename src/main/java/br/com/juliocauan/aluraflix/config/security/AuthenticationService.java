@@ -18,8 +18,9 @@ public class AuthenticationService implements UserDetailsService {
   private final UserRepository userRepository;
 
   @Override
+  @SuppressWarnings("unchecked")
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Optional<UserEntity> user = userRepository.findByEmail(username);
+    Optional<UserEntity> user = (Optional<UserEntity>) userRepository.findByEmail(username);
     if (user.isPresent())
       return user.get();
     throw new UsernameNotFoundException("Invalid User or Password!");
