@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.config.BaseMapStruct;
 import br.com.juliocauan.aluraflix.infrastructure.mapper.config.MapperConfiguration;
-import br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity;
-import br.com.juliocauan.aluraflix.infrastructure.service.CategoryService;
+import br.com.juliocauan.aluraflix.infrastructure.model.application.VideoEntity;
+import br.com.juliocauan.aluraflix.infrastructure.repository.application.CategoryRepository;
 import br.com.juliocauan.openapi.model.VideoGet;
 import br.com.juliocauan.openapi.model.VideoPost;
 import br.com.juliocauan.openapi.model.VideoPut;
@@ -17,7 +17,7 @@ import br.com.juliocauan.openapi.model.VideoPut;
 public abstract class VideoMapper implements BaseMapStruct<VideoEntity, VideoGet, VideoPost, VideoPut> {
 
     @Autowired
-    protected CategoryService categoryService;
+    protected CategoryRepository categoryRepository;
 
     @Override
     @Mapping(target = "id", ignore = true)
@@ -28,10 +28,9 @@ public abstract class VideoMapper implements BaseMapStruct<VideoEntity, VideoGet
     public abstract VideoGet entityToGetDto(VideoEntity entity);
 
     @Override
-    @Mapping(target = "category", expression = "java(categoryService.findOneOrGetDefaultId(postDto.getCategoryId()))")
     public abstract VideoEntity postDtoToEntity(VideoPost postDto);
 
     @Override
-    @Mapping(target = "category", expression = "java(putDto.getCategoryId() == null ? null : categoryService.findOneOrBadRequest(putDto.getCategoryId()))")
+    @Mapping(target = "category", expression = "java(putDto.getCategoryId() == null ? null : categoryRepository.findOneOrBadRequest(putDto.getCategoryId()))")
     public abstract VideoEntity putDtoToEntity(VideoPut putDto);
 }

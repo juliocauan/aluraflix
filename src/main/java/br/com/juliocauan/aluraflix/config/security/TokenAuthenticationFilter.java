@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.UserEntity;
+import br.com.juliocauan.aluraflix.infrastructure.repository.auth.UserRepository;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor

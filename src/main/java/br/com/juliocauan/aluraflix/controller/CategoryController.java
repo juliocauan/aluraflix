@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.CategoriaMapper;
 import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
-import br.com.juliocauan.aluraflix.infrastructure.model.domain.specification.VideoSpecification;
-import br.com.juliocauan.aluraflix.infrastructure.service.CategoryService;
-import br.com.juliocauan.aluraflix.infrastructure.service.VideoService;
+import br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity;
+import br.com.juliocauan.aluraflix.infrastructure.model.application.specification.VideoSpecification;
+import br.com.juliocauan.aluraflix.infrastructure.repository.application.CategoryRepository;
+import br.com.juliocauan.aluraflix.infrastructure.repository.application.VideoRepository;
 import br.com.juliocauan.openapi.api.CategoriesApi;
 import br.com.juliocauan.openapi.model.CategoryGet;
 import br.com.juliocauan.openapi.model.CategoryPost;
@@ -24,46 +25,49 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CategoryController implements CategoriesApi {
 
-    private final CategoryService categoryService;
+    private final CategoryRepository categoryRepository;
     private final CategoriaMapper categoryMapper;
-    private final VideoService videoService;
+    private final VideoRepository videoRepository;
     private final VideoMapper videoMapper;
 
     @Override
     public ResponseEntity<CategoryGet> _addCategory(@Valid CategoryPost categoryPost) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                categoryMapper.entityToGetDto(categoryService.save(categoryMapper.postDtoToEntity(categoryPost))));
+        CategoryEntity category = categoryMapper.postDtoToEntity(categoryPost);
+        CategoryGet response = categoryMapper.entityToGetDto(categoryRepository.save(category));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
     public ResponseEntity<Page<CategoryGet>> _findAllCategories(Pageable pageable) {
-        Page<CategoryGet> response = categoryService.findAll(pageable).map(categoryMapper::entityToGetDto);
+        Page<CategoryGet> response = categoryRepository.findAll(pageable).map(categoryMapper::entityToGetDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<CategoryGet> _findCategoryById(Integer categoryId) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                categoryMapper.entityToGetDto(categoryService.findOneOrNotFound(categoryId)));
+        CategoryGet response = categoryMapper.entityToGetDto(categoryRepository.findOneOrNotFound(categoryId));
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
-    public ResponseEntity<CategoryGet> _updateCategory(Integer categoriaId, @Valid CategoryPut categoryPut) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                categoryMapper.entityToGetDto(categoryService.update(
-                        categoriaId, categoryMapper.putDtoToEntity(categoryPut))));
+    public ResponseEntity<CategoryGet> _updateCategory(Integer categoryId, @Valid CategoryPut categoryPut) {
+        CategoryEntity categoryNew = categoryMapper.putDtoToEntity(categoryPut);
+        CategoryEntity categoryOld = categoryRepository.findOneOrNotFound(categoryId);
+        categoryMapper.update(categoryNew, categoryOld);
+        CategoryGet response = categoryMapper.entityToGetDto(categoryRepository.save(categoryOld));
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @Override
     public ResponseEntity<Void> _deleteCategory(Integer categoryId) {
-        categoryService.delete(categoryId);
+        categoryRepository.remove(categoryId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @Override
     public ResponseEntity<Page<VideoGet>> _findVideosByCategory(Integer categoryId, Pageable pageable) {
-        Page<VideoGet> response = videoService
-                .find(VideoSpecification.isInCategoria(categoryService.findOneOrNotFound(categoryId)), pageable)
+        Page<VideoGet> response = videoRepository
+                .findAll(VideoSpecification.isInCategoria(categoryRepository.findOneOrNotFound(categoryId)), pageable)
                 .map(videoMapper::entityToGetDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

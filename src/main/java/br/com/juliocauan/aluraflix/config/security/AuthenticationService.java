@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.UserEntity;
+import br.com.juliocauan.aluraflix.infrastructure.repository.auth.UserRepository;
 import lombok.AllArgsConstructor;
 
 @Service

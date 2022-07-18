@@ -1,8 +1,8 @@
 package br.com.juliocauan.aluraflix.infrastructure.repository.config;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
+import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -13,28 +13,31 @@ import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
 public interface BaseJpaRepository<E, ID> extends BaseRepository<E, ID>, JpaRepository<E, ID>, JpaSpecificationExecutor<E>{
 
     @Override
-    default Page<E> getPage(Pageable pageable) {
-        return findAll(pageable);
+    default void remove(ID id) {
+        delete(findOneOrNotFound(id));
     }
 
     @Override
-    default Page<E> getPage(Specification<E> spec, Pageable pageable) {
-        return findAll(spec, pageable);
+    default E findOneOrBadRequest(ID id) {
+        E entity = findOneOrNull(id);
+        if(entity == null)
+            throw new ValidationException(String.format("POST/PUT method: Unable to find %s with id %s",
+                getClassName(), id));
+        return entity;
     }
 
     @Override
-    default E findOne(ID id) {
+    default E findOneOrNotFound(ID id) {
+        E entity = findOneOrNull(id);
+        if(entity == null)
+            throw new EntityNotFoundException(String.format("GET/DELETE method: Unable to find %s with id %s",
+                getClassName(), id));
+        return entity;
+    }
+
+    @Override
+    default E findOneOrNull(ID id) {
         return id == null ? null : findById(id).orElse(null);
-    }
-
-    @Override
-    default E post(E entity) {
-        return save(entity);
-    }
-
-    @Override
-    default void remove(E entity) {
-        delete(entity);
     }
 
 }

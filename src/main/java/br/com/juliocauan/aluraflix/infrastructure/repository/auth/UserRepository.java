@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.config.security;
+package br.com.juliocauan.aluraflix.infrastructure.repository.auth;
 
 import java.util.Optional;
 

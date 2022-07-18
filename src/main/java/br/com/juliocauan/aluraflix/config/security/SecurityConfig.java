@@ -15,6 +15,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import br.com.juliocauan.aluraflix.infrastructure.exception.CustomAuthenticationEntryPoint;
+import br.com.juliocauan.aluraflix.infrastructure.repository.auth.UserRepository;
 import lombok.AllArgsConstructor;
 
 @Configuration

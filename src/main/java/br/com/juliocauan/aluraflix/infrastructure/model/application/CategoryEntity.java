@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructure.model.domain;
+package br.com.juliocauan.aluraflix.infrastructure.model.application;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import br.com.juliocauan.aluraflix.domain.model.Category;
+import br.com.juliocauan.aluraflix.domain.model.application.Category;
 import br.com.juliocauan.openapi.model.Color;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
