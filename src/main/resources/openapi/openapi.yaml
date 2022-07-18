@@ -522,6 +522,10 @@ components:
         email:
           type: string
           format: email
+        profiles:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfileType"
     UserPost:
       type: object
       required:
@@ -547,6 +551,10 @@ components:
         secret:
           type: string
           format: password
+        profiles:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfileType"
 
     VideoPage:
       type: object

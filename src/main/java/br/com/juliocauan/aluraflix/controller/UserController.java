@@ -4,10 +4,12 @@ import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.juliocauan.aluraflix.infrastructure.mapper.auth.UserMapper;
+import br.com.juliocauan.aluraflix.infrastructure.model.auth.UserEntity;
 import br.com.juliocauan.aluraflix.infrastructure.repository.auth.UserRepository;
 import br.com.juliocauan.openapi.api.UsersApi;
 import br.com.juliocauan.openapi.model.UserGet;
@@ -24,8 +26,10 @@ public class UserController implements UsersApi{
 
     @Override
     public ResponseEntity<UserGet> _addUser(@Valid UserPost userPost) {
-        // TODO Auto-generated method stub
-        return null;
+        UserEntity user = userMapper.postDtoToEntity(userPost);
+        
+        UserGet response = userMapper.entityToGetDto(userRepository.save(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
