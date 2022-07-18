@@ -146,7 +146,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isBadRequest())
-                                .andExpect(jsonPath("$.code").value("2001"))
+                                .andExpect(jsonPath("$.code").value("201"))
                                 .andExpect(jsonPath("$.fieldList", hasSize(2)));
         }
 
@@ -191,7 +191,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
-                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
                                                 "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
@@ -223,7 +223,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
-                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
                                                 "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
@@ -278,7 +278,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isBadRequest())
-                                .andExpect(jsonPath("$.code").value("2001"))
+                                .andExpect(jsonPath("$.code").value("201"))
                                 .andExpect(jsonPath("$.fieldList", hasSize(1)));
         }
 
@@ -293,7 +293,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
-                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
                                                 "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
@@ -320,7 +320,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
-                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
                                                 "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());

@@ -61,7 +61,7 @@ public class AuthenticationControllerTest extends TestContext {
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.code").value("5001"))
+                .andExpect(jsonPath("$.code").value("401"))
                 .andExpect(jsonPath("$.message").value("Invalid User or Password!"));
     }
 
@@ -76,7 +76,7 @@ public class AuthenticationControllerTest extends TestContext {
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized())
-                .andExpect(jsonPath("$.code").value("5001"))
+                .andExpect(jsonPath("$.code").value("401"))
                 .andExpect(jsonPath("$.message").value("Invalid User or Password!"));
     }
 
@@ -89,7 +89,7 @@ public class AuthenticationControllerTest extends TestContext {
                 .andDo(print())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$.code").value("5002"))
+                .andExpect(jsonPath("$.code").value("501"))
                 .andExpect(jsonPath("$.message").value("Bad Credentials!"));
     }
 
