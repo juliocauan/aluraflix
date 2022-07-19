@@ -1,8 +1,8 @@
 package br.com.juliocauan.aluraflix.infrastructure.model.auth;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,7 +47,7 @@ public class UserEntity implements User, UserDetails {
     private String secret;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<ProfileEntity> profiles = new ArrayList<>();
+    private Set<ProfileEntity> profiles = new HashSet<>();
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
