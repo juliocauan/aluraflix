@@ -525,7 +525,7 @@ components:
         profiles:
           type: array
           items:
-            $ref: "#/components/schemas/ProfileType"
+            $ref: "#/components/schemas/Profile"
     UserPost:
       type: object
       required:
@@ -653,6 +653,19 @@ components:
         color:
           $ref: "#/components/schemas/Color"
 
+    Profile:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/profileId"
+        value:
+          $ref: "#/components/schemas/ProfileType"
+    ProfileType:
+      type: string
+      enum:
+        - "ADMIN"
+        - "CLIENT"
+    
     Token:
       type: object
       required:
@@ -686,17 +699,14 @@ components:
       enum:
         - "White"
         - "Teal"
-    ProfileType:
-      type: string
-      enum:
-        - "ADMIN"
-        - "CLIENT"
     videoId:
       $ref: "#/components/schemas/integerId"
     categoryId:
       $ref: "#/components/schemas/integerId"
     userId:
       $ref: "#/components/schemas/longId"
+    profileId:
+      $ref: "#/components/schemas/integerId"
     longId:
       type: integer
       format: int64
