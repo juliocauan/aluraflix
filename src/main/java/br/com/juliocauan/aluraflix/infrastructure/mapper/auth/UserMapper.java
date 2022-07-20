@@ -17,6 +17,7 @@ public interface UserMapper extends BaseMapStruct<UserEntity, UserGet, UserPost,
     @Override
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "authorities", ignore = true)
+    @Mapping(target = "profiles", ignore = true)
     void update(UserEntity newEntity, @MappingTarget UserEntity oldEntity);
 
     @Override
@@ -25,7 +26,6 @@ public interface UserMapper extends BaseMapStruct<UserEntity, UserGet, UserPost,
     @Override
     UserEntity postDtoToEntity(UserPost postDto);
 
-    //TODO mapear Profiles
     @Override
     @Mapping(target = "profiles", ignore = true)
     UserEntity putDtoToEntity(UserPut putDto);

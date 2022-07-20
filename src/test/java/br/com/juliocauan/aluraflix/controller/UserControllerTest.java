@@ -45,7 +45,6 @@ public class UserControllerTest extends TestContext {
     private final String tokenUrl = "/auth";
     private final UserPost userPost = new UserPost();
     private final UserPut userPut = new UserPut();
-    private final Short  adminId = 1;
     private final Short clientId = 2;
 
     private Long lastUserId;
@@ -185,10 +184,24 @@ public class UserControllerTest extends TestContext {
                             .andExpect(status().isOk())
                             .andExpect(jsonPath("$.id").value(lastUserId))
                             .andExpect(jsonPath("$.email").value(userPut.getEmail()))
-                            .andExpect(jsonPath("$.profiles[0].id").value(clientId.toString()))
-                            .andExpect(jsonPath("$.profiles[0].value").value(ProfileType.CLIENT.getValue()))
-                            .andExpect(jsonPath("$.profiles[1].id").value(adminId.toString()))
-                            .andExpect(jsonPath("$.profiles[1].value").value(ProfileType.ADMIN.getValue()));
+                            .andExpect(jsonPath("$.profiles", hasSize(2)));
+    }
+
+    @Test
+    public void givenUser_WhenPutRepeatedProfile_Then200() throws Exception {
+            postUser();
+            userPut.addProfilesItem(ProfileType.ADMIN).addProfilesItem(ProfileType.CLIENT);
+            getMockMvc().perform(
+                            put(urlId, lastUserId)
+                                            .header("Authorization", token)
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .content(getObjectMapper().writeValueAsString(userPut)))
+                            .andDo(print())
+                            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                            .andExpect(status().isOk())
+                            .andExpect(jsonPath("$.id").value(lastUserId))
+                            .andExpect(jsonPath("$.email").value(userPut.getEmail()))
+                            .andExpect(jsonPath("$.profiles", hasSize(2)));
     }
 
     @Test
@@ -206,8 +219,7 @@ public class UserControllerTest extends TestContext {
                             .andExpect(status().isOk())
                             .andExpect(jsonPath("$.id").value(lastUserId))
                             .andExpect(jsonPath("$.email").value(email))
-                            .andExpect(jsonPath("$.profiles[0].id").value(clientId.toString()))
-                            .andExpect(jsonPath("$.profiles[0].value").value(ProfileType.CLIENT.getValue()));
+                            .andExpect(jsonPath("$.profiles", hasSize(2)));
     }
 
     @Test

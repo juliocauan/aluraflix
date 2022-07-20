@@ -2,7 +2,7 @@ package br.com.juliocauan.aluraflix.infrastructure.service;
 
 import org.springframework.stereotype.Service;
 
-import br.com.juliocauan.aluraflix.domain.repository.BaseRepository;
+import br.com.juliocauan.aluraflix.domain.repository.auth.ProfileRepositoryDomain;
 import br.com.juliocauan.aluraflix.domain.service.ProfileServiceDomain;
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.ProfileEntity;
 import br.com.juliocauan.aluraflix.infrastructure.repository.auth.ProfileRepository;
@@ -15,7 +15,7 @@ public class ProfileService implements ProfileServiceDomain<ProfileEntity, Short
     private final ProfileRepository profileRepository;
 
     @Override
-    public BaseRepository<ProfileEntity, Short> getRepository() {
+    public ProfileRepositoryDomain<ProfileEntity, Short> getRepository() {
         return profileRepository;
     }
 
