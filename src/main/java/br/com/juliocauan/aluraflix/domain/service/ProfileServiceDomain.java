@@ -18,8 +18,9 @@ public interface ProfileServiceDomain<E, ID> {
         return set;
     }
 
-    default Set<E> updateUserProfiles(Set<E> oldProfiles, List<ProfileType> newProfiles) {
-        newProfiles.forEach(profile -> oldProfiles.add(getRepository().findByValue(profile)));
+    default Set<E> updateUserProfiles(Set<E> oldProfiles, List<ProfileType> newProfilesAdd, List<ProfileType> newProfilesRemove) {
+        if(newProfilesRemove != null) newProfilesRemove.forEach(profile -> oldProfiles.remove(getRepository().findByValue(profile)));
+        if(newProfilesAdd != null) newProfilesAdd.forEach(profile -> oldProfiles.add(getRepository().findByValue(profile)));
         return oldProfiles;
     }
 

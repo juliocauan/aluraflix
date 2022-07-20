@@ -551,7 +551,11 @@ components:
         secret:
           type: string
           format: password
-        profiles:
+        profilesAdd:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProfileType"
+        profilesRemove:
           type: array
           items:
             $ref: "#/components/schemas/ProfileType"

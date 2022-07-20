@@ -55,7 +55,7 @@ public class UserController implements UsersApi{
         UserEntity userNew = userMapper.putDtoToEntity(userPut);
         UserEntity userOld = userRepository.findOneOrNotFound(userId);
         userMapper.update(userNew, userOld);
-        userOld.setProfiles(profileService.updateUserProfiles(userOld.getProfiles(), userPut.getProfiles()));
+        userOld.setProfiles(profileService.updateUserProfiles(userOld.getProfiles(), userPut.getProfilesAdd(), userPut.getProfilesRemove()));
         UserGet response = userMapper.entityToGetDto(userRepository.save(userOld));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

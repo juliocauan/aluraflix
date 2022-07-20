@@ -45,6 +45,7 @@ public class UserControllerTest extends TestContext {
     private final String tokenUrl = "/auth";
     private final UserPost userPost = new UserPost();
     private final UserPut userPut = new UserPut();
+    private final Short  adminId = 1;
     private final Short clientId = 2;
 
     private Long lastUserId;
@@ -81,7 +82,7 @@ public class UserControllerTest extends TestContext {
     @BeforeEach
     public void setup(){
         userPost.name("teste").email("teste2@teste.com").secret("secret");
-        userPut.email("teste3@teste.com").secret("secret2").addProfilesItem(ProfileType.ADMIN);
+        userPut.email("teste3@teste.com").secret("secret2").addProfilesAddItem(ProfileType.ADMIN).profilesRemove(null);
     }
 
     @AfterAll
@@ -190,7 +191,7 @@ public class UserControllerTest extends TestContext {
     @Test
     public void givenUser_WhenPutRepeatedProfile_Then200() throws Exception {
             postUser();
-            userPut.addProfilesItem(ProfileType.ADMIN).addProfilesItem(ProfileType.CLIENT);
+            userPut.addProfilesAddItem(ProfileType.ADMIN).addProfilesAddItem(ProfileType.CLIENT);
             getMockMvc().perform(
                             put(urlId, lastUserId)
                                             .header("Authorization", token)
@@ -202,6 +203,24 @@ public class UserControllerTest extends TestContext {
                             .andExpect(jsonPath("$.id").value(lastUserId))
                             .andExpect(jsonPath("$.email").value(userPut.getEmail()))
                             .andExpect(jsonPath("$.profiles", hasSize(2)));
+    }
+
+    @Test
+    public void givenUser_WhenPutRemoveAProfile_Then200() throws Exception {
+            postUser();
+            userPut.addProfilesAddItem(ProfileType.ADMIN).addProfilesRemoveItem(ProfileType.CLIENT);
+            getMockMvc().perform(
+                            put(urlId, lastUserId)
+                                            .header("Authorization", token)
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .content(getObjectMapper().writeValueAsString(userPut)))
+                            .andDo(print())
+                            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                            .andExpect(status().isOk())
+                            .andExpect(jsonPath("$.id").value(lastUserId))
+                            .andExpect(jsonPath("$.email").value(userPut.getEmail()))
+                            .andExpect(jsonPath("$.profiles[0].id").value(adminId.toString()))
+                            .andExpect(jsonPath("$.profiles[0].value").value(ProfileType.ADMIN.getValue()));
     }
 
     @Test
