@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import br.com.juliocauan.aluraflix.infrastructure.exception.CustomAuthenticationEntryPoint;
 import br.com.juliocauan.aluraflix.infrastructure.repository.auth.UserRepository;
-import br.com.juliocauan.openapi.model.ProfileType;
+import br.com.juliocauan.openapi.model.RoleType;
 import lombok.AllArgsConstructor;
 
 @Configuration
@@ -50,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.POST, "/auth").permitAll()
         .antMatchers(HttpMethod.GET, "/videos/free").permitAll()
         .antMatchers(HttpMethod.POST, "/users").permitAll()
-        .antMatchers(HttpMethod.GET, "/users").hasAuthority(ProfileType.ADMIN.getValue())
-        .antMatchers(HttpMethod.PUT, "/users/*").hasAuthority(ProfileType.ADMIN.getValue())
+        .antMatchers(HttpMethod.GET, "/users").hasAuthority(RoleType.ADMIN.getValue())
+        .antMatchers(HttpMethod.PUT, "/users/*").hasAuthority(RoleType.ADMIN.getValue())
         .anyRequest().authenticated()
         .and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint())
         .and().csrf().disable()

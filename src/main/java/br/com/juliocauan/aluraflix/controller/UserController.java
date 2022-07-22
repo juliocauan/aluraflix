@@ -12,7 +12,7 @@ import br.com.juliocauan.aluraflix.infrastructure.mapper.auth.UserMapper;
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.UserEntity;
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.specification.UserSpecification;
 import br.com.juliocauan.aluraflix.infrastructure.repository.auth.UserRepository;
-import br.com.juliocauan.aluraflix.infrastructure.service.auth.ProfileService;
+import br.com.juliocauan.aluraflix.infrastructure.service.auth.RoleService;
 import br.com.juliocauan.openapi.api.UsersApi;
 import br.com.juliocauan.openapi.model.UserGet;
 import br.com.juliocauan.openapi.model.UserPost;
@@ -25,12 +25,12 @@ public class UserController implements UsersApi{
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final ProfileService profileService;
+    private final RoleService roleService;
 
     @Override
     public ResponseEntity<UserGet> _addUser(@Valid UserPost userPost) {
         UserEntity user = userMapper.postDtoToEntity(userPost);
-        user.setProfiles(profileService.newUserProfiles());
+        user.setRoles(roleService.newUserRoles());
         UserGet response = userMapper.entityToGetDto(userRepository.save(user));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -55,7 +55,7 @@ public class UserController implements UsersApi{
         UserEntity userNew = userMapper.putDtoToEntity(userPut);
         UserEntity userOld = userRepository.findOneOrNotFound(userId);
         userMapper.update(userNew, userOld);
-        userOld.setProfiles(profileService.updateUserProfiles(userOld.getProfiles(), userPut.getProfilesAdd(), userPut.getProfilesRemove()));
+        userOld.setRoles(roleService.updateUserRoles(userOld.getRoles(), userPut.getRolesAdd(), userPut.getRolesRemove()));
         UserGet response = userMapper.entityToGetDto(userRepository.save(userOld));
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

@@ -11,18 +11,18 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import br.com.juliocauan.aluraflix.domain.model.auth.Profile;
-import br.com.juliocauan.openapi.model.ProfileType;
+import br.com.juliocauan.aluraflix.domain.model.auth.Role;
+import br.com.juliocauan.openapi.model.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "profiles")
+@Table(name = "roles")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class ProfileEntity implements Profile, GrantedAuthority {
+public class RoleEntity implements Role, GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class ProfileEntity implements Profile, GrantedAuthority {
 	private Short id;
 	
     @Enumerated(EnumType.STRING)
-	private ProfileType value;
+	private RoleType value;
 
     @Override
     public String getAuthority() {
@@ -52,7 +52,7 @@ public class ProfileEntity implements Profile, GrantedAuthority {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ProfileEntity other = (ProfileEntity) obj;
+        RoleEntity other = (RoleEntity) obj;
         if (value != other.value)
             return false;
         return true;

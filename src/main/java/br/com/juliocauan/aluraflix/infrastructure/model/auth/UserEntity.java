@@ -47,11 +47,11 @@ public class UserEntity implements User, UserDetails {
     private String secret;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private Set<ProfileEntity> profiles = new HashSet<>();
+    private Set<RoleEntity> roles = new HashSet<>();
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return profiles;
+        return roles;
     }
     @Override
     public String getPassword() {
