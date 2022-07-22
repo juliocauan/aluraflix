@@ -130,7 +130,7 @@ public class UserControllerTest extends TestContext {
         @Test
         public void givenUser_WhenGetAllUsers_Then200() throws Exception {
                 postUser();
-                String content = String.format("$.content[%d].", userIdList.size());
+                String content = String.format("$.content[%d].", userIdList.size() + 1);
                 getMockMvc().perform(
                                 get(url)
                                                 .header("Authorization", token))
@@ -142,7 +142,7 @@ public class UserControllerTest extends TestContext {
                                 .andExpect(jsonPath(content + "email").value(userPost.getEmail()))
                                 .andExpect(jsonPath(content + "profiles[0].id").value(clientId.toString()))
                                 .andExpect(jsonPath(content + "profiles[0].value").value(ProfileType.CLIENT.getValue()))
-                                .andExpect(jsonPath("$.numberOfElements").value(userIdList.size() + 1));
+                                .andExpect(jsonPath("$.numberOfElements").value(userIdList.size() + 2));
         }
 
         @Test
