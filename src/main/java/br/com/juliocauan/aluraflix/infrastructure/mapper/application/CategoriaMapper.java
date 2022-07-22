@@ -1,11 +1,11 @@
-package br.com.juliocauan.aluraflix.infrastructure.mapper;
+package br.com.juliocauan.aluraflix.infrastructure.mapper.application;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import br.com.juliocauan.aluraflix.infrastructure.mapper.config.BaseMapStruct;
-import br.com.juliocauan.aluraflix.infrastructure.mapper.config.MapperConfiguration;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.BaseMapStruct;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.MapperConfiguration;
 import br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity;
 import br.com.juliocauan.openapi.model.CategoryGet;
 import br.com.juliocauan.openapi.model.CategoryPost;

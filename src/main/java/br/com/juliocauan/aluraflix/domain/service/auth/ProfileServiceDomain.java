@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.domain.service;
+package br.com.juliocauan.aluraflix.domain.service.auth;
 
 import java.util.HashSet;
 import java.util.List;

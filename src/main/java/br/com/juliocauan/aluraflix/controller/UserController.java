@@ -12,7 +12,7 @@ import br.com.juliocauan.aluraflix.infrastructure.mapper.auth.UserMapper;
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.UserEntity;
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.specification.UserSpecification;
 import br.com.juliocauan.aluraflix.infrastructure.repository.auth.UserRepository;
-import br.com.juliocauan.aluraflix.infrastructure.service.ProfileService;
+import br.com.juliocauan.aluraflix.infrastructure.service.auth.ProfileService;
 import br.com.juliocauan.openapi.api.UsersApi;
 import br.com.juliocauan.openapi.model.UserGet;
 import br.com.juliocauan.openapi.model.UserPost;

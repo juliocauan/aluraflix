@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.juliocauan.aluraflix.domain.repository.auth.UserRepositoryDomain;
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.UserEntity;
-import br.com.juliocauan.aluraflix.infrastructure.repository.config.BaseJpaRepository;
+import br.com.juliocauan.aluraflix.infrastructure.repository.BaseJpaRepository;
 
 @Repository
 public interface UserRepository extends BaseJpaRepository<UserEntity, Long>, UserRepositoryDomain<UserEntity, Long> {

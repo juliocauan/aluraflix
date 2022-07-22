@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import br.com.juliocauan.aluraflix.domain.repository.application.CategoryRepositoryDomain;
 import br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity;
-import br.com.juliocauan.aluraflix.infrastructure.repository.config.BaseJpaRepository;
+import br.com.juliocauan.aluraflix.infrastructure.repository.BaseJpaRepository;
 
 @Repository
 public interface CategoryRepository extends BaseJpaRepository<CategoryEntity, Integer>, CategoryRepositoryDomain<CategoryEntity, Integer>{

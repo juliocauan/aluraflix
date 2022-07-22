@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.juliocauan.aluraflix.infrastructure.mapper.CategoriaMapper;
-import br.com.juliocauan.aluraflix.infrastructure.mapper.VideoMapper;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.application.CategoriaMapper;
+import br.com.juliocauan.aluraflix.infrastructure.mapper.application.VideoMapper;
 import br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity;
 import br.com.juliocauan.aluraflix.infrastructure.model.application.specification.VideoSpecification;
 import br.com.juliocauan.aluraflix.infrastructure.repository.application.CategoryRepository;

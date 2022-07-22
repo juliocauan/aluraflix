@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructure.repository.config;
+package br.com.juliocauan.aluraflix.infrastructure.repository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;

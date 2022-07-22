@@ -1,9 +1,9 @@
-package br.com.juliocauan.aluraflix.infrastructure.service;
+package br.com.juliocauan.aluraflix.infrastructure.service.auth;
 
 import org.springframework.stereotype.Service;
 
 import br.com.juliocauan.aluraflix.domain.repository.auth.ProfileRepositoryDomain;
-import br.com.juliocauan.aluraflix.domain.service.ProfileServiceDomain;
+import br.com.juliocauan.aluraflix.domain.service.auth.ProfileServiceDomain;
 import br.com.juliocauan.aluraflix.infrastructure.model.auth.ProfileEntity;
 import br.com.juliocauan.aluraflix.infrastructure.repository.auth.ProfileRepository;
 import lombok.AllArgsConstructor;
