@@ -207,6 +207,7 @@
 							<typeMappings>
 								<typeMapping>VideoPage=Page&lt;VideoGet&gt;</typeMapping>
 								<typeMapping>CategoryPage=Page&lt;CategoryGet&gt;</typeMapping>
+								<typeMapping>UserPage=Page&lt;UserGet&gt;</typeMapping>
 							</typeMappings>
 						</configuration>
 					</execution>

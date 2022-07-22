@@ -1,16 +1,12 @@
 package br.com.juliocauan.aluraflix.domain.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-
 public interface BaseRepository<E, ID> {
     
-    //TODO Revisar Specification
-    Page<E> getPage(Specification<E> spec, Pageable pageable);
-    Page<E> getPage(Pageable pageable);
-    E findOne(ID id);
-    E post(E entity);
-    void remove(E entity);
+    String getClassName();
+
+    E findOneOrNull(ID id);
+    E findOneOrNotFound(ID id);
+    E findOneOrBadRequest(ID id);
+    void remove(ID id);
 
 }

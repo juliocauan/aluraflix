@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.domain.model;
+package br.com.juliocauan.aluraflix.domain.model.application;
 
 public interface Video {
     String getTitle();

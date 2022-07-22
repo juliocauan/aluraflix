@@ -30,18 +30,18 @@ public class ProfileEntity implements Profile, GrantedAuthority {
 	private Short id;
 	
     @Enumerated(EnumType.STRING)
-	private ProfileType name;
+	private ProfileType value;
 
     @Override
     public String getAuthority() {
-        return this.name.getValue();
+        return this.value.getValue();
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
         return result;
     }
     @Override
@@ -53,7 +53,7 @@ public class ProfileEntity implements Profile, GrantedAuthority {
         if (getClass() != obj.getClass())
             return false;
         ProfileEntity other = (ProfileEntity) obj;
-        if (name != other.name)
+        if (value != other.value)
             return false;
         return true;
     }

@@ -23,7 +23,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         ObjectMapper mapper = new ObjectMapper();
         response.getWriter().write(mapper.writeValueAsString(new Error()
-            .code(5002)
+            .code(501)
             .message("Bad Credentials!")
             .trace(null)
             .fieldList(null)));

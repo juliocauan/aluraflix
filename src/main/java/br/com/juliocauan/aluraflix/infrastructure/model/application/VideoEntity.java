@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.infrastructure.model.domain;
+package br.com.juliocauan.aluraflix.infrastructure.model.application;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-import br.com.juliocauan.aluraflix.domain.model.Video;
+import br.com.juliocauan.aluraflix.domain.model.application.Video;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

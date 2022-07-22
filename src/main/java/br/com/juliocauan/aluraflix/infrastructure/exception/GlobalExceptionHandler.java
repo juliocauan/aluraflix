@@ -36,7 +36,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> entityNotFoundError(EntityNotFoundException ex){
-        responseError = init(1001, ex);
+        responseError = init(101, ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(responseError);
     }
     
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
-        responseError = init(2001, ex);
+        responseError = init(201, ex);
         ex.getFieldErrors().forEach(error -> {
             ErrorField e = new ErrorField();
             e.setField(error.getObjectName() + "." + error.getField());
@@ -56,24 +56,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
     }
 
+    //POST/PUT VALIDATION INTEGRITY ERROR SOLVED BY MAPPER
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Object> validationExceptionError(ValidationException ex){
+        responseError = init(202, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
+    }
+
     //POST/PUT VALIDATION INTEGRITY ERROR NOT SOLVED BY MAPPER
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> dataIntegrityError(DataIntegrityViolationException ex){
-        responseError = init(3001, ex);
+        responseError = init(301, ex);
         responseError.setMessage(ex.getMostSpecificCause().getMessage());
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(responseError);
     }
 
-    //POST/PUT VALIDATION INTEGRITY ERROR SOLVED BY MAPPER
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<Object> validationExceptionError(ValidationException ex){
-        responseError = init(4001, ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseError);
-    }
-
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> loginError(BadCredentialsException ex){
-        responseError = init(5001, ex);
+        responseError = init(401, ex);
         responseError.message("Invalid User or Password!");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(responseError);
     }

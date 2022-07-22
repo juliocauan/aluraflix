@@ -153,7 +153,7 @@ public class VideoControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isBadRequest())
-                                .andExpect(jsonPath("$.code").value("2001"))
+                                .andExpect(jsonPath("$.code").value("201"))
                                 .andExpect(jsonPath("$.fieldList", hasSize(3)));
         }
 
@@ -170,9 +170,9 @@ public class VideoControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isBadRequest())
-                                .andExpect(jsonPath("$.code").value("4001"))
+                                .andExpect(jsonPath("$.code").value("202"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity with id 0"))
+                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -275,9 +275,9 @@ public class VideoControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
-                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -340,7 +340,7 @@ public class VideoControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isBadRequest())
-                                .andExpect(jsonPath("$.code").value("2001"))
+                                .andExpect(jsonPath("$.code").value("201"))
                                 .andExpect(jsonPath("$.fieldList", hasSize(2)));
         }
 
@@ -356,9 +356,9 @@ public class VideoControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
-                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -376,9 +376,9 @@ public class VideoControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isBadRequest())
-                                .andExpect(jsonPath("$.code").value("4001"))
+                                .andExpect(jsonPath("$.code").value("202"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.CategoryEntity with id 0"))
+                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -405,9 +405,9 @@ public class VideoControllerTest extends TestContext {
                                 .andDo(print())
                                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                                 .andExpect(status().isNotFound())
-                                .andExpect(jsonPath("$.code").value("1001"))
+                                .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.domain.VideoEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
