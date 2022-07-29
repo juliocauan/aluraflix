@@ -3,17 +3,17 @@ version: "3.9"
 services:
   mysqldb:
     image: mysql:latest
-    container_name: mysql-aluraflix
+    container_name: mysql-flix
     restart: always
     networks:
       - compose-bridge
     ports:
       - "3308:3306"
     volumes:
-      - aluraflix-db:/var/lib/mysql
+      - flix-db:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=helloworld
-      - MYSQL_DATABASE=aluraflix
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=flix
 
   adminer:
     image: adminer
@@ -24,10 +24,10 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - aluraflix-db:/var/lib/mysql
+      - flix-db:/var/lib/mysql
 
 volumes:
-  aluraflix-db:
+  flix-db:
 
 networks:
   compose-bridge:

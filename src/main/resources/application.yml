@@ -7,9 +7,9 @@ spring:
             pageable:
                 default-page-size: 15
     datasource:
-        url: jdbc:mysql://localhost:3308/aluraflix
+        url: jdbc:mysql://localhost:3308/flix
         username: root
-        password: helloworld
+        password: root
         driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
         hibernate:

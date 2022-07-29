@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  title: 'AluraFlix'
+  title: 'Flix'
   version: '1.0.0'
 
 tags:
@@ -522,10 +522,10 @@ components:
         email:
           type: string
           format: email
-        profiles:
+        roles:
           type: array
           items:
-            $ref: "#/components/schemas/Profile"
+            $ref: "#/components/schemas/RoleGet"
     UserPost:
       type: object
       required:
@@ -551,14 +551,14 @@ components:
         secret:
           type: string
           format: password
-        profilesAdd:
+        rolesAdd:
           type: array
           items:
-            $ref: "#/components/schemas/ProfileType"
-        profilesRemove:
+            $ref: "#/components/schemas/RoleType"
+        rolesRemove:
           type: array
           items:
-            $ref: "#/components/schemas/ProfileType"
+            $ref: "#/components/schemas/RoleType"
 
     VideoPage:
       type: object
@@ -657,14 +657,14 @@ components:
         color:
           $ref: "#/components/schemas/Color"
 
-    Profile:
+    RoleGet:
       type: object
       properties:
         id:
-          $ref: "#/components/schemas/profileId"
+          $ref: "#/components/schemas/roleId"
         value:
-          $ref: "#/components/schemas/ProfileType"
-    ProfileType:
+          $ref: "#/components/schemas/RoleType"
+    RoleType:
       type: string
       enum:
         - "ADMIN"
@@ -709,7 +709,7 @@ components:
       $ref: "#/components/schemas/integerId"
     userId:
       $ref: "#/components/schemas/longId"
-    profileId:
+    roleId:
       $ref: "#/components/schemas/integerId"
     longId:
       type: integer
