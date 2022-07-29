@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.config;
+package br.com.juliocauan.flix.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

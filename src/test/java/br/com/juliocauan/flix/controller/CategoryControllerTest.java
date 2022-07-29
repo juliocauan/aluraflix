@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.controller;
+package br.com.juliocauan.flix.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import br.com.juliocauan.aluraflix.config.TestContext;
+import br.com.juliocauan.flix.config.TestContext;
 import br.com.juliocauan.openapi.model.CategoryGet;
 import br.com.juliocauan.openapi.model.CategoryPost;
 import br.com.juliocauan.openapi.model.CategoryPut;
@@ -193,7 +193,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.flix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -225,7 +225,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.flix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -295,7 +295,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.flix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -322,7 +322,7 @@ public class CategoryControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.flix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 

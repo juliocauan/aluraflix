@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.controller;
+package br.com.juliocauan.flix.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import br.com.juliocauan.aluraflix.config.TestContext;
+import br.com.juliocauan.flix.config.TestContext;
 import br.com.juliocauan.openapi.model.LoginForm;
 import br.com.juliocauan.openapi.model.RoleType;
 import br.com.juliocauan.openapi.model.Token;
@@ -41,7 +41,7 @@ public class UserControllerTest extends TestContext {
         private final String url = "/users";
         private final String urlId = "/users/{userId}";
         private final String urlInvalidId = "/users/0";
-        private final String getAndDeleteError = "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.auth.UserEntity with id 0";
+        private final String getAndDeleteError = "GET/DELETE method: Unable to find br.com.juliocauan.flix.infrastructure.model.auth.UserEntity with id 0";
         private final String tokenUrl = "/auth";
         private final UserPost userPost = new UserPost();
         private final UserPut userPut = new UserPut();

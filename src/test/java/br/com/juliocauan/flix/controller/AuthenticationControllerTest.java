@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.controller;
+package br.com.juliocauan.flix.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -17,7 +17,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.http.MediaType;
 
-import br.com.juliocauan.aluraflix.config.TestContext;
+import br.com.juliocauan.flix.config.TestContext;
 import br.com.juliocauan.openapi.model.LoginForm;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

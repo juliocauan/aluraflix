@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix;
+package br.com.juliocauan.flix;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Order(1)
-class AluraflixApplicationTests {
+class FlixApplicationTests {
 
 	@Test
 	@DisplayName("Testa estado da aplicação")

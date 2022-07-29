@@ -1,4 +1,4 @@
-package br.com.juliocauan.aluraflix.controller;
+package br.com.juliocauan.flix.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
-import br.com.juliocauan.aluraflix.config.TestContext;
+import br.com.juliocauan.flix.config.TestContext;
 import br.com.juliocauan.openapi.model.LoginForm;
 import br.com.juliocauan.openapi.model.Token;
 import br.com.juliocauan.openapi.model.VideoGet;
@@ -172,7 +172,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isBadRequest())
                                 .andExpect(jsonPath("$.code").value("202"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
+                                                "POST/PUT method: Unable to find br.com.juliocauan.flix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -277,7 +277,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.VideoEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.flix.infrastructure.model.application.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -358,7 +358,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.VideoEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.flix.infrastructure.model.application.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -378,7 +378,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isBadRequest())
                                 .andExpect(jsonPath("$.code").value("202"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "POST/PUT method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.CategoryEntity with id 0"))
+                                                "POST/PUT method: Unable to find br.com.juliocauan.flix.infrastructure.model.application.CategoryEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
@@ -407,7 +407,7 @@ public class VideoControllerTest extends TestContext {
                                 .andExpect(status().isNotFound())
                                 .andExpect(jsonPath("$.code").value("101"))
                                 .andExpect(jsonPath("$.message").value(
-                                                "GET/DELETE method: Unable to find br.com.juliocauan.aluraflix.infrastructure.model.application.VideoEntity with id 0"))
+                                                "GET/DELETE method: Unable to find br.com.juliocauan.flix.infrastructure.model.application.VideoEntity with id 0"))
                                 .andExpect(jsonPath("$.fieldList").doesNotExist());
         }
 
